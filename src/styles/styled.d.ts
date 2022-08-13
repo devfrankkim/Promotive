@@ -6,5 +6,8 @@ declare module "styled-components" {
     bgColor?: string;
     accentColor?: string;
     prev?: () => void;
+    boardColor?: string;
+    cardColor?: string;
+    boardTextColor?: string;
   }
 }

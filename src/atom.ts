@@ -43,3 +43,15 @@ export const toDoSelector = selector({
     return toDos?.filter((toDo) => toDo.category === category);
   },
 });
+
+interface IArrayAtom {
+  [key: string]: string[];
+}
+export const arrayATOM = atom<IArrayAtom>({
+  key: "arr",
+  default: {
+    "to do": ["a", "b", "c"],
+    doing: ["d", "e"],
+    done: ["f"],
+  },
+});

@@ -6,6 +6,8 @@ import CategoryList from "./CategoryList";
 import CreateToDo from "./CreateToDo";
 import ToDo from "./ToDo";
 
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+
 const ToDoList = () => {
   const filteredList = useRecoilValue(toDoSelector);
   const toDoListState = useRecoilValue(toDoState);

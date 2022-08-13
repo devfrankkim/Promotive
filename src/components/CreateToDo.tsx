@@ -11,7 +11,12 @@ const CreateToDo = () => {
   const setToDoListState = useSetRecoilState(toDoState);
   const getCategory = useRecoilValue(categoryState);
 
-  const { register, handleSubmit, setValue } = useForm<IForm>();
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+  } = useForm<IForm>();
 
   const handleValid = ({ toDo }: IForm) => {
     setToDoListState((oldToDos) => [
@@ -26,7 +31,6 @@ const CreateToDo = () => {
     setValue("toDo", "");
   };
 
-  
   return (
     <form onSubmit={handleSubmit(handleValid)}>
       <input
@@ -36,6 +40,7 @@ const CreateToDo = () => {
         placeholder="Write a to do"
       />
       <button>Add</button>
+      <span>{errors?.toDo?.message}</span>
     </form>
   );
 };

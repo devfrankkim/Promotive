@@ -22,7 +22,6 @@ function ToDo({ text, id }: IToDo) {
     setToDoListState((oldList) => oldList.filter((item) => item.id !== id));
   };
 
-  console.log(categoryList);
   return (
     <li>
       <span>{text}</span>
