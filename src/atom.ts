@@ -22,7 +22,7 @@ export const darkLightMode = atom({
 });
 
 export const toDoState = atom<IToDo[]>({
-  key: "toDo",
+  key: "toDoAtom",
   default: JSON.parse(localStorage.getItem(TODO_KEY) as any) || [],
 });
 
