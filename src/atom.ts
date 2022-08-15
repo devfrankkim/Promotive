@@ -10,12 +10,6 @@ export enum Categories {
   "DONE" = "DONE",
 }
 
-export interface IToDo {
-  text: string;
-  id: number;
-  category: Categories;
-}
-
 export const darkLightMode = atom({
   key: "dark-mode",
   default: JSON.parse(localStorage.getItem(ISDARK) as any) || false,
@@ -44,14 +38,17 @@ export const toDoSelector = selector({
   },
 });
 
-interface IArrayAtom {
-  [key: string]: string[];
+export interface IToDo {
+  text: string;
+  id: number;
+  category?: Categories;
 }
+
+export interface IArrayAtom {
+  [key: string]: IToDo[];
+}
+
 export const arrayATOM = atom<IArrayAtom>({
   key: "arr",
-  default: {
-    "to do": ["a", "b", "c"],
-    doing: ["d", "e"],
-    done: ["f"],
-  },
+  default: {},
 });

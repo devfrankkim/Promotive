@@ -2,18 +2,22 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { Droppable } from "react-beautiful-dnd";
 import styled from "styled-components";
-import DragCard from "./DragCard";
+import DragCard from "./DragCard/DragCard";
+import { arrayATOM, IArrayAtom, IToDo } from "../../../atom";
+import { useRecoilState } from "recoil";
 
 interface IBoardProps {
-  allBoards: string[];
-  cardKey: string;
+  boardList: IToDo[];
+  boardKey: string;
 }
 
 interface IForm {
   toDo: string;
 }
 
-const Boards = ({ allBoards, cardKey }: IBoardProps) => {
+const Boards = ({ boardList, boardKey }: IBoardProps) => {
+  const [toDos, setToDos] = useRecoilState(arrayATOM);
+
   const {
     register,
     handleSubmit,
@@ -22,25 +26,25 @@ const Boards = ({ allBoards, cardKey }: IBoardProps) => {
     formState: { errors },
   } = useForm<IForm>();
 
-  const onValid = (data: any) => {
+  const onValid = (data: IForm) => {
+    console.log(data);
     const newToDo = {
       id: Date.now(),
-      text: data,
+      text: data.toDo,
     };
 
-    // setToDos((allBoards) => {
-    //   return {
-    //     ...allBoards,
-    //     [boardId]: [newToDo, ...allBoards[boardId]],
-    //   };
-    // });
+    setToDos((boardList) => {
+      return {
+        ...boardList,
+        [boardKey]: [newToDo, ...boardList[boardKey]],
+      };
+    });
     setValue("toDo", "");
   };
-  console.log(errors);
 
   return (
     <CardWrapper>
-      <div>{cardKey}</div>
+      <div>{boardKey}</div>
       <Form onSubmit={handleSubmit(onValid)}>
         <input
           {...register("toDo", {
@@ -50,15 +54,16 @@ const Boards = ({ allBoards, cardKey }: IBoardProps) => {
                 value.includes("!") ? "Type... something" : true,
             },
           })}
-          placeholder={`Write down ${cardKey}`}
+          placeholder={`Write down ${boardKey}`}
         />
       </Form>
       <span>{errors?.toDo?.message}</span>
-      <Droppable droppableId={cardKey}>
+
+      <Droppable droppableId={boardKey}>
         {(magic) => (
           <Wrapper ref={magic.innerRef} {...magic.droppableProps}>
-            {allBoards.map((toDo, index) => (
-              <DragCard key={toDo} toDo={toDo} index={index} />
+            {boardList.map((toDo, index) => (
+              <DragCard key={toDo.id} toDoText={toDo.text} index={index} />
             ))}
             {magic.placeholder}
           </Wrapper>
