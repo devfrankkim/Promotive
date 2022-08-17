@@ -1,8 +1,9 @@
 import { atom, selector } from "recoil";
 
-export const TODO_KEY = "toDos-list";
-export const CATEGORY_OPTION = "TO_DO";
-export const ISDARK = "dark-mode";
+export const TODO_KEY = "TODO_KEY";
+export const TODO_CATEGORY_OPTION = "TO_DO_CATEGORY_OPTION";
+export const ISDARK = "DARK_MODE";
+export const DNDTODO = "DND_TO_DO";
 
 export enum Categories {
   "TO_DO" = "TO_DO",
@@ -10,11 +11,19 @@ export enum Categories {
   "DONE" = "DONE",
 }
 
+export interface IToDo {
+  text: string;
+  id: number;
+  category?: Categories;
+}
+
+// ============== Dark Mode ==============
 export const darkLightMode = atom({
-  key: "dark-mode",
+  key: "darkMode",
   default: JSON.parse(localStorage.getItem(ISDARK) as any) || false,
 });
 
+// ============== to do list (input) ==============
 export const toDoState = atom<IToDo[]>({
   key: "toDoAtom",
   default: JSON.parse(localStorage.getItem(TODO_KEY) as any) || [],
@@ -23,7 +32,7 @@ export const toDoState = atom<IToDo[]>({
 export const categoryState = atom({
   key: "categoryState",
   default:
-    JSON.parse(localStorage.getItem(CATEGORY_OPTION) as any) ||
+    JSON.parse(localStorage.getItem(TODO_CATEGORY_OPTION) as any) ||
     Categories.TO_DO,
 });
 
@@ -38,17 +47,23 @@ export const toDoSelector = selector({
   },
 });
 
-export interface IToDo {
-  text: string;
-  id: number;
-  category?: Categories;
-}
+// ============== DND ==============
 
 export interface IArrayAtom {
   [key: string]: IToDo[];
 }
 
+export const dNdState = atom<IArrayAtom>({
+  key: "dndState",
+  default: JSON.parse(localStorage.getItem(DNDTODO) as any) || {},
+});
+
 export const arrayATOM = atom<IArrayAtom>({
   key: "arr",
   default: {},
+});
+
+export const boardTitleState = atom<string>({
+  key: "bordTitleState",
+  default: "",
 });

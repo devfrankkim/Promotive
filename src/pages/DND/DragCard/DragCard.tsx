@@ -8,19 +8,20 @@ import {
 import styled from "styled-components";
 
 type TDragCard = {
+  toDoId: number;
   toDoText: string;
   index: number;
 };
 
-const DragCard = ({ toDoText, index }: TDragCard) => {
+const DragCard = ({ toDoId, toDoText, index }: TDragCard) => {
   return (
     <>
-      <Draggable key={toDoText} draggableId={toDoText} index={index}>
-        {(magic) => (
+      <Draggable key={toDoText} draggableId={toDoId + ""} index={index}>
+        {(provided) => (
           <Card
-            ref={magic.innerRef}
-            {...magic.dragHandleProps}
-            {...magic.draggableProps}
+            ref={provided.innerRef}
+            {...provided.draggableProps}
+            {...provided.dragHandleProps}
           >
             {toDoText}
           </Card>

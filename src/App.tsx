@@ -1,11 +1,17 @@
-import ResetGlobalStyle from "./ResetGlobalStyle";
-import ToDoList from "./components/ToDoList";
+import { useEffect } from "react";
+import { Route, Routes } from "react-router-dom";
+
 import { ThemeProvider } from "styled-components";
 import { darkTheme, lightTheme } from "./styles/theme";
 import { useRecoilValue } from "recoil";
+import ResetGlobalStyle from "./ResetGlobalStyle";
+
+import DarkMode from "./components/DarkMode";
+
+import ToDoList from "./pages/ToDoList";
+import DND from "./pages/DND";
+
 import { darkLightMode, ISDARK } from "./atom";
-import { useEffect } from "react";
-import DND from "./components/DND";
 
 function App() {
   const isDark = useRecoilValue(darkLightMode);
@@ -17,8 +23,11 @@ function App() {
   return (
     <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
       <ResetGlobalStyle />
-      <ToDoList />
-      <DND />
+      <DarkMode />
+      <Routes>
+        <Route path="/" element={<DND />} />
+        <Route path="/toDo" element={<ToDoList />} />
+      </Routes>
     </ThemeProvider>
   );
 }

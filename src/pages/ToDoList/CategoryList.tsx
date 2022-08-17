@@ -1,6 +1,6 @@
 import React from "react";
 import { useRecoilState } from "recoil";
-import { Categories, categoryState, CATEGORY_OPTION } from "../atom";
+import { Categories, categoryState, TODO_CATEGORY_OPTION } from "../../atom";
 
 const CategoryList = () => {
   const [categoryList, setCategoryList] = useRecoilState(categoryState);
@@ -11,7 +11,7 @@ const CategoryList = () => {
 
     // =========== Set default select option ===========
     localStorage.setItem(
-      CATEGORY_OPTION,
+      TODO_CATEGORY_OPTION,
       JSON.stringify(event.currentTarget.value)
     );
   };

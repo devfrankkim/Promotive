@@ -16,7 +16,8 @@
 - [x] Recoil set up
 - [x] Dark Mode + LocalStorage
 - [x] To-do-list + LocalStorage
-- [ ] Drag and drop
+- [x] Drag and drop
+- [ ] Different board drag and drop
 - [] add schedule time -> to-do-list
 - [] weather api (react query)
 - [] timer
