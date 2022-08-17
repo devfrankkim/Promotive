@@ -2,103 +2,99 @@ import React, { FormEvent, useState } from "react";
 import { DragDropContext, Droppable, DropResult } from "react-beautiful-dnd";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
-import { dNdState, boardTitleState, IArrayAtom } from "../../atom";
+import { dNdState } from "../../atom";
 import handleDNDtodoLocalStorage from "../../utils/dnd.utils";
 import Boards from "./Boards/Boards";
 
 const DND = () => {
   const [allBoards, setAllBoards] = useRecoilState(dNdState);
   const [value, setValue] = useState("");
-  // console.log(allBoards);
 
   const onDragEnd = (info: DropResult) => {
     const { source, destination, type } = info;
-    console.log(destination);
-    console.log(source);
-
     if (!destination || !source) return;
 
     // ======= Board movement =======
     if (type === "board") {
       if (destination?.index === source?.index) return;
+
       setAllBoards((oldBoards) => {
         const copyBoards = [...oldBoards];
         const replacedBoard = copyBoards.splice(source.index, 1)[0];
-        const result = copyBoards.splice(destination?.index, 0, replacedBoard);
+        copyBoards.splice(destination?.index, 0, replacedBoard);
 
-        return result;
+        handleDNDtodoLocalStorage(copyBoards);
+        return copyBoards;
       });
     }
 
     // ======= Card movement =======
     if (type === "card") {
-      // ======= (same board) card movement =======
+      // ******* (same board) card movement *******
       if (destination?.droppableId === source.droppableId) {
-        console.log(destination.droppableId);
-        console.log(source.droppableId);
         if (destination.index === source.index) return;
         setAllBoards((oldBoards) => {
-          const copyBoards = [...oldBoards];
+          let copyBoards = [...oldBoards];
           const replacedIndex = copyBoards.findIndex(
-            (list) => list.title === source.droppableId
+            (list) => list.boardId + "" === source.droppableId
           );
-
-          console.log(typeof copyBoards[replacedIndex].content);
-
-          // error => console.log(copyBoards[replacedIndex].content);
+          // error => copyBoards[replacedIndex].content;
           const newBoard = [...copyBoards[replacedIndex].content];
+          const newCard = newBoard?.splice(source.index, 1)[0];
+          newBoard.splice(destination.index, 0, newCard);
 
-          // const newTask = newBoard?.splice(source.index, 1);
-          console.log(newBoard);
+          copyBoards[replacedIndex] = {
+            boardId: newCard.id,
+            title: copyBoards[replacedIndex].title,
+            content: newBoard,
+          };
 
-          const a = newBoard[source.index];
-
-          console.log(a);
-
-          newBoard.splice(source.index, 1);
-          newBoard.splice(destination.index, 0, a);
-
-          console.log(newBoard);
-
-          // const copyBoard = copyBoards[source.index].content;
-          // console.log(copyBoard);
-          // const replacedTask = copyBoard?.splice(source.index, 1);
-          // console.log(replacedTask);
-
-          // const newBoards = copyBoards[source.index];
-          // const replacedTask = copyBoards.splice(source.index, 1);
-          // console.log(replacedTask);
-          return oldBoards;
+          handleDNDtodoLocalStorage(copyBoards);
+          return copyBoards;
         });
-        // setAllBoards((allBoards) => {
-        //   const newBoard = [...allBoards[source.droppableId]];
-        //   const replacedTask = newBoard.splice(source.index, 1)[0];
-        //   newBoard.splice(destination?.index, 0, replacedTask);
-
-        //   const result = {
-        //     ...allBoards,
-        //     [source.droppableId]: newBoard,
-        //   };
-        //   handleDNDtodoLocalStorage(result);
-        //   return result;
-        // });
       }
 
-      // ======= (cross board) card movement =======
+      // ******* (cross board) card movement *******
       if (destination.droppableId !== source.droppableId) {
-        // setAllBoards((allBoards) => {
-        //   const sourceBoard = [...allBoards[source.droppableId]];
-        //   const destinationBoard = [...allBoards[destination.droppableId]];
-        //   const replacedTask = sourceBoard.splice(source.index, 1)[0];
-        //   destinationBoard.splice(destination?.index, 0, replacedTask);
-        //   const result = {
-        //     ...allBoards,
-        //     [source.droppableId]: sourceBoard,
-        //     [destination.droppableId]: destinationBoard,
-        //   };
-        //   handleDNDtodoLocalStorage(result);
-        //   return result;
-        // });
+        setAllBoards((oldBoards) => {
+          let copyBoards = [...oldBoards];
+          const sourceId = source.droppableId;
+          const destinationId = destination.droppableId;
+
+          // ------ Get index ------
+          const targetSourceIndex = copyBoards.findIndex(
+            (list) => list.boardId + "" === sourceId
+          );
+          const targetDestinationIndex = copyBoards.findIndex(
+            (list) => list.boardId + "" === destinationId
+          );
+
+          // ------ Handle source data------
+          const sourceContent = [...copyBoards[targetSourceIndex].content];
+          const sourceCard = sourceContent.splice(source.index, 1)[0];
+
+          copyBoards[targetSourceIndex] = {
+            boardId: copyBoards[targetSourceIndex].boardId,
+            title: copyBoards[targetSourceIndex].title,
+            content: sourceContent,
+          };
+
+          // ------ Handle destination data ------
+          const destinationContent = [
+            ...copyBoards[targetDestinationIndex].content,
+          ];
+
+          destinationContent.splice(destination.index, 0, sourceCard);
+
+          copyBoards[targetDestinationIndex] = {
+            boardId: copyBoards[targetDestinationIndex].boardId,
+            title: copyBoards[targetDestinationIndex].title,
+            content: destinationContent,
+          };
+
+          handleDNDtodoLocalStorage(copyBoards);
+          return copyBoards;
+        });
       }
     }
   };
@@ -108,20 +104,16 @@ const DND = () => {
 
     setAllBoards((oldBoards) => {
       const copyBoards = [...oldBoards];
-      const newBoards = [{ title: value + " ", content: [] }, ...copyBoards];
-      console.log(newBoards);
+      const newBoards = [
+        { boardId: Date.now(), title: value + " ", content: [] },
+        ...copyBoards,
+      ];
+
+      handleDNDtodoLocalStorage(newBoards);
       return newBoards;
     });
 
-    // if (value.length !== 0)
-    //   setAllBoards((lists) => {
-    //     const result = { [value + " "]: [], ...lists };
-    //     handleDNDtodoLocalStorage(result);
-
-    //     return result;
-    //   });
-
-    // setValue("");
+    setValue("");
   };
 
   return (
@@ -146,23 +138,15 @@ const DND = () => {
                 ref={provided.innerRef}
                 {...provided.droppableProps}
               >
-                {allBoards.map((boardId, index) => (
+                {allBoards?.map((board, index) => (
                   <Boards
-                    key={boardId.title + index}
-                    boardList={boardId.content}
-                    boardTitle={boardId?.title}
-                    boardId={boardId}
+                    key={board.title + index}
+                    boardList={board.content}
+                    boardTitle={board?.title}
                     boardIndex={index}
+                    boardId={board.boardId}
                   />
                 ))}
-                {/* {Object.keys(allBoards).map((boardId, index) => (
-                  <Boards
-                    key={boardId}
-                    boardList={allBoards[boardId]}
-                    boardId={boardId}
-                    index={index}
-                  />
-                ))} */}
                 {provided.placeholder}
               </BoardsWrapper>
             </Wrapper>

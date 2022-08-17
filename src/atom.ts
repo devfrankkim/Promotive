@@ -1,4 +1,5 @@
 import { atom, selector } from "recoil";
+import handleDNDtodoLocalStorage from "./utils/dnd.utils";
 
 export const TODO_KEY = "TODO_KEY";
 export const TODO_CATEGORY_OPTION = "TO_DO_CATEGORY_OPTION";
@@ -49,35 +50,50 @@ export interface IToDo {
 }
 
 export interface IArrayAtom {
+  boardId: number;
   title: string;
   content: IToDo[];
 }
 
 export const dNdState = atom<IArrayAtom[]>({
   key: "dndState",
-  default: [
-    {
-      title: "for",
-      content: [
-        { id: 1, text: "messi" },
-        { id: 2, text: "ronaldo" },
-      ],
-    },
-    {
-      title: "mid",
-      content: [
-        { id: 3, text: "kevin" },
-        { id: 4, text: "modric" },
-      ],
-    },
-    {
-      title: "def",
-      content: [
-        { id: 5, text: "ramos" },
-        { id: 6, text: "pique" },
-      ],
-    },
-  ],
+  default:
+    JSON.parse(localStorage.getItem(DNDTODO) as any) ||
+    handleDNDtodoLocalStorage([
+      {
+        boardId: 1,
+        title: "for",
+        content: [
+          { id: 11, text: "messi" },
+          { id: 22, text: "ronaldo" },
+        ],
+      },
+      {
+        boardId: 2,
+        title: "mid",
+        content: [
+          { id: 33, text: "kevin" },
+          { id: 44, text: "modric" },
+        ],
+      },
+      {
+        boardId: 3,
+        title: "def",
+        content: [
+          { id: 55, text: "ramos" },
+          { id: 66, text: "pique" },
+        ],
+      },
+      {
+        boardId: 4,
+        title: "def",
+        content: [
+          { id: 77, text: "ramos" },
+          { id: 88, text: "pique" },
+        ],
+      },
+    ]) ||
+    [],
 });
 
 // export const dNdState = atom<IArrayAtom[]>({

@@ -13,8 +13,8 @@ interface IBoardProps {
   key?: string;
   boardIndex: number;
   boardList?: any;
-  boardId?: any;
   boardTitle: string;
+  boardId: number;
 }
 
 interface IForm {
@@ -23,19 +23,13 @@ interface IForm {
 
 const Boards = ({
   boardList,
-  boardId,
   boardIndex,
   boardTitle,
+  boardId,
 }: IBoardProps) => {
   const [allBoards, setAllBoards] = useRecoilState(dNdState);
   const [title, setTitle] = useState(boardList);
   const inputElement = useRef<HTMLInputElement>(null);
-
-  useEffect(() => {
-    if (inputElement?.current) {
-      inputElement?.current?.focus();
-    }
-  }, []);
 
   const {
     register,
@@ -51,15 +45,23 @@ const Boards = ({
       text: data.toDo,
     };
 
-    // setAllBoards((boardList) => {
-    //   const result = {
-    //     ...boardList,
-    //     [boardId]: [newToDo, ...boardList[boardId]],
-    //   };
-    //   handleDNDtodoLocalStorage(result);
+    setAllBoards((boardList) => {
+      const copyBoards = [...boardList];
+      const copyContent = copyBoards[boardIndex].content;
+      const newContent = [...copyContent, newToDo];
 
-    //   return result;
-    // });
+      const newObj = {
+        boardId,
+        title: boardTitle,
+        content: newContent,
+      };
+
+      copyBoards.splice(boardIndex, 1);
+      copyBoards.splice(boardIndex, 0, newObj);
+
+      return [...copyBoards];
+    });
+
     setValue("toDo", "");
   };
 
@@ -70,12 +72,9 @@ const Boards = ({
         (item, index) => index !== boardIndex
       );
 
+      handleDNDtodoLocalStorage(newBoardList);
+
       return newBoardList;
-      // const newBoard = { ...oldBoardList };
-      // delete newBoard[boardId];
-      // const result = newBoard;
-      // handleDNDtodoLocalStorage(result);
-      // return result;
     });
   };
 
@@ -109,7 +108,6 @@ const Boards = ({
             maxLength={10}
             defaultValue={boardTitle}
             onChange={handleTitle}
-            id={boardId}
           />
 
           <button onClick={() => deleteBoard()}> x </button>
@@ -127,7 +125,7 @@ const Boards = ({
           </Form>
           <span>{errors?.toDo?.message}</span>
 
-          <Droppable droppableId={boardTitle} type="card">
+          <Droppable droppableId={boardId + ""} type="card">
             {(provided) => (
               <Wrapper ref={provided.innerRef} {...provided.droppableProps}>
                 {boardList?.map((toDo: any, index: any) => (
