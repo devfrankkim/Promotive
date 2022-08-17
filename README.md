@@ -16,12 +16,16 @@
 - [x] Recoil set up
 - [x] Dark Mode + LocalStorage
 - [x] To-do-list + LocalStorage
-- [x] Drag and drop
-- [ ] Different board drag and drop
+- [x] Drag And Drop + LocalStorage
+- [x] DND Board (Create, Read, Delete)
+- [x] DND Card (Create, Read, Delete)
+- [x] move Board DND + LocalStorage
+- [ ] Update Card content
+- [ ] Delete Card content
+- [ ] Update Board title
 - [] add schedule time -> to-do-list
 - [] weather api (react query)
 - [] timer
-- [] to-do-list
 - [] OAuth - sign up/sign in
 - [] json db
 - [] styling

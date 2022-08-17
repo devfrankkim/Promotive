@@ -11,12 +11,6 @@ export enum Categories {
   "DONE" = "DONE",
 }
 
-export interface IToDo {
-  text: string;
-  id: number;
-  category?: Categories;
-}
-
 // ============== Dark Mode ==============
 export const darkLightMode = atom({
   key: "darkMode",
@@ -48,20 +42,79 @@ export const toDoSelector = selector({
 });
 
 // ============== DND ==============
-
-export interface IArrayAtom {
-  [key: string]: IToDo[];
+export interface IToDo {
+  id: number;
+  text: string;
+  category?: Categories;
 }
 
-export const dNdState = atom<IArrayAtom>({
+export interface IArrayAtom {
+  title: string;
+  content: IToDo[];
+}
+
+export const dNdState = atom<IArrayAtom[]>({
   key: "dndState",
-  default: JSON.parse(localStorage.getItem(DNDTODO) as any) || {},
+  default: [
+    {
+      title: "for",
+      content: [
+        { id: 1, text: "messi" },
+        { id: 2, text: "ronaldo" },
+      ],
+    },
+    {
+      title: "mid",
+      content: [
+        { id: 3, text: "kevin" },
+        { id: 4, text: "modric" },
+      ],
+    },
+    {
+      title: "def",
+      content: [
+        { id: 5, text: "ramos" },
+        { id: 6, text: "pique" },
+      ],
+    },
+  ],
 });
 
-export const arrayATOM = atom<IArrayAtom>({
-  key: "arr",
-  default: {},
-});
+// export const dNdState = atom<IArrayAtom[]>({
+//   key: "dndState",
+//   default: JSON.parse(localStorage.getItem(DNDTODO) as any) || [
+//     {
+//       title: "for",
+//       content: [
+//         { id: 1, text: "messi" },
+//         { id: 2, text: "ronaldo" },
+//       ],
+//     },
+//     {
+//       title: "mid",
+//       content: [
+//         { id: 3, text: "kevin" },
+//         { id: 4, text: "modric" },
+//       ],
+//     },
+//     {
+//       title: "def",
+//       content: [
+//         { id: 5, text: "ramos" },
+//         { id: 6, text: "pique" },
+//       ],
+//     },
+//   ],
+// });
+
+// export interface IArrayAtom {
+//   [key: string]: IToDo[];
+// }
+
+// export const arrayATOM = atom<IArrayAtom>({
+//   key: "arr",
+//   default: {},
+// });
 
 export const boardTitleState = atom<string>({
   key: "bordTitleState",

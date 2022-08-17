@@ -9,7 +9,8 @@ import Boards from "./Boards/Boards";
 const DND = () => {
   const [allBoards, setAllBoards] = useRecoilState(dNdState);
   const [value, setValue] = useState("");
-  console.log(allBoards);
+  // console.log(allBoards);
+
   const onDragEnd = (info: DropResult) => {
     const { source, destination, type } = info;
     console.log(destination);
@@ -19,18 +20,11 @@ const DND = () => {
 
     // ======= Board movement =======
     if (type === "board") {
-      setAllBoards((oldBoard) => {
-        const copyAllBoards = Object.entries({ ...oldBoard });
-        const deleteBoard = copyAllBoards.splice(source.index, 1);
-        copyAllBoards.splice(destination?.index, 0, ...deleteBoard);
-
-        // const newBoard: IArrayAtom = {};
-        // for (let i = 0; i < copyAllBoards.length; i++) {
-        //   newBoard[copyAllBoards[i][0]] = copyAllBoards[i][1];
-        // }
-
-        const result = Object.fromEntries(copyAllBoards);
-        handleDNDtodoLocalStorage(result);
+      if (destination?.index === source?.index) return;
+      setAllBoards((oldBoards) => {
+        const copyBoards = [...oldBoards];
+        const replacedBoard = copyBoards.splice(source.index, 1)[0];
+        const result = copyBoards.splice(destination?.index, 0, replacedBoard);
 
         return result;
       });
@@ -43,38 +37,68 @@ const DND = () => {
         console.log(destination.droppableId);
         console.log(source.droppableId);
         if (destination.index === source.index) return;
+        setAllBoards((oldBoards) => {
+          const copyBoards = [...oldBoards];
+          const replacedIndex = copyBoards.findIndex(
+            (list) => list.title === source.droppableId
+          );
 
-        setAllBoards((allBoards) => {
-          const newBoard = [...allBoards[source.droppableId]];
-          const replacedTask = newBoard.splice(source.index, 1)[0];
-          newBoard.splice(destination?.index, 0, replacedTask);
+          console.log(typeof copyBoards[replacedIndex].content);
 
-          const result = {
-            ...allBoards,
-            [source.droppableId]: newBoard,
-          };
-          handleDNDtodoLocalStorage(result);
-          return result;
+          // error => console.log(copyBoards[replacedIndex].content);
+          const newBoard = [...copyBoards[replacedIndex].content];
+
+          // const newTask = newBoard?.splice(source.index, 1);
+          console.log(newBoard);
+
+          const a = newBoard[source.index];
+
+          console.log(a);
+
+          newBoard.splice(source.index, 1);
+          newBoard.splice(destination.index, 0, a);
+
+          console.log(newBoard);
+
+          // const copyBoard = copyBoards[source.index].content;
+          // console.log(copyBoard);
+          // const replacedTask = copyBoard?.splice(source.index, 1);
+          // console.log(replacedTask);
+
+          // const newBoards = copyBoards[source.index];
+          // const replacedTask = copyBoards.splice(source.index, 1);
+          // console.log(replacedTask);
+          return oldBoards;
         });
+        // setAllBoards((allBoards) => {
+        //   const newBoard = [...allBoards[source.droppableId]];
+        //   const replacedTask = newBoard.splice(source.index, 1)[0];
+        //   newBoard.splice(destination?.index, 0, replacedTask);
+
+        //   const result = {
+        //     ...allBoards,
+        //     [source.droppableId]: newBoard,
+        //   };
+        //   handleDNDtodoLocalStorage(result);
+        //   return result;
+        // });
       }
 
       // ======= (cross board) card movement =======
       if (destination.droppableId !== source.droppableId) {
-        setAllBoards((allBoards) => {
-          const sourceBoard = [...allBoards[source.droppableId]];
-          const destinationBoard = [...allBoards[destination.droppableId]];
-          const replacedTask = sourceBoard.splice(source.index, 1)[0];
-          destinationBoard.splice(destination?.index, 0, replacedTask);
-
-          const result = {
-            ...allBoards,
-            [source.droppableId]: sourceBoard,
-            [destination.droppableId]: destinationBoard,
-          };
-
-          handleDNDtodoLocalStorage(result);
-          return result;
-        });
+        // setAllBoards((allBoards) => {
+        //   const sourceBoard = [...allBoards[source.droppableId]];
+        //   const destinationBoard = [...allBoards[destination.droppableId]];
+        //   const replacedTask = sourceBoard.splice(source.index, 1)[0];
+        //   destinationBoard.splice(destination?.index, 0, replacedTask);
+        //   const result = {
+        //     ...allBoards,
+        //     [source.droppableId]: sourceBoard,
+        //     [destination.droppableId]: destinationBoard,
+        //   };
+        //   handleDNDtodoLocalStorage(result);
+        //   return result;
+        // });
       }
     }
   };
@@ -82,15 +106,22 @@ const DND = () => {
   const addToState = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
 
-    if (value.length !== 0)
-      setAllBoards((lists) => {
-        const result = { [value + " "]: [], ...lists };
-        handleDNDtodoLocalStorage(result);
+    setAllBoards((oldBoards) => {
+      const copyBoards = [...oldBoards];
+      const newBoards = [{ title: value + " ", content: [] }, ...copyBoards];
+      console.log(newBoards);
+      return newBoards;
+    });
 
-        return result;
-      });
+    // if (value.length !== 0)
+    //   setAllBoards((lists) => {
+    //     const result = { [value + " "]: [], ...lists };
+    //     handleDNDtodoLocalStorage(result);
 
-    setValue("");
+    //     return result;
+    //   });
+
+    // setValue("");
   };
 
   return (
@@ -115,14 +146,23 @@ const DND = () => {
                 ref={provided.innerRef}
                 {...provided.droppableProps}
               >
-                {Object.keys(allBoards).map((boardId, index) => (
+                {allBoards.map((boardId, index) => (
+                  <Boards
+                    key={boardId.title + index}
+                    boardList={boardId.content}
+                    boardTitle={boardId?.title}
+                    boardId={boardId}
+                    boardIndex={index}
+                  />
+                ))}
+                {/* {Object.keys(allBoards).map((boardId, index) => (
                   <Boards
                     key={boardId}
                     boardList={allBoards[boardId]}
                     boardId={boardId}
                     index={index}
                   />
-                ))}
+                ))} */}
                 {provided.placeholder}
               </BoardsWrapper>
             </Wrapper>

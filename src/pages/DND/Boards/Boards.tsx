@@ -8,18 +8,27 @@ import { useRecoilState } from "recoil";
 import handleDNDtodoLocalStorage from "../../../utils/dnd.utils";
 
 interface IBoardProps {
-  boardList: IToDo[];
-  boardId: string;
-  index: number;
+  // boardList: IToDo[];
+  // boardId: string;
+  key?: string;
+  boardIndex: number;
+  boardList?: any;
+  boardId?: any;
+  boardTitle: string;
 }
 
 interface IForm {
   toDo: string;
 }
 
-const Boards = ({ boardList, boardId, index }: IBoardProps) => {
+const Boards = ({
+  boardList,
+  boardId,
+  boardIndex,
+  boardTitle,
+}: IBoardProps) => {
   const [allBoards, setAllBoards] = useRecoilState(dNdState);
-  const [title, setTitle] = useState(boardId);
+  const [title, setTitle] = useState(boardList);
   const inputElement = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -42,47 +51,52 @@ const Boards = ({ boardList, boardId, index }: IBoardProps) => {
       text: data.toDo,
     };
 
-    setAllBoards((boardList) => {
-      const result = {
-        ...boardList,
-        [boardId]: [newToDo, ...boardList[boardId]],
-      };
-      handleDNDtodoLocalStorage(result);
+    // setAllBoards((boardList) => {
+    //   const result = {
+    //     ...boardList,
+    //     [boardId]: [newToDo, ...boardList[boardId]],
+    //   };
+    //   handleDNDtodoLocalStorage(result);
 
-      return result;
-    });
+    //   return result;
+    // });
     setValue("toDo", "");
   };
 
-  const deleteBoard = (boardId: string): void => {
+  const deleteBoard = (): void => {
     setAllBoards((oldBoardList) => {
-      const newBoard = { ...oldBoardList };
-      delete newBoard[boardId];
-      const result = newBoard;
-      handleDNDtodoLocalStorage(result);
+      const copyBoardList = [...oldBoardList];
+      const newBoardList = copyBoardList.filter(
+        (item, index) => index !== boardIndex
+      );
 
-      return result;
+      return newBoardList;
+      // const newBoard = { ...oldBoardList };
+      // delete newBoard[boardId];
+      // const result = newBoard;
+      // handleDNDtodoLocalStorage(result);
+      // return result;
     });
   };
 
   const handleTitle = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setTitle(e.target.value);
-    const copyBoard = { ...allBoards };
-    const editValue = copyBoard[boardId];
-    delete copyBoard[boardId];
+    // const copyBoard = { ...allBoards };
+    // const editValue = copyBoard[boardId];
+    // delete copyBoard[boardId];
 
-    setAllBoards(() => {
-      const result = { [e.target.value]: editValue, ...copyBoard };
-      handleDNDtodoLocalStorage(result);
-      return result;
-    });
+    // setAllBoards(() => {
+    //   const result = { [e.target.value]: editValue, ...copyBoard };
+    //   handleDNDtodoLocalStorage(result);
+    //   return result;
+    // });
   };
 
   return (
     <Draggable
-      draggableId={`board-${index + 1}`}
-      index={index}
-      key={`board-${index + 1}`}
+      draggableId={`board-${boardIndex + 1}`}
+      index={boardIndex}
+      key={`board-${boardIndex + 1}`}
     >
       {(provided) => (
         <CardWrapper
@@ -93,13 +107,12 @@ const Boards = ({ boardList, boardId, index }: IBoardProps) => {
           {/* <h2>{boardId}</h2> */}
           <TextArea
             maxLength={10}
-            defaultValue={boardId}
+            defaultValue={boardTitle}
             onChange={handleTitle}
             id={boardId}
-            // ref={inputElement}
           />
 
-          <button onClick={() => deleteBoard(boardId)}> x </button>
+          <button onClick={() => deleteBoard()}> x </button>
           <Form onSubmit={handleSubmit(onValid)}>
             <input
               {...register("toDo", {
@@ -109,15 +122,15 @@ const Boards = ({ boardList, boardId, index }: IBoardProps) => {
                     value.includes("!") ? "Type... something" : true,
                 },
               })}
-              placeholder={`Write down ${boardId}`}
+              placeholder={`Write down ${boardTitle}`}
             />
           </Form>
           <span>{errors?.toDo?.message}</span>
 
-          <Droppable droppableId={boardId} type="card">
+          <Droppable droppableId={boardTitle} type="card">
             {(provided) => (
               <Wrapper ref={provided.innerRef} {...provided.droppableProps}>
-                {boardList?.map((toDo, index) => (
+                {boardList?.map((toDo: any, index: any) => (
                   <DragCard
                     key={toDo.id}
                     toDoId={toDo.id}
