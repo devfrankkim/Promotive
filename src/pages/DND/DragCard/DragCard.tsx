@@ -1,14 +1,37 @@
 import React from "react";
 import { Draggable } from "react-beautiful-dnd";
+import { useRecoilState } from "recoil";
 import styled from "styled-components";
+import { dNdState } from "../../../atom";
+import handleDNDtodoLocalStorage from "../../../utils/dnd.utils";
 
 type TDragCard = {
+  index: number;
   toDoId: number;
   toDoText: string;
-  index: number;
+  boardIndex: number;
 };
 
-const DragCard = ({ toDoId, toDoText, index }: TDragCard) => {
+const DragCard = ({ toDoId, toDoText, index, boardIndex }: TDragCard) => {
+  const [allBoards, setAllBoards] = useRecoilState(dNdState);
+
+  const deleteCard = (toDoId: number): void => {
+    setAllBoards((oldBoards) => {
+      const copyBoards = [...oldBoards];
+      const newBoard = copyBoards[boardIndex].content.filter(
+        (card) => card.id !== toDoId
+      );
+
+      copyBoards[boardIndex] = {
+        ...copyBoards[boardIndex],
+        content: newBoard,
+      };
+
+      handleDNDtodoLocalStorage(copyBoards);
+      return copyBoards;
+    });
+  };
+
   return (
     <>
       <Draggable key={toDoText} draggableId={toDoId + ""} index={index}>
@@ -18,7 +41,11 @@ const DragCard = ({ toDoId, toDoText, index }: TDragCard) => {
             {...provided.draggableProps}
             {...provided.dragHandleProps}
           >
-            {toDoText}
+            <div>
+              <span>{toDoText}</span>
+              <button onClick={() => deleteCard(toDoId)}>X</button>
+              <button>edit</button>
+            </div>
           </Card>
         )}
       </Draggable>

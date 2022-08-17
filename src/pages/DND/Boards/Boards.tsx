@@ -12,7 +12,7 @@ interface IBoardProps {
   // boardId: string;
   key?: string;
   boardIndex: number;
-  boardList?: any;
+  boardList: IToDo[];
   boardTitle: string;
   boardId: number;
 }
@@ -29,7 +29,6 @@ const Boards = ({
 }: IBoardProps) => {
   const [allBoards, setAllBoards] = useRecoilState(dNdState);
   const [title, setTitle] = useState(boardList);
-  const inputElement = useRef<HTMLInputElement>(null);
 
   const {
     register,
@@ -59,6 +58,8 @@ const Boards = ({
       copyBoards.splice(boardIndex, 1);
       copyBoards.splice(boardIndex, 0, newObj);
 
+      handleDNDtodoLocalStorage([...copyBoards]);
+
       return [...copyBoards];
     });
 
@@ -79,11 +80,10 @@ const Boards = ({
   };
 
   const handleTitle = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setTitle(e.target.value);
+    // setTitle(e.target.value);
     // const copyBoard = { ...allBoards };
     // const editValue = copyBoard[boardId];
     // delete copyBoard[boardId];
-
     // setAllBoards(() => {
     //   const result = { [e.target.value]: editValue, ...copyBoard };
     //   handleDNDtodoLocalStorage(result);
@@ -128,12 +128,13 @@ const Boards = ({
           <Droppable droppableId={boardId + ""} type="card">
             {(provided) => (
               <Wrapper ref={provided.innerRef} {...provided.droppableProps}>
-                {boardList?.map((toDo: any, index: any) => (
+                {boardList.map((toDo, index) => (
                   <DragCard
                     key={toDo.id}
                     toDoId={toDo.id}
                     toDoText={toDo.text}
                     index={index}
+                    boardIndex={boardIndex}
                   />
                 ))}
                 {provided.placeholder}
@@ -174,6 +175,7 @@ const CardWrapper = styled.div`
   flex-direction: column;
   text-align: center;
 `;
+
 const Wrapper = styled.div`
   padding: 20px 10px;
   padding-top: 30px;
@@ -182,3 +184,16 @@ const Wrapper = styled.div`
   border-radius: 5px;
   min-height: 200px;
 `;
+
+// doNotSwear: (value) => {
+//   const noSwear = [
+//     "fuck",
+//     "fucker",
+//     "fucking",
+//     "shit",
+//     "damn",
+//     "dang",
+//     "swear",
+//   ];
+//   return noSwear.includes(value) ? "No swearing" : true;
+// },

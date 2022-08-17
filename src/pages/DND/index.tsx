@@ -2,12 +2,12 @@ import React, { FormEvent, useState } from "react";
 import { DragDropContext, Droppable, DropResult } from "react-beautiful-dnd";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
-import { dNdState } from "../../atom";
+import { dNdState, IArrayAtom } from "../../atom";
 import handleDNDtodoLocalStorage from "../../utils/dnd.utils";
 import Boards from "./Boards/Boards";
 
 const DND = () => {
-  const [allBoards, setAllBoards] = useRecoilState(dNdState);
+  const [allBoards, setAllBoards] = useRecoilState<IArrayAtom[]>(dNdState);
   const [value, setValue] = useState("");
 
   const onDragEnd = (info: DropResult) => {
@@ -102,22 +102,28 @@ const DND = () => {
   const addToState = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
 
-    setAllBoards((oldBoards) => {
-      const copyBoards = [...oldBoards];
-      const newBoards = [
-        { boardId: Date.now(), title: value + " ", content: [] },
-        ...copyBoards,
-      ];
+    if (value.length !== 0)
+      setAllBoards((oldBoards) => {
+        const copyBoards = [...oldBoards];
+        const newBoards = [
+          { boardId: Date.now(), title: value + " ", content: [] },
+          ...copyBoards,
+        ];
 
-      handleDNDtodoLocalStorage(newBoards);
-      return newBoards;
-    });
+        handleDNDtodoLocalStorage(newBoards);
+        return newBoards;
+      });
 
     setValue("");
   };
 
+  const clearAllBoads = () => {
+    handleDNDtodoLocalStorage([]);
+    setAllBoards([]);
+  };
   return (
     <>
+      <button onClick={clearAllBoads}>Clear all boards</button>
       <form onSubmit={addToState}>
         <input
           placeholder="+ Add another list"
@@ -138,7 +144,7 @@ const DND = () => {
                 ref={provided.innerRef}
                 {...provided.droppableProps}
               >
-                {allBoards?.map((board, index) => (
+                {allBoards.map((board, index) => (
                   <Boards
                     key={board.title + index}
                     boardList={board.content}
