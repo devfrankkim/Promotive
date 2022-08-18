@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Draggable } from "react-beautiful-dnd";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
@@ -14,6 +14,12 @@ type TDragCard = {
 
 const DragCard = ({ toDoId, toDoText, index, boardIndex }: TDragCard) => {
   const [allBoards, setAllBoards] = useRecoilState(dNdState);
+  const [isEditCard, setIsEditCard] = useState(false);
+  const inputElement = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    inputElement?.current?.focus();
+  }, [isEditCard]);
 
   const deleteCard = (toDoId: number): void => {
     setAllBoards((oldBoards) => {
@@ -42,9 +48,24 @@ const DragCard = ({ toDoId, toDoText, index, boardIndex }: TDragCard) => {
             {...provided.dragHandleProps}
           >
             <div>
-              <span>{toDoText}</span>
-              <button onClick={() => deleteCard(toDoId)}>X</button>
-              <button>edit</button>
+              {isEditCard ? (
+                <div>
+                  <input
+                    ref={inputElement}
+                    placeholder={toDoText}
+                    onKeyDown={(e) => {
+                      if (e.key === "Escape") setIsEditCard(false);
+                    }}
+                  />
+                  <button onClick={() => setIsEditCard(false)}>X</button>
+                </div>
+              ) : (
+                <div>
+                  <span>{toDoText}</span>
+                  <button onClick={() => deleteCard(toDoId)}>X</button>
+                  <button onClick={() => setIsEditCard(true)}>edit</button>
+                </div>
+              )}
             </div>
           </Card>
         )}
