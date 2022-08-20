@@ -1,10 +1,14 @@
-import React, { FormEvent, useState } from "react";
+import { FormEvent, useState } from "react";
+
 import { DragDropContext, Droppable, DropResult } from "react-beautiful-dnd";
 import { useRecoilState } from "recoil";
-import styled from "styled-components";
 import { dNdState, IArrayAtom } from "../../atom";
-import handleDNDtodoLocalStorage from "../../utils/dnd.utils";
+
+import styled from "styled-components";
+
 import Boards from "./Boards/Boards";
+
+import handleDNDtodoLocalStorage from "../../utils/dnd.utils";
 
 const DND = () => {
   const [allBoards, setAllBoards] = useRecoilState<IArrayAtom[]>(dNdState);
