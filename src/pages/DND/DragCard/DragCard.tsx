@@ -1,31 +1,36 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { FormEvent, useEffect, useRef, useState } from "react";
+
 import { Draggable } from "react-beautiful-dnd";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
+
 import styled from "styled-components";
+
 import { dNdState } from "../../../atom";
 import handleDNDtodoLocalStorage from "../../../utils/dnd.utils";
 
 type TDragCard = {
   index: number;
-  toDoId: number;
-  toDoText: string;
+  cardId: number;
+  cardText: string;
   boardIndex: number;
 };
 
-const DragCard = ({ toDoId, toDoText, index, boardIndex }: TDragCard) => {
+const DragCard = ({ cardId, cardText, index, boardIndex }: TDragCard) => {
   const [allBoards, setAllBoards] = useRecoilState(dNdState);
   const [isEditCard, setIsEditCard] = useState(false);
+  const [cardContent, setCardContent] = useState(cardText);
+
   const inputElement = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     inputElement?.current?.focus();
   }, [isEditCard]);
 
-  const deleteCard = (toDoId: number): void => {
+  const onDeleteCard = (cardId: number): void => {
     setAllBoards((oldBoards) => {
       const copyBoards = [...oldBoards];
       const newBoard = copyBoards[boardIndex].content.filter(
-        (card) => card.id !== toDoId
+        (card) => card.id !== cardId
       );
 
       copyBoards[boardIndex] = {
@@ -38,9 +43,35 @@ const DragCard = ({ toDoId, toDoText, index, boardIndex }: TDragCard) => {
     });
   };
 
+  const onHandleCardContent = (e: FormEvent) => {
+    e.preventDefault();
+
+    const copyBoards = [...allBoards];
+    const targetBoardContent = [...copyBoards[boardIndex].content];
+    const targetIndex = targetBoardContent.findIndex(
+      (item) => item.id === cardId
+    );
+    let targetCard = targetBoardContent[targetIndex];
+    targetCard = {
+      id: cardId,
+      text: cardContent,
+    };
+
+    targetBoardContent.splice(targetIndex, 1);
+    targetBoardContent.splice(targetIndex, 0, targetCard);
+    copyBoards[boardIndex] = {
+      ...copyBoards[boardIndex],
+      content: targetBoardContent,
+    };
+
+    handleDNDtodoLocalStorage(copyBoards);
+    setAllBoards(copyBoards);
+    setIsEditCard(false);
+  };
+
   return (
     <>
-      <Draggable key={toDoText} draggableId={toDoId + ""} index={index}>
+      <Draggable key={cardText} draggableId={cardId + ""} index={index}>
         {(provided) => (
           <Card
             ref={provided.innerRef}
@@ -49,20 +80,25 @@ const DragCard = ({ toDoId, toDoText, index, boardIndex }: TDragCard) => {
           >
             <div>
               {isEditCard ? (
-                <div>
+                <Form onSubmit={onHandleCardContent}>
                   <input
+                    required
                     ref={inputElement}
-                    placeholder={toDoText}
+                    placeholder={cardText}
+                    defaultValue={cardText}
                     onKeyDown={(e) => {
                       if (e.key === "Escape") setIsEditCard(false);
                     }}
+                    onChange={(e) => setCardContent(e.target.value)}
                   />
-                  <button onClick={() => setIsEditCard(false)}>X</button>
-                </div>
+                  <button type="button" onClick={() => setIsEditCard(false)}>
+                    X
+                  </button>
+                </Form>
               ) : (
                 <div>
-                  <span>{toDoText}</span>
-                  <button onClick={() => deleteCard(toDoId)}>X</button>
+                  <span>{cardText}</span>
+                  <button onClick={() => onDeleteCard(cardId)}>X</button>
                   <button onClick={() => setIsEditCard(true)}>edit</button>
                 </div>
               )}
@@ -75,6 +111,13 @@ const DragCard = ({ toDoId, toDoText, index, boardIndex }: TDragCard) => {
 };
 
 export default React.memo(DragCard);
+
+const Form = styled.form`
+  width: 100%;
+  input {
+    width: 100%;
+  }
+`;
 
 const Card = styled.div`
   border-radius: 5px;
