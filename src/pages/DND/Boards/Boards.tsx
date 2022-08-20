@@ -1,11 +1,16 @@
-import React, { FormEvent, useEffect, useRef, useState } from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
+
 import { useForm } from "react-hook-form";
 import { Draggable, Droppable } from "react-beautiful-dnd";
+import { useSetRecoilState } from "recoil";
+import { dNdState, IToDo } from "../../../atom";
+
 import styled from "styled-components";
+
 import DragCard from "../DragCard/DragCard";
-import { dNdState, boardTitleState, IArrayAtom, IToDo } from "../../../atom";
-import { useRecoilState } from "recoil";
+
 import handleDNDtodoLocalStorage from "../../../utils/dnd.utils";
+import { NO_SWEAR } from "../../../utils/constants/noSwear";
 
 interface IBoardProps {
   // boardList: IToDo[];
@@ -18,7 +23,7 @@ interface IBoardProps {
 }
 
 interface IForm {
-  toDo: string;
+  [key: string]: string;
 }
 
 const Boards = ({
@@ -27,8 +32,15 @@ const Boards = ({
   boardTitle,
   boardId,
 }: IBoardProps) => {
-  const [allBoards, setAllBoards] = useRecoilState(dNdState);
+  const setAllBoards = useSetRecoilState(dNdState);
   const [isEditBoardTitle, setIsEditBoardTitle] = useState(false);
+  const [titleState, setTitleState] = useState(boardTitle);
+
+  const inputElement = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    inputElement?.current?.focus();
+  }, [isEditBoardTitle]);
 
   const {
     register,
@@ -41,7 +53,7 @@ const Boards = ({
   const onValid = (data: IForm) => {
     const newToDo = {
       id: Date.now(),
-      text: data.toDo,
+      text: data.cardTextForm,
     };
 
     setAllBoards((boardList) => {
@@ -63,10 +75,36 @@ const Boards = ({
       return [...copyBoards];
     });
 
-    setValue("toDo", "");
+    setValue("cardTextForm", "");
   };
 
-  const deleteBoard = () => {
+  const onSubmitBoardTitle = (e: FormEvent) => {
+    e.preventDefault();
+
+    NO_SWEAR.includes(titleState.toLocaleLowerCase())
+      ? alert("no swearing")
+      : setAllBoards((oldBoards) => {
+          const copyBoards = [...oldBoards];
+
+          const targetIndex = copyBoards.findIndex(
+            (item) => item.boardId === boardId
+          );
+
+          let targetBoard = { ...copyBoards[targetIndex] };
+          targetBoard = {
+            ...copyBoards[targetIndex],
+            title: titleState,
+          };
+
+          copyBoards.splice(targetIndex, 1);
+          copyBoards.splice(targetIndex, 0, targetBoard);
+
+          handleDNDtodoLocalStorage(copyBoards);
+          return copyBoards;
+        });
+  };
+
+  const onDeleteBoard = () => {
     setAllBoards((oldBoardList) => {
       const copyBoardList = [...oldBoardList];
       const newBoardList = copyBoardList.filter(
@@ -77,14 +115,6 @@ const Boards = ({
 
       return newBoardList;
     });
-  };
-
-  const editBoardTitle = () => {
-    setIsEditBoardTitle(true);
-    console.log(boardId);
-    console.log(boardTitle);
-
-    // setIsEditBoardTitle(false);
   };
 
   return (
@@ -100,42 +130,63 @@ const Boards = ({
           {...provided.dragHandleProps}
         >
           <WrapperTitle>
-            <h2 className="WrapperTitle__title">{boardTitle}</h2>
+            {isEditBoardTitle ? (
+              <Form onSubmit={onSubmitBoardTitle}>
+                <input
+                  required
+                  placeholder={titleState || ""}
+                  defaultValue={titleState}
+                  ref={inputElement}
+                  onKeyDown={(e) => {
+                    if (e.key === "Escape") setIsEditBoardTitle(false);
+                  }}
+                  onChange={(e) => setTitleState(e.currentTarget.value)}
+                />
+              </Form>
+            ) : (
+              <h2 className="WrapperTitle__title">{boardTitle}</h2>
+            )}
 
             <div className="WrapperTitle__edit_delete">
               {isEditBoardTitle ? (
                 <button onClick={() => setIsEditBoardTitle(false)}> x </button>
               ) : (
                 <div>
-                  <button onClick={() => editBoardTitle()}>수정</button>
-                  <button onClick={() => deleteBoard()}> x </button>
+                  <button onClick={() => setIsEditBoardTitle(true)}>
+                    수정
+                  </button>
+                  <button onClick={() => onDeleteBoard()}> x </button>
                 </div>
               )}
             </div>
           </WrapperTitle>
           <Form onSubmit={handleSubmit(onValid)}>
             <input
-              {...register("toDo", {
+              {...register("cardTextForm", {
                 required: " write down !!! ",
                 validate: {
-                  checkValue: (value) =>
-                    value.includes("!") ? "Type... something" : true,
+                  doNotSwear: (value) => {
+                    return NO_SWEAR.includes(value.toLowerCase())
+                      ? "No swearing"
+                      : true;
+                  },
                 },
               })}
               placeholder={`Write down ${boardTitle}`}
             />
           </Form>
 
-          <span>{errors?.toDo?.message}</span>
+          <span>{errors?.boardTitle?.message}</span>
+          <span>{errors?.cardTextForm?.message}</span>
 
           <Droppable droppableId={boardId + ""} type="card">
             {(provided) => (
               <Wrapper ref={provided.innerRef} {...provided.droppableProps}>
-                {boardList.map((toDo, index) => (
+                {boardList.map((card, index) => (
                   <DragCard
-                    key={toDo.id}
-                    toDoId={toDo.id}
-                    toDoText={toDo.text}
+                    key={card.id}
+                    cardId={card.id}
+                    cardText={card.text}
                     index={index}
                     boardIndex={boardIndex}
                   />
@@ -162,6 +213,8 @@ const WrapperTitle = styled.div`
     2px 4px 16px 0px rgba(0, 255, 255, 0.7);
 
   .WrapperTitle__title {
+    align-items: center;
+    display: flex;
     text-overflow: ellipsis;
     border: none;
     overflow: hidden;
@@ -201,19 +254,6 @@ const Wrapper = styled.div`
   min-height: 200px;
 `;
 
-// doNotSwear: (value) => {
-//   const noSwear = [
-//     "fuck",
-//     "fucker",
-//     "fucking",
-//     "shit",
-//     "damn",
-//     "dang",
-//     "swear",
-//   ];
-//   return noSwear.includes(value) ? "No swearing" : true;
-// },
-
 // const handleTitle = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
 // setTitle(e.target.value);
 // const copyBoard = { ...allBoards };
@@ -226,10 +266,8 @@ const Wrapper = styled.div`
 // });
 // };
 
-{
-  /* <TextArea
+/* <TextArea
             maxLength={10}
             defaultValue={boardTitle}
             onChange={handleTitle}
           /> */
-}
