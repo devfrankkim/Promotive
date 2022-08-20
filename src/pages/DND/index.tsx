@@ -2,7 +2,7 @@ import { FormEvent, useState } from "react";
 
 import { DragDropContext, Droppable, DropResult } from "react-beautiful-dnd";
 import { useRecoilState } from "recoil";
-import { dNdState, IArrayAtom } from "../../atom";
+import { darkLightMode, dNdState, IArrayAtom } from "../../atom";
 
 import styled from "styled-components";
 
@@ -10,7 +10,13 @@ import Boards from "./Boards/Boards";
 
 import handleDNDtodoLocalStorage from "../../utils/dnd.utils";
 
+import { FaTrash } from "react-icons/fa";
+import { TDarkMode } from "../../types";
+import { LAPTOP, TABLET } from "../../utils/responsiveness";
+
 const DND = () => {
+  const [isDarkMode, isSetDarkMode] = useRecoilState(darkLightMode);
+
   const [allBoards, setAllBoards] = useRecoilState<IArrayAtom[]>(dNdState);
   const [value, setValue] = useState("");
 
@@ -127,15 +133,19 @@ const DND = () => {
   };
   return (
     <>
-      <button onClick={clearAllBoads}>Clear all boards</button>
-      <form onSubmit={addToState}>
+      <ClearAll darkMode={isDarkMode}>
+        <FaTrash onClick={clearAllBoads} />
+      </ClearAll>
+
+      <Form onSubmit={addToState}>
         <input
           placeholder="+ Add another list"
           type="text"
           onChange={(e) => setValue(e.target.value)}
           value={value || ""}
         />
-      </form>
+      </Form>
+
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable
           droppableId="boardSection"
@@ -169,19 +179,68 @@ const DND = () => {
 
 export default DND;
 
+const Form = styled.form`
+  text-align: center;
+  margin: 0 auto;
+  position: relative;
+  top: 6rem;
+  width: 15rem;
+  height: auto;
+  overflow: hidden;
+
+  input {
+    outline: none;
+    border-radius: 50px;
+    padding: 15px 50px;
+    width: 100%;
+  }
+  @media ${TABLET} {
+    width: 300px;
+  }
+`;
+
+const ClearAll = styled.button<TDarkMode>`
+  position: fixed;
+  top: 2rem;
+  right: 0;
+  font-size: 1.7rem;
+  background: none;
+  border: none;
+
+  color: ${(props) => (props.darkMode ? "white" : "black")};
+
+  :hover {
+    opacity: 0.7;
+    cursor: pointer;
+    transition: 0.1s;
+  }
+  @media ${TABLET} {
+    font-size: 2rem;
+    right: 4rem;
+  }
+`;
+
 const BoardsWrapper = styled.div`
+  position: relative;
+  top: 10rem;
   display: grid;
   width: 100%;
   gap: 1rem;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(1, 1fr);
+
+  @media ${TABLET} {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media ${LAPTOP} {
+    grid-template-columns: repeat(3, 1fr);
+  }
 `;
 
 const Wrapper = styled.div`
-  display: flex;
-  max-width: 480px;
+  display: grid;
+  justify-content: center;
+  max-width: 450px;
   width: 100%;
   margin: 0 auto;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
 `;

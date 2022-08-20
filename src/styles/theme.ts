@@ -1,19 +1,28 @@
 import { DefaultTheme } from "styled-components";
 
+// color: ${(props) => (props.darkMode ? "rgba(0, 255, 255, 0.7)" : "#8A2BE2")};
+
 export const lightTheme: DefaultTheme = {
   textColor: "black",
   bgColor: "white",
-  accentColor: "pink",
+  accentColor: "8A2BE2",
   boardColor: "#DADFE9",
   cardColor: "white",
   boardTextColor: "black",
+  darkBG: "",
+  darkBoxShadow: "",
 };
 
 export const darkTheme: DefaultTheme = {
-  textColor: "white",
+  textColor: "black",
   bgColor: "black",
-  accentColor: "pink",
+  accentColor: "rgba(0, 255, 255, 0.7)",
   boardColor: "#DADFE9",
   cardColor: "white",
   boardTextColor: "black",
+  darkBG: "white",
+  darkBoxShadow: `0px 1px 2px 0px rgba(0, 255, 255, 0.7),
+  1px 2px 4px 0px rgba(0, 255, 255, 0.7),
+  2px 4px 8px 0px rgba(0, 255, 255, 0.7),
+  2px 4px 16px 0px rgba(0, 255, 255, 0.7)`,
 };

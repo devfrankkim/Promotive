@@ -2,8 +2,8 @@ import { FormEvent, useEffect, useRef, useState } from "react";
 
 import { useForm } from "react-hook-form";
 import { Draggable, Droppable } from "react-beautiful-dnd";
-import { useSetRecoilState } from "recoil";
-import { dNdState, IToDo } from "../../../atom";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { darkLightMode, dNdState, IToDo } from "../../../atom";
 
 import styled from "styled-components";
 
@@ -11,10 +11,13 @@ import DragCard from "../DragCard/DragCard";
 
 import handleDNDtodoLocalStorage from "../../../utils/dnd.utils";
 import { NO_SWEAR } from "../../../utils/constants/noSwear";
+import { TDarkMode } from "../../../types";
+
+import { BiEdit, BiTrash } from "react-icons/bi";
+import { MdOutlineCancelPresentation } from "react-icons/md";
+import * as S from "../styles";
 
 interface IBoardProps {
-  // boardList: IToDo[];
-  // boardId: string;
   key?: string;
   boardIndex: number;
   boardList: IToDo[];
@@ -32,6 +35,8 @@ const Boards = ({
   boardTitle,
   boardId,
 }: IBoardProps) => {
+  const isDarkMode = useRecoilValue(darkLightMode);
+
   const setAllBoards = useSetRecoilState(dNdState);
   const [isEditBoardTitle, setIsEditBoardTitle] = useState(false);
   const [titleState, setTitleState] = useState(boardTitle);
@@ -125,14 +130,15 @@ const Boards = ({
     >
       {(provided) => (
         <CardWrapper
+          darkMode={isDarkMode}
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
         >
-          <WrapperTitle>
+          <S.WrapperTitle darkMode={isDarkMode}>
             {isEditBoardTitle ? (
               <Form onSubmit={onSubmitBoardTitle}>
-                <input
+                <InputField
                   required
                   placeholder={titleState || ""}
                   defaultValue={titleState}
@@ -144,24 +150,29 @@ const Boards = ({
                 />
               </Form>
             ) : (
-              <h2 className="WrapperTitle__title">{boardTitle}</h2>
+              <span className="WrapperTitle__title">{boardTitle}</span>
             )}
 
-            <div className="WrapperTitle__edit_delete">
+            <div className="WrapperTitle__edit_delete_div">
               {isEditBoardTitle ? (
-                <button onClick={() => setIsEditBoardTitle(false)}> x </button>
+                <MdOutlineCancelPresentation
+                  className="icon cancel-icon"
+                  onClick={() => setIsEditBoardTitle(false)}
+                />
               ) : (
-                <div>
-                  <button onClick={() => setIsEditBoardTitle(true)}>
-                    수정
-                  </button>
-                  <button onClick={() => onDeleteBoard()}> x </button>
+                <div className="WrapperTitle__edit_delete__buttons">
+                  <BiEdit
+                    className="icon"
+                    onClick={() => setIsEditBoardTitle(true)}
+                  />
+                  <BiTrash className="icon" onClick={() => onDeleteBoard()} />
                 </div>
               )}
             </div>
-          </WrapperTitle>
+          </S.WrapperTitle>
+
           <Form onSubmit={handleSubmit(onValid)}>
-            <input
+            <InputField
               {...register("cardTextForm", {
                 required: " write down !!! ",
                 validate: {
@@ -203,33 +214,18 @@ const Boards = ({
 
 export default Boards;
 
-const WrapperTitle = styled.div`
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  box-shadow: 0px 1px 2px 0px rgba(0, 255, 255, 0.7),
-    1px 2px 4px 0px rgba(0, 255, 255, 0.7),
-    2px 4px 8px 0px rgba(0, 255, 255, 0.7),
-    2px 4px 16px 0px rgba(0, 255, 255, 0.7);
-
-  .WrapperTitle__title {
-    align-items: center;
-    display: flex;
-    text-overflow: ellipsis;
-    border: none;
-    overflow: hidden;
-    overflow-wrap: break-word;
-    height: 28px;
-    resize: none;
-    text-align: center;
-  }
-
-  .WrapperTitle__edit_delete {
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    right: 0;
-  }
+const InputField = styled.input`
+  outline: none;
+  width: 100%;
+  padding: 0.4rem 0.2rem 0.6rem;
+  font-size: 1rem;
+  font-weight: 500;
+  border: none;
+  border-bottom: 1px solid black;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  margin-bottom: 1rem;
 `;
 
 const Form = styled.form`
@@ -239,7 +235,14 @@ const Form = styled.form`
   }
 `;
 
-const CardWrapper = styled.div`
+const CardWrapper = styled.div<TDarkMode>`
+  overflow: hidden;
+  padding: 1rem;
+  box-shadow: ${(props) => props.darkMode && props.theme.darkBoxShadow};
+  background-color: rgb(255, 255, 255);
+  border: 0.2rem solid rgb(17, 17, 17);
+  border-radius: 1rem;
+  width: 15rem;
   display: flex;
   flex-direction: column;
   text-align: center;
@@ -253,21 +256,3 @@ const Wrapper = styled.div`
   border-radius: 5px;
   min-height: 200px;
 `;
-
-// const handleTitle = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-// setTitle(e.target.value);
-// const copyBoard = { ...allBoards };
-// const editValue = copyBoard[boardId];
-// delete copyBoard[boardId];
-// setAllBoards(() => {
-//   const result = { [e.target.value]: editValue, ...copyBoard };
-//   handleDNDtodoLocalStorage(result);
-//   return result;
-// });
-// };
-
-/* <TextArea
-            maxLength={10}
-            defaultValue={boardTitle}
-            onChange={handleTitle}
-          /> */

@@ -1,12 +1,17 @@
 import React, { FormEvent, useEffect, useRef, useState } from "react";
 
 import { Draggable } from "react-beautiful-dnd";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 
 import styled from "styled-components";
 
-import { dNdState } from "../../../atom";
+import { darkLightMode, dNdState } from "../../../atom";
 import handleDNDtodoLocalStorage from "../../../utils/dnd.utils";
+
+import { TDarkMode } from "../../../types";
+import { BiEdit, BiTrash } from "react-icons/bi";
+import { MdOutlineCancelPresentation } from "react-icons/md";
+import * as S from "../styles";
 
 type TDragCard = {
   index: number;
@@ -16,6 +21,7 @@ type TDragCard = {
 };
 
 const DragCard = ({ cardId, cardText, index, boardIndex }: TDragCard) => {
+  const isDarkMode = useRecoilValue(darkLightMode);
   const [allBoards, setAllBoards] = useRecoilState(dNdState);
   const [isEditCard, setIsEditCard] = useState(false);
   const [cardContent, setCardContent] = useState(cardText);
@@ -78,10 +84,10 @@ const DragCard = ({ cardId, cardText, index, boardIndex }: TDragCard) => {
             {...provided.draggableProps}
             {...provided.dragHandleProps}
           >
-            <div>
+            <S.WrapperTitle darkMode={isDarkMode}>
               {isEditCard ? (
                 <Form onSubmit={onHandleCardContent}>
-                  <input
+                  <InputField
                     required
                     ref={inputElement}
                     placeholder={cardText}
@@ -91,18 +97,28 @@ const DragCard = ({ cardId, cardText, index, boardIndex }: TDragCard) => {
                     }}
                     onChange={(e) => setCardContent(e.target.value)}
                   />
-                  <button type="button" onClick={() => setIsEditCard(false)}>
-                    X
-                  </button>
+                  <MdOutlineCancelPresentation
+                    type="button"
+                    className="icon cancel-icon"
+                    onClick={() => setIsEditCard(false)}
+                  />
                 </Form>
               ) : (
-                <div>
+                <S.FlexCenter>
                   <span>{cardText}</span>
-                  <button onClick={() => onDeleteCard(cardId)}>X</button>
-                  <button onClick={() => setIsEditCard(true)}>edit</button>
-                </div>
+                  <div>
+                    <BiEdit
+                      className="card icon"
+                      onClick={() => setIsEditCard(true)}
+                    />
+                    <BiTrash
+                      className="card icon"
+                      onClick={() => onDeleteCard(cardId)}
+                    />
+                  </div>
+                </S.FlexCenter>
               )}
-            </div>
+            </S.WrapperTitle>
           </Card>
         )}
       </Draggable>
@@ -112,8 +128,24 @@ const DragCard = ({ cardId, cardText, index, boardIndex }: TDragCard) => {
 
 export default React.memo(DragCard);
 
+const InputField = styled.input`
+  outline: none;
+  width: 100%;
+  padding: 0.4rem 0.2rem 0.6rem;
+  font-size: 1rem;
+  font-weight: 500;
+  border: none;
+  border-bottom: 1px solid black;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  margin-bottom: 1rem;
+`;
+
 const Form = styled.form`
   width: 100%;
+  display: flex;
+  align-items: center;
   input {
     width: 100%;
   }
@@ -123,6 +155,8 @@ const Card = styled.div`
   border-radius: 5px;
   margin-bottom: 5px;
   padding: 10px 10px;
+  margin-bottom: 0.5rem;
+
   color: ${(props) => props.theme.boardTextColor};
   background-color: ${(props) => props.theme.cardColor};
 `;

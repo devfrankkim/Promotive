@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
 
-import { ThemeProvider } from "styled-components";
+import styled, { ThemeProvider } from "styled-components";
 import { darkTheme, lightTheme } from "./styles/theme";
 import { useRecoilValue } from "recoil";
 import ResetGlobalStyle from "./ResetGlobalStyle";
@@ -28,8 +28,16 @@ function App() {
         <Route path="/" element={<DND />} />
         <Route path="/toDo" element={<ToDoList />} />
       </Routes>
+      <Footer></Footer>
     </ThemeProvider>
   );
 }
 
+const Footer = styled.footer`
+  margin-top: 15rem;
+  width: 100%;
+  display: grid;
+  justify-content: center;
+  z-index: 999999;
+`;
 export default App;
