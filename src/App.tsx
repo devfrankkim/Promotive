@@ -12,6 +12,7 @@ import ToDoList from "./pages/ToDoList";
 import DND from "./pages/DND";
 
 import { darkLightMode, ISDARK } from "./atom";
+import Pomodoro from "./components/Pomodoro";
 
 function App() {
   const isDark = useRecoilValue(darkLightMode);
@@ -25,8 +26,9 @@ function App() {
       <ResetGlobalStyle />
       <DarkMode />
       <Routes>
-        <Route path="/" element={<DND />} />
-        <Route path="/toDo" element={<ToDoList />} />
+        <Route path="/" element={<Pomodoro />} />
+        <Route path="DND" element={<DND />} />
+        <Route path="toDo" element={<ToDoList />} />
       </Routes>
       <Footer></Footer>
     </ThemeProvider>
