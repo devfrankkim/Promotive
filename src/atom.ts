@@ -131,8 +131,3 @@ export const dNdState = atom<IArrayAtom[]>({
 //   key: "arr",
 //   default: {},
 // });
-
-export const boardTitleState = atom<string>({
-  key: "bordTitleState",
-  default: "",
-});

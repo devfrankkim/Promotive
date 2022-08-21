@@ -130,7 +130,6 @@ const Boards = ({
     >
       {(provided) => (
         <CardWrapper
-          darkMode={isDarkMode}
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
@@ -235,10 +234,10 @@ const Form = styled.form`
   }
 `;
 
-const CardWrapper = styled.div<TDarkMode>`
+const CardWrapper = styled.div`
   overflow: hidden;
   padding: 1rem;
-  box-shadow: ${(props) => props.darkMode && props.theme.darkBoxShadow};
+  box-shadow: ${(props) => props.theme.darkBoxShadow};
   background-color: rgb(255, 255, 255);
   border: 0.2rem solid rgb(17, 17, 17);
   border-radius: 1rem;

@@ -20,12 +20,13 @@
 - [x] DND Board (Create, Read, Delete)
 - [x] DND Card (Create, Read, Delete)
 - [x] move Board DND + LocalStorage
-- [ ] Update Card content
-- [ ] Delete Card content
-- [ ] Update Board title
+- [x] Update Card content
+- [x] Delete Card content
+- [x] Update Board title
+- [x] Update Card title
+- [] Timer
 - [] add schedule time -> to-do-list
 - [] weather api (react query)
-- [] timer
 - [] OAuth - sign up/sign in
 - [] json db
 - [] styling
