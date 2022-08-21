@@ -128,8 +128,12 @@ const DND = () => {
   };
 
   const clearAllBoads = () => {
-    handleDNDtodoLocalStorage([]);
-    setAllBoards([]);
+    if (window.confirm("Are you sure you want to delete all boards?")) {
+      handleDNDtodoLocalStorage([]);
+      setAllBoards([]);
+    } else {
+      return;
+    }
   };
   return (
     <>
@@ -155,6 +159,7 @@ const DND = () => {
           {(provided) => (
             <Wrapper>
               <BoardsWrapper
+                darkMode={isDarkMode}
                 ref={provided.innerRef}
                 {...provided.droppableProps}
               >
@@ -220,7 +225,7 @@ const ClearAll = styled.button<TDarkMode>`
   }
 `;
 
-const BoardsWrapper = styled.div`
+const BoardsWrapper = styled.div<TDarkMode>`
   position: relative;
   top: 10rem;
   display: grid;
