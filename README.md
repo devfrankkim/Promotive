@@ -24,7 +24,8 @@
 - [x] Delete Card content
 - [x] Update Board title
 - [x] Update Card title
-- [] Timer
+- [x] Timer
+- [ ] Timer in Recoil
 - [] add schedule time -> to-do-list
 - [] weather api (react query)
 - [] OAuth - sign up/sign in
