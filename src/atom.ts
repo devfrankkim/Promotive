@@ -95,39 +95,3 @@ export const dNdState = atom<IArrayAtom[]>({
     ]) ||
     [],
 });
-
-// export const dNdState = atom<IArrayAtom[]>({
-//   key: "dndState",
-//   default: JSON.parse(localStorage.getItem(DNDTODO) as any) || [
-//     {
-//       title: "for",
-//       content: [
-//         { id: 1, text: "messi" },
-//         { id: 2, text: "ronaldo" },
-//       ],
-//     },
-//     {
-//       title: "mid",
-//       content: [
-//         { id: 3, text: "kevin" },
-//         { id: 4, text: "modric" },
-//       ],
-//     },
-//     {
-//       title: "def",
-//       content: [
-//         { id: 5, text: "ramos" },
-//         { id: 6, text: "pique" },
-//       ],
-//     },
-//   ],
-// });
-
-// export interface IArrayAtom {
-//   [key: string]: IToDo[];
-// }
-
-// export const arrayATOM = atom<IArrayAtom>({
-//   key: "arr",
-//   default: {},
-// });

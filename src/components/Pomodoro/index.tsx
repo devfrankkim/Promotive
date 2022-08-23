@@ -1,11 +1,19 @@
 import React, { useEffect, useRef, useState, useCallback } from "react";
-import { useRecoilState } from "recoil";
-import { timeState } from "../../promoAtom";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { pomodoroState, timeOption, defaultTimer } from "../../promoAtom";
 
 const Pomodoro = () => {
   const clockRef = useRef(null);
+  // const [timeTest, setTimeTest] = useRecoilState(timeOption);
+  const [timer, setTimer] = useRecoilState(pomodoroState);
+  console.log(timer);
 
-  const [timer, setTimer] = useRecoilState(timeState);
+  // const [defaultOption, setDefaultOption] = useRecoilState(defaultTimer);
+
+  // console.log(defaultOption);
+
+  // const [timer, setTimer] = useRecoilState(pomodoroState);
+  const [pomoTimer, setPomoTimer] = useRecoilState(pomodoroState);
   const [timeText, setTimeText] = useState("");
   const [isStart, setIsStart] = useState(false);
   const [isPause, setIsPause] = useState(false);
@@ -31,25 +39,25 @@ const Pomodoro = () => {
   // ========== update the timer ==========
   const calculateTimer = useCallback(() => {
     if (!isPause) {
-      if (timer === 0) {
+      if (Number(timer) === 0) {
         setTimeText("00:00:00");
         return;
       }
 
-      if (timer > 0) {
-        setTimer((prev) => prev - 1000);
+      if (Number(timer) > 0) {
+        Number(setPomoTimer((prev) => Number(prev) - 1000));
       }
     }
-  }, [isPause, timer, setTimer]);
+  }, [isPause, Number(timer), setPomoTimer]);
 
   useEffect(() => {
     if (!isPause) {
-      if (timer > 0) {
-        const time = convertMsToHM(timer);
+      if (Number(timer) > 0) {
+        const time = convertMsToHM(Number(timer));
         setTimeText(time);
       }
 
-      if (timer === 0) {
+      if (Number(timer) === 0) {
         setTimeText("00:00:00");
         return;
       }
@@ -65,27 +73,66 @@ const Pomodoro = () => {
     }
   }, [isStart, calculateTimer]);
 
+  const onHandleTimerCategory = (e: React.MouseEvent<HTMLButtonElement>) => {
+    setIsPause(false);
+    if (e.currentTarget.name === "pomodoroState") {
+      setTimer(30 * 60 * 1000);
+    }
+    if (e.currentTarget.name === "shortBreakState") {
+      setTimer(5 * 60 * 1000);
+    }
+    if (e.currentTarget.name === "longBreakState") {
+      setTimer(60 * 60 * 1000);
+    }
+  };
+
   return (
     <div>
-      <h2 ref={clockRef}>{timeText}</h2>
-      <button
-        type="button"
-        onClick={() => {
-          setIsStart(true);
-          setIsPause(false);
-        }}
-      >
-        Start Timer
-      </button>
-      <button
-        type="button"
-        onClick={() => {
-          setIsStart(false);
-          setIsPause(true);
-        }}
-      >
-        Pause Timer
-      </button>
+      <div>
+        <button
+          type="button"
+          name="pomodoroState"
+          onClick={onHandleTimerCategory}
+        >
+          Pomodoro
+        </button>
+        <button
+          type="button"
+          name="shortBreakState"
+          onClick={onHandleTimerCategory}
+        >
+          Short Break
+        </button>
+        <button
+          type="button"
+          name="longBreakState"
+          onClick={onHandleTimerCategory}
+        >
+          Long Break
+        </button>
+      </div>
+      <div>
+        <h2 ref={clockRef}>{timeText}</h2>
+
+        <button
+          type="button"
+          onClick={() => {
+            setIsStart(true);
+            setIsPause(false);
+          }}
+        >
+          Start Timer
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            setIsStart(false);
+            setIsPause(true);
+          }}
+        >
+          Pause Timer
+        </button>
+      </div>
     </div>
   );
 };
