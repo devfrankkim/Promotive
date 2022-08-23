@@ -1,6 +1,6 @@
-import React, { useEffect, useRef, useState, useCallback } from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { pomodoroState, timeOption, defaultTimer } from "../../promoAtom";
+import React, { useEffect, useRef, useState, useCallback } from 'react';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { pomodoroState, timeOption, defaultTimer } from '../../promoAtom';
 
 const Pomodoro = () => {
   const clockRef = useRef(null);
@@ -14,12 +14,15 @@ const Pomodoro = () => {
 
   // const [timer, setTimer] = useRecoilState(pomodoroState);
   const [pomoTimer, setPomoTimer] = useRecoilState(pomodoroState);
-  const [timeText, setTimeText] = useState("");
+  const [timeText, setTimeText] = useState('');
   const [isStart, setIsStart] = useState(false);
   const [isPause, setIsPause] = useState(false);
 
+  ///////////
+  const [pomoInput, setPomoInput] = useState('');
+
   const padTo2Digits = (num: number) => {
-    return num.toString().padStart(2, "0");
+    return num.toString().padStart(2, '0');
   };
 
   // ========== convert milliseconds to readable time ==========
@@ -40,7 +43,7 @@ const Pomodoro = () => {
   const calculateTimer = useCallback(() => {
     if (!isPause) {
       if (Number(timer) === 0) {
-        setTimeText("00:00:00");
+        setTimeText('00:00:00');
         return;
       }
 
@@ -58,7 +61,7 @@ const Pomodoro = () => {
       }
 
       if (Number(timer) === 0) {
-        setTimeText("00:00:00");
+        setTimeText('00:00:00');
         return;
       }
     }
@@ -75,14 +78,23 @@ const Pomodoro = () => {
 
   const onHandleTimerCategory = (e: React.MouseEvent<HTMLButtonElement>) => {
     setIsPause(false);
-    if (e.currentTarget.name === "pomodoroState") {
-      setTimer(30 * 60 * 1000);
+    const targetName = e.currentTarget.name;
+    const keys = ['pomodoroState', 'shortBreakState', 'longBreakState'];
+    if (keys.includes(targetName)) {
+      const times: { [key: string]: number } = {
+        pomodoroState: pomoTimer,
+        shortBreakState: 5,
+        longBreakState: 60,
+      };
+      setTimer(times[targetName] * 60 * 1000);
     }
-    if (e.currentTarget.name === "shortBreakState") {
-      setTimer(5 * 60 * 1000);
-    }
-    if (e.currentTarget.name === "longBreakState") {
-      setTimer(60 * 60 * 1000);
+  };
+
+  const onHandleSettingForTimer = (e: React.MouseEvent<HTMLButtonElement>) => {
+    console.log('clicked');
+    const n = parseInt(pomoInput);
+    if (!isNaN(n)) {
+      setPomoTimer(n);
     }
   };
 
@@ -131,6 +143,19 @@ const Pomodoro = () => {
           }}
         >
           Pause Timer
+        </button>
+      </div>
+      <div>
+        <hr />
+        <input
+          type="number"
+          onChange={(e) => {
+            setPomoInput(e.target.value);
+          }}
+          value={pomoInput}
+        />
+        <button name="pomodoSetTime" onClick={onHandleSettingForTimer}>
+          Set Pomodoro
         </button>
       </div>
     </div>
