@@ -12,7 +12,7 @@ import { LAPTOP, TABLET } from "utils/responsiveness";
 
 import { TDarkMode } from "types";
 
-import handleDNDtodoLocalStorage from "utils/dnd.utils";
+import { handleDNDtodoLocalStorage } from "utils/helpers";
 
 const DND = () => {
   const [isDarkMode, isSetDarkMode] = useRecoilState(darkLightMode);

@@ -13,7 +13,7 @@ import styled from "styled-components";
 
 import * as S from "../styles";
 
-import handleDNDtodoLocalStorage from "utils/dnd.utils";
+import { handleDNDtodoLocalStorage } from "utils/helpers";
 
 type TDragCard = {
   index: number;

@@ -1,5 +1,5 @@
 import { atom, selector } from "recoil";
-import handleDNDtodoLocalStorage from "utils/dnd.utils";
+import { handleDNDtodoLocalStorage } from "utils/helpers";
 
 export const TODO_KEY = "TODO_KEY";
 export const TODO_CATEGORY_OPTION = "TO_DO_CATEGORY_OPTION";

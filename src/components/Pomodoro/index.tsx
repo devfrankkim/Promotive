@@ -1,23 +1,20 @@
 import React, { useEffect, useState, useCallback } from "react";
 
 import {
-  pomodoroState,
-  shortBreakState,
-  longBreakState,
-  beginState,
-} from "utils/constants/pomodoro";
+  handlePomodorotodoLocalStorage,
+  TIMEKEY,
+  TIMESTATE,
+} from "utils/helpers";
 
 const Pomodoro = () => {
   const [defaultTimer, setDefaultTimer] = useState("begin");
 
-  const [beginTimer, setBeginTimer] = useState(beginState);
-  const [pomoTimer, setPomoTimer] = useState(pomodoroState);
-  const [shortTimer, setShortTimer] = useState(shortBreakState);
-  const [longTimer, setLongTimer] = useState(longBreakState);
-  // const [beginTimer, setBeginTimer] = useRecoilState(beginState);
-  // const [pomoTimer, setPomoTimer] = useRecoilState(pomodoroState);
-  // const [shortTimer, setShortTimer] = useRecoilState(shortBreakState);
-  // const [longTimer, setLongTimer] = useRecoilState(longBreakState);
+  const [beginTimer, setBeginTimer] = useState<number>(TIMESTATE.beginState);
+  const [pomoTimer, setPomoTimer] = useState<number>(TIMESTATE.pomodoroState);
+  const [shortTimer, setShortTimer] = useState<number>(
+    TIMESTATE.shortBreakState
+  );
+  const [longTimer, setLongTimer] = useState<number>(TIMESTATE.longBreakState);
 
   const [timeText, setTimeText] = useState("");
   const [isStart, setIsStart] = useState(false);
@@ -49,64 +46,69 @@ const Pomodoro = () => {
   const calculateTimer = useCallback(() => {
     if (!isPause) {
       if (defaultTimer === "begin") {
-        if (Number(beginTimer) === 0) {
-          setTimeText("00:00:00");
-          return;
-        }
         if (Number(beginTimer) > 0) {
           Number(setBeginTimer((prev) => Number(prev) - 1000));
+          return;
+        }
+
+        if (Number(beginTimer) === 0) {
+          setIsPause(true);
+          return;
         }
       }
 
       if (defaultTimer === "pomo") {
-        if (Number(pomoTimer) === 0) {
-          setTimeText("00:00:00");
-          return;
-        }
         if (Number(pomoTimer) > 0) {
           Number(setPomoTimer((prev) => Number(prev) - 1000));
+          return;
+        }
+
+        if (Number(pomoTimer) === 0) {
+          setIsPause(true);
+          return;
         }
       }
 
       if (defaultTimer === "short") {
-        if (Number(shortTimer) === 0) {
-          setTimeText("00:00:00");
-          return;
-        }
         if (Number(shortTimer) > 0) {
           Number(setShortTimer((prev) => Number(prev) - 1000));
+          return;
+        }
+
+        if (Number(shortTimer) === 0) {
+          setIsPause(true);
+          return;
         }
       }
 
       if (defaultTimer === "long") {
-        if (Number(longTimer) === 0) {
-          setTimeText("00:00:00");
-          return;
-        }
         if (Number(longTimer) > 0) {
           Number(setLongTimer((prev) => Number(prev) - 1000));
+          return;
+        }
+
+        if (Number(longTimer) === 0) {
+          setIsPause(true);
+          return;
         }
       }
     }
-  }, [
-    defaultTimer,
-    isPause,
-    setPomoInput,
-    setShorBreakInput,
-    setLongBreakInput,
-  ]);
+  }, [defaultTimer, isPause, beginTimer, longTimer, pomoTimer, shortTimer]);
 
   //  ======== Convert timer ========
   useEffect(() => {
+    const JSON_TIMESTATE = JSON.parse(localStorage.getItem(TIMEKEY) as any);
+
     if (defaultTimer === "begin") {
       if (beginTimer > 0) {
         const time = convertMsToHM(beginTimer);
 
         setTimeText(time);
       }
-
-      if (Number(beginTimer) === 0) {
-        setTimeText("00:00:00");
+      if (Number(beginTimer) <= 0) {
+        setBeginTimer(JSON_TIMESTATE.beginState);
+        alert("Finished!");
+        setIsPause(true);
         return;
       }
     }
@@ -117,9 +119,10 @@ const Pomodoro = () => {
 
         setTimeText(time);
       }
-
-      if (Number(pomoTimer) === 0) {
-        setTimeText("00:00:00");
+      if (Number(pomoTimer) <= 0) {
+        setPomoTimer(JSON_TIMESTATE.pomodoroState * 60 * 1000);
+        alert("Finished!");
+        setIsPause(true);
         return;
       }
     }
@@ -130,8 +133,10 @@ const Pomodoro = () => {
         setTimeText(time);
       }
 
-      if (Number(shortTimer) === 0) {
-        setTimeText("00:00:00");
+      if (Number(shortTimer) <= 0) {
+        setShortTimer(JSON_TIMESTATE.shortBreakState * 60 * 1000);
+        alert("Finished!");
+        setIsPause(true);
         return;
       }
     }
@@ -142,12 +147,15 @@ const Pomodoro = () => {
         setTimeText(time);
       }
 
-      if (Number(longTimer) === 0) {
-        setTimeText("00:00:00");
+      if (Number(longTimer) <= 0) {
+        setLongTimer(JSON_TIMESTATE.longBreakState * 60 * 1000);
+        alert("Finished!");
+        setIsPause(true);
         return;
       }
     }
   }, [
+    setLongBreakInput,
     beginTimer,
     pomoTimer,
     shortTimer,
@@ -158,18 +166,21 @@ const Pomodoro = () => {
     setPomoInput,
     setShorBreakInput,
     setLongBreakInput,
+    // setTimerOption,
   ]);
 
   //  ======== start timer ========
   useEffect(() => {
-    if (isStart) {
+    if (isStart && !isPause) {
       let intervalId = setInterval(calculateTimer, 1000);
+
       return () => {
         clearInterval(intervalId);
       };
     }
-  }, [isStart, calculateTimer]);
+  }, [isStart, calculateTimer, isPause]);
 
+  // ========= default category time ==========
   const onHandleTimerCategory = (e: React.MouseEvent<HTMLButtonElement>) => {
     setIsPause(true);
 
@@ -180,19 +191,29 @@ const Pomodoro = () => {
       switch (targetName) {
         case "pomodoroState":
           setDefaultTimer("pomo");
+
           setPomoTimer(Number(pomoInput) * 60 * 1000);
           break;
         case "shortBreakState":
           setDefaultTimer("short");
+
           setShortTimer(Number(shorBreakInput) * 60 * 1000);
           break;
         case "longBreakState":
           setDefaultTimer("long");
+
           setLongTimer(Number(longBreakInput) * 60 * 1000);
           break;
         default:
       }
     }
+
+    handlePomodorotodoLocalStorage({
+      beginState: Number(pomoInput) * 60 * 1000,
+      pomodoroState: Number(pomoInput),
+      shortBreakState: Number(shorBreakInput),
+      longBreakState: Number(longBreakInput),
+    });
   };
 
   const onHandleSettingForTimer = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -259,11 +280,21 @@ const Pomodoro = () => {
         >
           Pause Timer
         </button>
+        <button
+          type="button"
+          onClick={() => {
+            setIsStart(false);
+            setIsPause(true);
+          }}
+        >
+          Reset
+        </button>
       </div>
       <div>
         <hr />
         <input
           type="number"
+          min={0}
           onChange={(e) => {
             setPomoInput(Number(e.target.value));
           }}
@@ -283,6 +314,7 @@ const Pomodoro = () => {
         <hr />
         <input
           type="number"
+          min={0}
           onChange={(e) => {
             setShorBreakInput(Number(e.target.value));
           }}
@@ -302,6 +334,7 @@ const Pomodoro = () => {
         <hr />
         <input
           type="number"
+          min={0}
           onChange={(e) => {
             setLongBreakInput(Number(e.target.value));
           }}

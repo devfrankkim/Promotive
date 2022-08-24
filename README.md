@@ -26,8 +26,9 @@
 - [x] Update Board title
 - [x] Update Card title
 - [x] Timer
-- [ ] Timer in Recoil
-- [] add schedule time -> to-do-list
+- [ ] Local Storage - Timer
+
+- [ ] Momentum
 - [] weather api (react query)
 - [] OAuth - sign up/sign in
 - [] json db

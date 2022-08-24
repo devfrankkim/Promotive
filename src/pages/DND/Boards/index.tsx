@@ -14,7 +14,7 @@ import DragCard from "../DragCard";
 
 import styled from "styled-components";
 
-import handleDNDtodoLocalStorage from "utils/dnd.utils";
+import { handleDNDtodoLocalStorage } from "utils/helpers";
 import { NO_SWEAR } from "utils/constants/noSwear";
 
 import * as S from "../styles";
