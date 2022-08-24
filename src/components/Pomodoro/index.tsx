@@ -1,12 +1,21 @@
 import React, { useEffect, useState, useCallback } from "react";
+import { useRecoilState } from "recoil";
+import { modalPomodoro } from "recoil/promoAtom";
+import styled from "styled-components";
+
+import { FiSettings } from "react-icons/fi";
+import { RiChatDeleteLine } from "react-icons/ri";
 
 import {
   handlePomodorotodoLocalStorage,
   TIMEKEY,
   TIMESTATE,
 } from "utils/helpers";
+import { TABLET } from "utils/responsiveness";
 
 const Pomodoro = () => {
+  const [isOpen, setIsOpen] = useRecoilState(modalPomodoro);
+
   const [defaultTimer, setDefaultTimer] = useState("begin");
 
   const [beginTimer, setBeginTimer] = useState<number>(TIMESTATE.beginState);
@@ -31,13 +40,13 @@ const Pomodoro = () => {
   // ========== convert milliseconds to readable time ==========
   const convertMsToHM = useCallback((milliseconds: number) => {
     let seconds = Math.floor(milliseconds / 1000);
-    let minutes = Math.floor(seconds / 60);
-    let hours = Math.floor(minutes / 60);
+    let minut1s = Math.floor(seconds / 60);
+    let hours = Math.floor(minut1s / 60);
 
     seconds = seconds % 60;
-    minutes = minutes % 60;
+    minut1s = minut1s % 60;
 
-    return `${padTo2Digits(hours)}:${padTo2Digits(minutes)}:${padTo2Digits(
+    return `${padTo2Digits(hours)}:${padTo2Digits(minut1s)}:${padTo2Digits(
       seconds
     )}`;
   }, []);
@@ -233,125 +242,269 @@ const Pomodoro = () => {
   };
 
   return (
-    <div>
-      <div>
-        <button
-          type="button"
-          name="pomodoroState"
-          onClick={onHandleTimerCategory}
-        >
-          Pomodoro
-        </button>
-        <button
-          type="button"
-          name="shortBreakState"
-          onClick={onHandleTimerCategory}
-        >
-          Short Break
-        </button>
-        <button
-          type="button"
-          name="longBreakState"
-          onClick={onHandleTimerCategory}
-        >
-          Long Break
-        </button>
+    <div onClick={() => setIsOpen(false)}>
+      <ButtonSettingContainer
+        onClick={(e) => {
+          e.stopPropagation();
+          setIsOpen((prev) => !prev);
+        }}
+      >
+        <FiSettings />
+        <div>Setting</div>
+      </ButtonSettingContainer>
 
-        <button>Setting</button>
-      </div>
-      <div>
-        <h2>{timeText}</h2>
+      <div onClick={() => setIsOpen(false)}>
+        {/* ============ modal ============ */}
+        {isOpen && (
+          <ModalWrapper onClick={(e) => e.stopPropagation()}>
+            <div className="top">
+              <h2>Timer Setting</h2>
+              <RiChatDeleteLine
+                className="closeButton"
+                onClick={() => setIsOpen(false)}
+              />
+            </div>
+            <hr />
+            <ContainerWrapperInputTimer
+              onKeyDown={(e) => {
+                if (e.key === "Escape") setIsOpen(false);
+              }}
+            >
+              <WrapperInputTimer>
+                <InputTimer
+                  autoFocus
+                  type="number"
+                  min={1}
+                  onChange={(e) => {
+                    setPomoInput(Number(e.target.value));
+                  }}
+                  value={pomoInput}
+                />
+                <button
+                  name="pomodoroState"
+                  onClick={(e) => {
+                    onHandleSettingForTimer(e);
+                    onHandleTimerCategory(e);
+                  }}
+                >
+                  Set Pomodoro
+                </button>
+              </WrapperInputTimer>
+              <WrapperInputTimer>
+                <InputTimer
+                  type="number"
+                  min={1}
+                  onChange={(e) => {
+                    setShorBreakInput(Number(e.target.value));
+                  }}
+                  value={shorBreakInput}
+                />
+                <button
+                  name="shortBreakState"
+                  onClick={(e) => {
+                    if (shorBreakInput === 0) {
+                      alert("set timer properly");
+                      return;
+                    }
+                    onHandleSettingForTimer(e);
+                    onHandleTimerCategory(e);
+                  }}
+                >
+                  Set Short Break
+                </button>
+              </WrapperInputTimer>
+              <WrapperInputTimer>
+                <InputTimer
+                  type="number"
+                  min={1}
+                  onChange={(e) => {
+                    setLongBreakInput(Number(e.target.value));
+                  }}
+                  value={longBreakInput}
+                />
+                <button
+                  name="longBreakState"
+                  onClick={(e) => {
+                    onHandleSettingForTimer(e);
+                    onHandleTimerCategory(e);
+                  }}
+                >
+                  Set Long Break
+                </button>
+              </WrapperInputTimer>
+            </ContainerWrapperInputTimer>
+          </ModalWrapper>
+        )}
 
-        <button
-          type="button"
-          onClick={() => {
-            setIsPause(false);
-            setIsStart(true);
-          }}
-        >
-          Start Timer
-        </button>
-        <button
-          type="button"
-          onClick={() => {
-            setIsStart(false);
-            setIsPause(true);
-          }}
-        >
-          Pause Timer
-        </button>
-        <button
-          type="button"
-          onClick={() => {
-            setIsStart(false);
-            setIsPause(true);
-          }}
-        >
-          Reset
-        </button>
-      </div>
-      <div>
-        <hr />
-        <input
-          type="number"
-          min={0}
-          onChange={(e) => {
-            setPomoInput(Number(e.target.value));
-          }}
-          value={pomoInput}
-        />
-        <button
-          name="pomodoroState"
-          onClick={(e) => {
-            onHandleSettingForTimer(e);
-            onHandleTimerCategory(e);
-          }}
-        >
-          Set Pomodoro
-        </button>
-      </div>
-      <div>
-        <hr />
-        <input
-          type="number"
-          min={0}
-          onChange={(e) => {
-            setShorBreakInput(Number(e.target.value));
-          }}
-          value={shorBreakInput}
-        />
-        <button
-          name="shortBreakState"
-          onClick={(e) => {
-            onHandleSettingForTimer(e);
-            onHandleTimerCategory(e);
-          }}
-        >
-          Set Short Break
-        </button>
-      </div>
-      <div>
-        <hr />
-        <input
-          type="number"
-          min={0}
-          onChange={(e) => {
-            setLongBreakInput(Number(e.target.value));
-          }}
-          value={longBreakInput}
-        />
-        <button
-          name="longBreakState"
-          onClick={(e) => {
-            onHandleSettingForTimer(e);
-            onHandleTimerCategory(e);
-          }}
-        >
-          Set Long Break
-        </button>
+        <FramePomodoro>
+          <span onClick={(e) => e.stopPropagation()}>
+            <button
+              type="button"
+              name="pomodoroState"
+              onClick={onHandleTimerCategory}
+            >
+              Pomodoro
+            </button>
+            <button
+              type="button"
+              name="shortBreakState"
+              onClick={onHandleTimerCategory}
+            >
+              Short Break
+            </button>
+            <button
+              type="button"
+              name="longBreakState"
+              onClick={onHandleTimerCategory}
+            >
+              Long Break
+            </button>
+          </span>
+          <span onClick={(e) => e.stopPropagation()}>
+            <h2>{timeText}</h2>
+
+            <button
+              type="button"
+              onClick={() => {
+                setIsPause(false);
+                setIsStart(true);
+              }}
+            >
+              Start Timer
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setIsStart(false);
+                setIsPause(true);
+              }}
+            >
+              Pause Timer
+            </button>
+          </span>
+        </FramePomodoro>
       </div>
     </div>
   );
 };
 
 export default Pomodoro;
+
+const ModalWrapper = styled.div`
+  color: rgb(34, 34, 34);
+  border-radius: 8px;
+  background-color: white;
+  /* position: relative; */
+  max-width: 400px;
+  width: 95%;
+  height: 50vh;
+  z-index: 2147483647;
+  border-top: 1px solid rgb(239, 239, 239);
+  border-bottom: 1px solid rgb(239, 239, 239);
+  margin: auto;
+  transition: all 0.2s ease-in 0s;
+  transform: translateY(20px);
+  box-shadow: rgb(0 0 0 / 15%) 0px 10px 20px, rgb(0 0 0 / 10%) 0px 3px 6px;
+  overflow: hidden;
+  position: absolute;
+  top: 10rem;
+  padding: 2rem;
+
+  .top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+  }
+
+  .closeButton {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.3rem;
+  }
+
+  h2 {
+    display: block;
+  }
+`;
+
+const ContainerWrapperInputTimer = styled.div`
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+`;
+
+const WrapperInputTimer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column-reverse;
+  width: 80px;
+
+  button {
+    background: none;
+    border: 1px solid black;
+    cursor: pointer;
+
+    :hover {
+      color: red;
+      transition: all 0.1s ease-in 0s;
+    }
+  }
+`;
+
+const InputTimer = styled.input`
+  border-radius: 4px;
+  background-color: rgb(239, 239, 239);
+  font-size: 16px;
+  padding: 10px;
+  box-shadow: none;
+  border: none;
+  color: rgb(85, 85, 85);
+  width: 100%;
+  box-sizing: border-box;
+  /* outline: none; */
+`;
+
+const FramePomodoro = styled.div`
+  position: relative;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100vh;
+  pointer-events: auto;
+  transition: all 0.2s ease-in 0s;
+  overflow: hidden scroll;
+  padding: 48px 0px;
+  box-sizing: border-box;
+
+  h2 {
+    display: inline-block;
+    width: 100%;
+  }
+`;
+
+const ButtonSettingContainer = styled.div`
+  cursor: pointer;
+  padding: 8px 10px;
+  display: flex;
+  align-items: center;
+  border: 1px solid black;
+  gap: 2px;
+  position: absolute;
+
+  z-index: 9999;
+  position: fixed;
+  height: 2rem;
+  right: 6.5rem;
+  top: 2rem;
+  border-radius: 34px;
+  justify-content: center;
+
+  @media ${TABLET} {
+    right: 13rem;
+    width: 90px;
+    height: 34px;
+  }
+`;
