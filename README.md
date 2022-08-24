@@ -13,6 +13,7 @@
 
 ### features
 
+- [x] TS config
 - [x] Recoil set up
 - [x] Dark Mode + LocalStorage
 - [x] To-do-list + LocalStorage

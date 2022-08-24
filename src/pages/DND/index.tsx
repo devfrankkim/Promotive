@@ -1,18 +1,18 @@
 import { FormEvent, useState } from "react";
-
 import { DragDropContext, Droppable, DropResult } from "react-beautiful-dnd";
 import { useRecoilState } from "recoil";
-import { darkLightMode, dNdState, IArrayAtom } from "../../atom";
+import { darkLightMode, dNdState, IArrayAtom } from "recoil/DnDToDoAtom";
+
+import Boards from "./Boards";
 
 import styled from "styled-components";
 
-import Boards from "./Boards/Boards";
-
-import handleDNDtodoLocalStorage from "../../utils/dnd.utils";
-
 import { FaTrash } from "react-icons/fa";
-import { TDarkMode } from "../../types";
-import { LAPTOP, TABLET } from "../../utils/responsiveness";
+import { LAPTOP, TABLET } from "utils/responsiveness";
+
+import { TDarkMode } from "types";
+
+import handleDNDtodoLocalStorage from "utils/dnd.utils";
 
 const DND = () => {
   const [isDarkMode, isSetDarkMode] = useRecoilState(darkLightMode);

@@ -1,5 +1,5 @@
 import { atom, selector } from "recoil";
-import handleDNDtodoLocalStorage from "./utils/dnd.utils";
+import handleDNDtodoLocalStorage from "utils/dnd.utils";
 
 export const TODO_KEY = "TODO_KEY";
 export const TODO_CATEGORY_OPTION = "TO_DO_CATEGORY_OPTION";
@@ -82,14 +82,6 @@ export const dNdState = atom<IArrayAtom[]>({
         content: [
           { id: 55, text: "ramos" },
           { id: 66, text: "pique" },
-        ],
-      },
-      {
-        boardId: 4,
-        title: "def",
-        content: [
-          { id: 77, text: "ramos" },
-          { id: 88, text: "pique" },
         ],
       },
     ]) ||
