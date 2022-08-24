@@ -1,6 +1,10 @@
 import React from "react";
 import { useRecoilState } from "recoil";
-import { Categories, categoryState, TODO_CATEGORY_OPTION } from "../../atom";
+import {
+  Categories,
+  categoryState,
+  TODO_CATEGORY_OPTION,
+} from "recoil/DnDToDoAtom";
 
 const CategoryList = () => {
   const [categoryList, setCategoryList] = useRecoilState(categoryState);

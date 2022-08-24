@@ -1,20 +1,22 @@
 import { FormEvent, useEffect, useRef, useState } from "react";
-
 import { useForm } from "react-hook-form";
-import { Draggable, Droppable } from "react-beautiful-dnd";
-import { useRecoilValue, useSetRecoilState } from "recoil";
-import { darkLightMode, dNdState, IToDo } from "../../../atom";
-
-import styled from "styled-components";
-
-import DragCard from "../DragCard/DragCard";
-
-import handleDNDtodoLocalStorage from "../../../utils/dnd.utils";
-import { NO_SWEAR } from "../../../utils/constants/noSwear";
-import { TDarkMode } from "../../../types";
 
 import { BiEdit, BiTrash } from "react-icons/bi";
 import { MdOutlineCancelPresentation } from "react-icons/md";
+
+import { Draggable, Droppable } from "react-beautiful-dnd";
+
+import { useRecoilValue, useSetRecoilState } from "recoil";
+
+import { darkLightMode, dNdState, IToDo } from "recoil/DnDToDoAtom";
+
+import DragCard from "../DragCard";
+
+import styled from "styled-components";
+
+import handleDNDtodoLocalStorage from "utils/dnd.utils";
+import { NO_SWEAR } from "utils/constants/noSwear";
+
 import * as S from "../styles";
 
 interface IBoardProps {

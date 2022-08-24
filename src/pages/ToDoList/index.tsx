@@ -1,12 +1,10 @@
 import { useEffect } from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { toDoSelector, toDoState, TODO_KEY } from "../../atom";
+import { useRecoilValue } from "recoil";
+import { toDoSelector, toDoState, TODO_KEY } from "recoil/DnDToDoAtom";
 import CategoryList from "./CategoryList";
 
 import CreateToDo from "./CreateToDo";
 import ToDo from "./ToDo";
-
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
 const ToDoList = () => {
   const filteredList = useRecoilValue(toDoSelector);

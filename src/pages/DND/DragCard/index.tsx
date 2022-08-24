@@ -1,17 +1,19 @@
 import React, { FormEvent, useEffect, useRef, useState } from "react";
 
+import { BiEdit, BiTrash } from "react-icons/bi";
+import { MdOutlineCancelPresentation } from "react-icons/md";
+
 import { Draggable } from "react-beautiful-dnd";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+
+import { useRecoilState, useRecoilValue } from "recoil";
+
+import { darkLightMode, dNdState } from "recoil/DnDToDoAtom";
 
 import styled from "styled-components";
 
-import { darkLightMode, dNdState } from "../../../atom";
-import handleDNDtodoLocalStorage from "../../../utils/dnd.utils";
-
-import { TDarkMode } from "../../../types";
-import { BiEdit, BiTrash } from "react-icons/bi";
-import { MdOutlineCancelPresentation } from "react-icons/md";
 import * as S from "../styles";
+
+import handleDNDtodoLocalStorage from "utils/dnd.utils";
 
 type TDragCard = {
   index: number;

@@ -1,9 +1,10 @@
-import React from "react";
 import { useRecoilState } from "recoil";
+import { darkLightMode } from "recoil/DnDToDoAtom";
+
 import styled from "styled-components";
-import { darkLightMode } from "../../atom";
-import { TDarkMode } from "../../types";
-import { TABLET } from "../../utils/responsiveness";
+
+import { TDarkMode } from "types";
+import { TABLET } from "utils/responsiveness";
 
 const DarkMode = () => {
   const [isDarkMode, isSetDarkMode] = useRecoilState(darkLightMode);

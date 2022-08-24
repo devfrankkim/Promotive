@@ -1,8 +1,14 @@
-import { useRecoilState, useRecoilValue } from "recoil";
-import { Categories, categoryState, IToDo, toDoState } from "../../atom";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+
+import {
+  Categories,
+  categoryState,
+  IToDo,
+  toDoState,
+} from "recoil/DnDToDoAtom";
 
 function ToDo({ text, id }: IToDo) {
-  const [toDoListState, setToDoListState] = useRecoilState(toDoState);
+  const setToDoListState = useSetRecoilState(toDoState);
   const categoryList = useRecoilValue(categoryState);
 
   const handleCategory = (category: IToDo["category"]) => {

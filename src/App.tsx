@@ -7,12 +7,12 @@ import { useRecoilValue } from "recoil";
 import ResetGlobalStyle from "./ResetGlobalStyle";
 
 import DarkMode from "./components/DarkMode";
+import Pomodoro from "./components/Pomodoro";
 
 import ToDoList from "./pages/ToDoList";
 import DND from "./pages/DND";
 
-import { darkLightMode, ISDARK } from "./atom";
-import Pomodoro from "./components/Pomodoro";
+import { darkLightMode, ISDARK } from "./recoil/DnDToDoAtom";
 
 function App() {
   const isDark = useRecoilValue(darkLightMode);
