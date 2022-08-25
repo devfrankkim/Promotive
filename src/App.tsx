@@ -6,8 +6,9 @@ import { darkTheme, lightTheme } from "./styles/theme";
 import { useRecoilValue } from "recoil";
 import ResetGlobalStyle from "./ResetGlobalStyle";
 
-import DarkMode from "./components/DarkMode";
-import Pomodoro from "./components/Pomodoro";
+import Weather from "components/Weather";
+import DarkMode from "components/DarkMode";
+import Pomodoro from "components/Pomodoro";
 
 import ToDoList from "./pages/ToDoList";
 import DND from "./pages/DND";
@@ -26,7 +27,8 @@ function App() {
       <ResetGlobalStyle />
       <DarkMode />
       <Routes>
-        <Route path="/" element={<Pomodoro />} />
+        <Route path="/" element={<Weather />} />
+        <Route path="/pomodoro" element={<Pomodoro />} />
         <Route path="DND" element={<DND />} />
         <Route path="toDo" element={<ToDoList />} />
       </Routes>
