@@ -25,7 +25,7 @@ const Weather = () => {
   //  ====== API success -> HIT API =======
   const success = useCallback((result: ISuccess) => {
     const { latitude, longitude } = result.coords;
-    const WEATHER_BASE_URL = `http://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${WEATHER_API_KEY}&units=metric`;
+    const WEATHER_BASE_URL = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${WEATHER_API_KEY}&units=metric`;
 
     fetchWeatherAPI(WEATHER_BASE_URL);
   }, []);
