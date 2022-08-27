@@ -5,10 +5,17 @@ import React, { useState, useEffect, useCallback } from "react";
 import { error, ISuccess, options, WEATHER_API_KEY } from "api/weather";
 
 import styled from "styled-components";
+import ErrorBox from "components/ErrorBox";
+import SkeletonCard from "components/SkeletonCard";
+import { WeatherResponse } from "types/WeatherType";
+import WeatherCard from "./Card";
 
 const Weather = () => {
-  const [weatherInfo, setWeatherInfo] = useState("");
+  const [weatherInfo, setWeatherInfo] = useState();
   const [isLoading, setIsLoading] = useState(true);
+  const [isError, setIsError] = useState(false);
+
+  console.log(weatherInfo);
 
   //  ====== Fetch Weather API =======
   const fetchWeatherAPI = async (URL: string) => {
@@ -16,8 +23,10 @@ const Weather = () => {
       const { data } = await axios.get(URL);
       setWeatherInfo(data);
       setIsLoading(false);
+      setIsError(false);
     } catch (err) {
       setIsLoading(false);
+      setIsError(true);
       console.log(err);
     }
   };
@@ -43,7 +52,25 @@ const Weather = () => {
     fetchLocation();
   }, [fetchLocation]);
 
-  return <div>{isLoading ? <div>Loading....</div> : <div>yay</div>}</div>;
+  //  ====== Skeleton  =======
+  const getSkeletonCards = () =>
+    [1].map((_, idx) => (
+      <div key={idx}>
+        <SkeletonCard />
+      </div>
+    ));
+
+  return (
+    <div>
+      {isError ? (
+        <ErrorBox />
+      ) : isLoading ? (
+        [getSkeletonCards()]
+      ) : (
+        <WeatherCard weatherInfo={weatherInfo} />
+      )}
+    </div>
+  );
 };
 
 export default Weather;
