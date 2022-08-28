@@ -1,8 +1,17 @@
 import React from "react";
 import styled from "styled-components";
-import { Card } from "styles/styles";
+import { boxShadow, Card, Skeleton } from "styles/styles";
+
+export const getSkeletonCards = (cards: number = 1) =>
+  [cards].map((_, idx) => (
+    <div key={idx}>
+      <SkeletonCard />
+    </div>
+  ));
 
 const SkeletonCard = () => {
+  //  ====== Skeleton  =======
+
   return <SkeletonCardBox />;
 };
 
@@ -10,17 +19,14 @@ export default SkeletonCard;
 
 const SkeletonCardBox = styled.div`
   ${Card}
-
-  background: #e3dac9;
-  height: 100px;
-  width: 100px;
+  ${Skeleton}
 
   @keyframes skeletonAnimation {
     0% {
-      background-position: 0% 90%;
+      background-position: 0% 50%;
     }
     50% {
-      background-position: 100% 90%;
+      background-position: 100% 50%;
       transform: scale3d(1.1, 1.1, 10);
     }
     100% {

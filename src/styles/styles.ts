@@ -44,3 +44,22 @@ export const Card = css`
   border: 1px solid ${palette.border};
   border-radius: 5px;
 `;
+
+export const FlexCenter = css`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+export const Skeleton = css`
+  height: 150px;
+  width: 130px;
+  flex-direction: column;
+  position: absolute;
+  top: 2rem;
+  left: 2.5rem;
+  background: grey;
+
+  ${FlexCenter};
+  ${boxShadow.type3};
+`;

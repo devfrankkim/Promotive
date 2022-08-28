@@ -4,18 +4,15 @@ import React, { useState, useEffect, useCallback } from "react";
 
 import { error, ISuccess, options, WEATHER_API_KEY } from "api/weather";
 
-import styled from "styled-components";
 import ErrorBox from "components/ErrorBox";
-import SkeletonCard from "components/SkeletonCard";
-import { WeatherResponse } from "types/WeatherType";
+import { getSkeletonCards } from "components/SkeletonCard";
+
 import WeatherCard from "./Card";
 
 const Weather = () => {
   const [weatherInfo, setWeatherInfo] = useState();
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
-
-  console.log(weatherInfo);
 
   //  ====== Fetch Weather API =======
   const fetchWeatherAPI = async (URL: string) => {
@@ -53,12 +50,6 @@ const Weather = () => {
   }, [fetchLocation]);
 
   //  ====== Skeleton  =======
-  const getSkeletonCards = () =>
-    [1].map((_, idx) => (
-      <div key={idx}>
-        <SkeletonCard />
-      </div>
-    ));
 
   return (
     <div>
