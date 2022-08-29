@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { SunSystem, WeatherDetailIcon, WeatherMain } from "types/WeatherType";
 import { DAY, TODAY_DATE } from "utils/constants/weather";
 import { TbTemperatureCelsius } from "react-icons/tb";

@@ -14,6 +14,7 @@ import ToDoList from "./pages/ToDoList";
 import DND from "./pages/DND";
 
 import { darkLightMode, ISDARK } from "./recoil/DnDToDoAtom";
+import Momentum from "pages/Momentum";
 
 function App() {
   const isDark = useRecoilValue(darkLightMode);
@@ -27,8 +28,9 @@ function App() {
       <ResetGlobalStyle />
       <DarkMode />
       <Routes>
-        <Route path="/" element={<Weather />} />
-        <Route path="/pomodoro" element={<Pomodoro />} />
+        <Route path="/" element={<Momentum />} />
+        <Route path="weather" element={<Weather />} />
+        <Route path="pomodoro" element={<Pomodoro />} />
         <Route path="DND" element={<DND />} />
         <Route path="toDo" element={<ToDoList />} />
       </Routes>

@@ -8,6 +8,7 @@ import { RiChatDeleteLine } from "react-icons/ri";
 
 import {
   handlePomodorotodoLocalStorage,
+  padTo2Digits,
   TIMEKEY,
   TIMESTATE,
 } from "utils/helpers";
@@ -32,10 +33,6 @@ const Pomodoro = () => {
   const [pomoInput, setPomoInput] = useState(pomoTimer);
   const [shorBreakInput, setShorBreakInput] = useState(shortTimer);
   const [longBreakInput, setLongBreakInput] = useState(longTimer);
-
-  const padTo2Digits = (num: number) => {
-    return num.toString().padStart(2, "0");
-  };
 
   // ========== convert milliseconds to readable time ==========
   const convertMsToHM = useCallback((milliseconds: number) => {
