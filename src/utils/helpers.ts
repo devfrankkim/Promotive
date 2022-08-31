@@ -34,11 +34,16 @@ export const handlePomodorotodoLocalStorage = (result: IPomodoro) => {
 //  ============ Momentum Local Storage  ============
 
 export const MOMENTUM_NAME = "MOMENTUM";
+export const CLOCK_VERSION = "clock_version";
 
-export const handleMomentumLocalStorage = (result: string) => {
+export const handleMomentumNameLocalStorage = (result: string) => {
   return localStorage.setItem(MOMENTUM_NAME, JSON.stringify(result));
+};
+
+export const handleClockVersionLocalStorage = (result: number) => {
+  return localStorage.setItem(CLOCK_VERSION, JSON.stringify(result));
 };
 
 export const momentumLocalName =
   JSON.parse(localStorage.getItem(MOMENTUM_NAME) as any) ||
-  handleMomentumLocalStorage("");
+  handleMomentumNameLocalStorage(" ");

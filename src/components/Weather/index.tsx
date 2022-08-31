@@ -2,7 +2,7 @@ import axios from "axios";
 
 import React, { useState, useEffect, useCallback } from "react";
 
-import { error, ISuccess, options, WEATHER_API_KEY } from "api/weather";
+import { error, ISuccess, options, WEATHER_API_KEY } from "api/API_weather";
 
 import ErrorBox from "components/ErrorBox";
 import { getSkeletonCards } from "components/SkeletonCard";

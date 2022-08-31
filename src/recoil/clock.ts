@@ -1,10 +1,13 @@
 import { atom } from "recoil";
+import { CLOCK_VERSION, handleClockVersionLocalStorage } from "utils/helpers";
 
-export const getTime = (number: number = 12) => {
-  let GREET = ``;
-
-  let hours: number | string = new Date().getHours();
+// =========== Get time & greet status ===========
+export const getTime = (number: number) => {
+  let hours: number | string | any = new Date().getHours();
   let minutes: number | string = new Date().getMinutes();
+
+  let GREET = "";
+  let TIME = "";
 
   if (6 < hours && hours < 12) {
     GREET = "Good Morning";
@@ -14,18 +17,52 @@ export const getTime = (number: number = 12) => {
     GREET = "Good Evening";
   }
 
-  // 24-hour-lock option
-  hours = hours % number;
+  // *** 12:00 - 24:00 execption ***
+  // ------- if not noon & mid night -------
+  if (hours !== 24 && hours !== 12) {
+    if (number === 12) {
+      // 12-hour-lock option
+      hours = hours % number < 10 ? `${hours % number}` : `${hours}`;
+    }
 
-  hours = hours < 10 ? `0${hours}` : hours;
+    // 24-hour-lock option
+    if (number === 24) {
+      hours = hours % number < 10 ? `0${hours}` : `${hours}`;
+    }
+  }
+
+  // ------- noon - 12:00 -------
+  if (hours === 12) {
+    hours = 12;
+  }
+
+  // ------- Mid night - 00:00 or 24:00 -------
+  if (hours === 24) {
+    hours = number === 12 ? "00" : "24";
+  }
+
   minutes = minutes < 10 ? `0${minutes}` : minutes;
 
-  const TIME = `${hours}:${minutes}`;
+  TIME = `${hours}:${minutes}`;
 
   return [TIME, GREET];
 };
 
+// =========== set clock-version(12 or 24) from local storage ===========
+export const ClockVersionState = atom({
+  key: "clockStateKey",
+  default:
+    JSON.parse(localStorage.getItem(CLOCK_VERSION) as any) ||
+    handleClockVersionLocalStorage(24),
+});
+
+// =========== Get clock-version(12 or 24) ===========
+const getLocalTime: any = JSON.parse(
+  localStorage.getItem(CLOCK_VERSION) as any
+);
+
+// =========== Time state -> from getTime fn  ===========
 export const clockState = atom({
   key: "clockKey",
-  default: getTime(),
+  default: getTime(getLocalTime),
 });
