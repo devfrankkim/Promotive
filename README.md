@@ -13,9 +13,9 @@
 
 ### features
 
-- [x] Momentum
-- [x] Weather
 - [x] Dark Mode
+- [x] Momentum [#8](https://github.com/devfrankkim/Promotive/issues/8)
+- [x] Weather
 - [x] Drag And Drop
 - [x] CRUD lists
 - [x] Pomodoro (timer)
