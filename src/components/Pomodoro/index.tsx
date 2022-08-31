@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { useRecoilState } from "recoil";
-import { modalPomodoro } from "recoil/promoAtom";
+import { modalPomodoro } from "recoil/modal";
 import styled from "styled-components";
 
 import { FiSettings } from "react-icons/fi";
@@ -172,7 +172,6 @@ const Pomodoro = () => {
     setPomoInput,
     setShorBreakInput,
     setLongBreakInput,
-    // setTimerOption,
   ]);
 
   //  ======== start timer ========

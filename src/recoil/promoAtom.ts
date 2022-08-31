@@ -1,10 +1,5 @@
 import { atom } from "recoil";
 
-export const modalPomodoro = atom({
-  key: "modalPomodoroSetting",
-  default: false,
-});
-
 export const defaultTimer = atom({
   key: "defaultTimer",
   default: "pomodoroState",

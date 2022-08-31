@@ -3,8 +3,14 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useRecoilState } from "recoil";
 import { clockState, ClockVersionState, getTime } from "recoil/clock";
+import { modalClockVersion } from "recoil/modal";
+
+import { FaUserClock } from "react-icons/fa";
 
 import styled from "styled-components";
+
+import useCloseOutside from "hooks/useCloseOutside";
+
 import {
   CLOCK_VERSION,
   handleClockVersionLocalStorage,
@@ -19,6 +25,12 @@ type TMomentumRegister = {
 const MOMENTTUM_REGISTER = "momentumRegisterForm";
 
 const Momentum = () => {
+  const [isOpen, setIsOpen] = useRecoilState(modalClockVersion);
+
+  const domNode = useCloseOutside(() => {
+    setIsOpen(false);
+  });
+
   const [momentumName, setMomentumName] = useState(momentumLocalName);
   const [clockVersion, setClockVersion] = useRecoilState(ClockVersionState);
   const [timeState, setTimeState] = useRecoilState(clockState);
@@ -28,6 +40,7 @@ const Momentum = () => {
     register,
     handleSubmit,
     setValue,
+
     formState: { errors },
   } = useForm<TMomentumRegister>();
 
@@ -60,14 +73,47 @@ const Momentum = () => {
     setValue(MOMENTTUM_REGISTER, "");
   };
 
+  console.log(isOpen);
+
   return (
     <>
-      <TextSpan>{timeState[0]}</TextSpan>
-      <TextSpan>Hello, What's your name?</TextSpan>
-      <TextSpan>
-        {timeState[1]} {momentumName}.
-      </TextSpan>
-      <button onClick={onHandleClock}>24 hour clock</button>
+      <div>
+        <span ref={domNode}>
+          <button
+            onClick={(e) => {
+              setIsOpen((prev) => !prev);
+            }}
+          >
+            <FaUserClock />
+          </button>
+
+          {isOpen && (
+            <ButtonClockSwitch>
+              <span>24-hour clock</span>
+              <label className="switch">
+                <input
+                  type="checkbox"
+                  defaultChecked={
+                    clockVersion === 24
+                      ? true
+                      : clockVersion === 12
+                      ? false
+                      : true
+                  }
+                />
+                <span className="slider round" onClick={onHandleClock}></span>
+              </label>
+            </ButtonClockSwitch>
+          )}
+        </span>
+      </div>
+      <div>
+        <TextSpan>{timeState[0]}</TextSpan>
+        <TextSpan>Hello, What's your name?</TextSpan>
+        <TextSpan>
+          {timeState[1]} {momentumName}.
+        </TextSpan>
+      </div>
       <form onSubmit={handleSubmit(handleValid)}>
         <InputBox
           type="text"
@@ -91,6 +137,64 @@ const Momentum = () => {
 
 export default Momentum;
 
+const ButtonClockSwitch = styled.button`
+  background: none;
+  border: 1px black solid;
+
+  .switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+  }
+  .switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: 1s;
+  }
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: 1.1s;
+  }
+
+  input:checked + .slider {
+    background-color: #2196f3;
+  }
+
+  input:focus + .slider {
+    box-shadow: 0 0 1px #2196f3;
+  }
+
+  input:checked + .slider:before {
+    transform: translateX(26px);
+  }
+
+  /* Rounded sliders */
+  .slider.round {
+    border-radius: 34px;
+  }
+
+  .slider.round:before {
+    border-radius: 50%;
+  }
+`;
+
 const ErrorSpan = styled.span`
   color: red;
   width: 100%;
@@ -106,11 +210,6 @@ const ErrorSpan = styled.span`
   line-height: normal;
   outline: none;
   text-align: center;
-`;
-
-const Wrapper = styled.div`
-  width: 100%;
-  height: 100%;
 `;
 
 const TextSpan = styled.span`
