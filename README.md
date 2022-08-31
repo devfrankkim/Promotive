@@ -22,9 +22,9 @@
 
 ### Coming soon
 
-- [] Weahter - search params
-- [] Pomodoro (pause)
-- [] Quotes API
-- [] OAuth - sign up/sign in
-- [] json db
-- [] styling
+- [ ] Weahter - search params
+- [ ] Pomodoro (pause)
+- [ ] Quotes API
+- [ ] OAuth - sign up/sign in
+- [ ] json db
+- [ ] styling
