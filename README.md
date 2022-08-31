@@ -13,23 +13,18 @@
 
 ### features
 
-- [x] TS config
-- [x] Recoil set up
-- [x] Dark Mode + LocalStorage
-- [x] To-do-list + LocalStorage
-- [x] Drag And Drop + LocalStorage
-- [x] DND Board (Create, Read, Delete)
-- [x] DND Card (Create, Read, Delete)
-- [x] move Board DND + LocalStorage
-- [x] Update Card content
-- [x] Delete Card content
-- [x] Update Board title
-- [x] Update Card title
-- [x] Timer
-- [ ] Local Storage - Timer
+- [x] Momentum
+- [x] Weather
+- [x] Dark Mode
+- [x] Drag And Drop
+- [x] CRUD lists
+- [x] Pomodoro (timer)
 
-- [ ] Momentum
-- [] weather api (react query)
+### Coming soon
+
+- [] Weahter - search params
+- [] Pomodoro (pause)
+- [] Quotes API
 - [] OAuth - sign up/sign in
 - [] json db
 - [] styling
