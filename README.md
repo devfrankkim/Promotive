@@ -1,5 +1,8 @@
 ## Promotive
 
+_“Trust yourself. You know more than
+you think you do.”_
+
 `Making scheduler with pomodoro timer to stay productive!`
 
 ### Tech stack
