@@ -40,8 +40,9 @@ export const handleMomentumNameLocalStorage = (result: string) => {
   return localStorage.setItem(MOMENTUM_NAME, JSON.stringify(result));
 };
 
-export const handleClockVersionLocalStorage = (result: number) => {
-  return localStorage.setItem(CLOCK_VERSION, JSON.stringify(result));
+export const handleClockVersionLocalStorage = (result: number): number => {
+  localStorage.setItem(CLOCK_VERSION, JSON.stringify(result));
+  return result;
 };
 
 export const momentumLocalName =
