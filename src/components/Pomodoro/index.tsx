@@ -365,7 +365,7 @@ const Pomodoro = () => {
           </span>
           <span onClick={(e) => e.stopPropagation()}>
             <h2>{timeText}</h2>
-
+            {/* ========= START BUTTON ========= */}
             <button
               type="button"
               onClick={() => {
@@ -375,6 +375,7 @@ const Pomodoro = () => {
             >
               Start Timer
             </button>
+            {/* ========= PAUSE BUTTON ========= */}
             <button
               type="button"
               onClick={() => {
@@ -384,6 +385,7 @@ const Pomodoro = () => {
             >
               Pause Timer
             </button>
+            {/* ========= RESET BUTTON ========= */}
             <button
               type="button"
               onClick={() => {
