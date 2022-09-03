@@ -17,6 +17,7 @@ import {
   handleMomentumNameLocalStorage,
   momentumLocalName,
 } from "utils/helpers";
+import { useCallback } from "react";
 
 type TMomentumRegister = {
   momentumRegisterForm: string;
@@ -44,13 +45,17 @@ const Momentum = () => {
     formState: { errors },
   } = useForm<TMomentumRegister>();
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setTimeState(getTime(Number(clockVersion)));
-    }, 1000);
+  const tiktok = useCallback(() => {
+    setTimeState(getTime(Number(clockVersion)));
+  }, [clockVersion, setTimeState]);
 
-    return () => clearInterval(interval);
-  }, [clockVersion, setTimeState, setClockVersion]);
+  useEffect(() => {
+    tiktok();
+    const interval = setInterval(tiktok, 1000);
+    return () => {
+      clearInterval(interval);
+    };
+  }, [tiktok]);
 
   // =========== handle 24-hour-clock ===========
   const onHandleClock = () => {
@@ -170,7 +175,7 @@ const ButtonClockSwitch = styled.button`
     left: 4px;
     bottom: 4px;
     background-color: white;
-    transition: 1.1s;
+    transition: 0.2s;
   }
 
   input:checked + .slider {
