@@ -78,8 +78,6 @@ const Momentum = () => {
     setValue(MOMENTTUM_REGISTER, "");
   };
 
-  console.log(isOpen);
-
   return (
     <>
       <div>
