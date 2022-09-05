@@ -16,13 +16,13 @@ export const getTime = (number: number) => {
   } else {
     GREET = "Good Evening";
   }
-
+  hours = 8;
   // *** 12:00 - 24:00 execption ***
   // ------- if not noon & mid night -------
   if (hours !== 24 && hours !== 12) {
     if (number === 12) {
       // 12-hour-lock option
-      hours = hours % number < 10 ? `${hours % number}` : `${hours}`;
+      hours = `${hours % number}`;
     }
 
     // 24-hour-lock option
