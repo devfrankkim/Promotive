@@ -16,7 +16,7 @@ export const getTime = (number: number) => {
   } else {
     GREET = "Good Evening";
   }
-  hours = 8;
+
   // *** 12:00 - 24:00 execption ***
   // ------- if not noon & mid night -------
   if (hours !== 24 && hours !== 12) {
