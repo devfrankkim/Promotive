@@ -6,10 +6,9 @@ import { error, ISuccess, options, WEATHER_API_KEY } from "api/API_weather";
 
 import ErrorBox from "components/ErrorBox";
 import { getSkeletonCards } from "components/SkeletonCard";
+import WeatherCard from "components/WeatherCard";
 
-import WeatherCard from "./Card";
-
-const Weather = () => {
+const WeatherMyLocation = () => {
   const [weatherInfo, setWeatherInfo] = useState();
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
@@ -18,6 +17,7 @@ const Weather = () => {
   const fetchWeatherAPI = async (URL: string) => {
     try {
       const { data } = await axios.get(URL);
+
       setWeatherInfo(data);
       setIsLoading(false);
       setIsError(false);
@@ -64,4 +64,4 @@ const Weather = () => {
   );
 };
 
-export default Weather;
+export default WeatherMyLocation;

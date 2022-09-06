@@ -1,19 +1,9 @@
-import React, { useState } from "react";
-import { SunSystem, WeatherDetailIcon, WeatherMain } from "types/WeatherType";
 import { DAY, TODAY_DATE } from "utils/constants/weather";
 import { TbTemperatureCelsius } from "react-icons/tb";
 import styled from "styled-components";
 import { boxShadow, FlexCenter } from "styles/styles";
 
 const WeatherCard = ({ weatherInfo }: any) => {
-  const [detail, setDetail] = useState<WeatherDetailIcon>(
-    weatherInfo?.weather[0]
-  );
-  const [main, setMain] = useState<WeatherMain>(weatherInfo?.main);
-  const [sunRiseSet, setSunRiseSet] = useState<SunSystem>(weatherInfo?.sys);
-
-  console.log(weatherInfo);
-
   return (
     <FliperContainer>
       <div className="flip-card">
@@ -27,13 +17,14 @@ const WeatherCard = ({ weatherInfo }: any) => {
               </WrapperDate>
               <WeatherDetail>
                 <img
-                  src={`http://openweathermap.org/img/w/${detail?.icon}.png`}
+                  src={`http://openweathermap.org/img/w/${weatherInfo?.weather[0]?.icon}.png`}
                   alt="weather-icon"
                 />
-                <div>{detail.description}</div>
+                <div>{weatherInfo?.weather[0]?.description}</div>
                 <div>
-                  {main.temp} <TbTemperatureCelsius />
+                  {weatherInfo?.main?.temp} <TbTemperatureCelsius />
                 </div>
+                <div>🏠 {weatherInfo?.name}</div>
               </WeatherDetail>
             </Wrapper>
           </div>
@@ -48,14 +39,15 @@ const WeatherCard = ({ weatherInfo }: any) => {
               <WeatherDetail>
                 <strong>Feels like:</strong>
                 <div>
-                  {main.feels_like}
+                  {weatherInfo?.main?.feels_like}
                   <TbTemperatureCelsius />
                 </div>
                 <div>
-                  <strong> humidity </strong> : {main.humidity}%
+                  <strong> humidity </strong> : {weatherInfo?.main?.humidity}%
                 </div>
                 <div>
-                  <strong>visibility</strong>: {weatherInfo.visibility / 1000}km
+                  <strong>visibility</strong>: {weatherInfo?.visibility / 1000}
+                  km
                 </div>
               </WeatherDetail>
             </Wrapper>
