@@ -10,7 +10,7 @@ import ForeCast from "components/ForeCast";
 
 const WeatherForeCast = () => {
   const [currentWeatherData, setCurrentWeatherData] = useState({});
-  const [forecastData, setForecastData] = useState({});
+  const [forecastData, setForecastData] = useState<any>({});
 
   const [currentIsLoading, setCurrentIsLoading] = useState(false);
   const [roreCastIsLoading, setForeCastIsLoading] = useState(false);

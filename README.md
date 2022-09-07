@@ -25,8 +25,7 @@ you think you do.”_
 
 ### Coming soon
 
-- [ ] Weahter - search params
-- [ ] Pomodoro (pause)
+- [ ] Weather chart(graph)
 - [ ] Quotes API
 - [ ] OAuth - sign up/sign in
 - [ ] json db

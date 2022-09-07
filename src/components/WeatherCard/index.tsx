@@ -24,7 +24,9 @@ const WeatherCard = ({ weatherInfo }: any) => {
                 <div>
                   {weatherInfo?.main?.temp} <TbTemperatureCelsius />
                 </div>
-                <div>🏠 {weatherInfo?.name}</div>
+                <div>
+                  🏠 {weatherInfo?.name}, {weatherInfo?.sys?.country}
+                </div>
               </WeatherDetail>
             </Wrapper>
           </div>
