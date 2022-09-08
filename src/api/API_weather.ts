@@ -1,7 +1,7 @@
 import axios from "axios";
 
-export const WEATHER_API_KEY = process.env.REACT_APP_WEATHER_API_KEY;
 export const WEATHER_GEO_API_KEY = process.env.REACT_APP_WEATHER_GEO_API_KEY;
+export const WEATHER_API_KEY = process.env.REACT_APP_WEATHER_API_KEY;
 
 export type ISuccess = {
   coords: {
