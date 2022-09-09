@@ -25,7 +25,6 @@ you think you do.”_
 
 ### Coming soon
 
-- [ ] Weather chart(graph)
 - [ ] Quotes API
 - [ ] OAuth - sign up/sign in
 - [ ] json db
