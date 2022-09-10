@@ -110,15 +110,34 @@ const Pomodoro = () => {
     }
   }, [defaultTimer, isPause, beginTimer, longTimer, pomoTimer, shortTimer]);
 
+  //  ======== Handle Save Setting Timer ========
+  const onHandleSaveSetting = useCallback(() => {
+    setDefaultTimer(POMO);
+
+    setPomoTimer(Number(pomoInput) * 60 * 1000);
+    setShortTimer(Number(shorBreakInput) * 60 * 1000);
+    setLongTimer(Number(longBreakInput) * 60 * 1000);
+
+    handlePomodorotodoLocalStorage({
+      beginState: Number(pomoInput) * 60 * 1000,
+      pomodoroState: Number(pomoInput),
+      shortBreakState: Number(shorBreakInput),
+      longBreakState: Number(longBreakInput),
+    });
+  }, [pomoInput, shorBreakInput, longBreakInput]);
+
   //  ======== Convert timer ========
   useEffect(() => {
     const JSON_TIMESTATE = JSON.parse(localStorage.getItem(TIMEKEY) as any);
+
+    console.log(defaultTimer, "timeeeee");
 
     if (defaultTimer === BEGIN) {
       if (beginTimer > 0) {
         const time = convertMsToHM(beginTimer);
 
         setTimeText(time);
+        console.log(time, "timeeeee");
       }
       if (Number(beginTimer) <= 0) {
         setBeginTimer(JSON_TIMESTATE.beginState);
@@ -180,9 +199,10 @@ const Pomodoro = () => {
     setPomoInput,
     setShorBreakInput,
     setLongBreakInput,
+    onHandleSaveSetting,
   ]);
 
-  //  ======== start timer ========
+  //  ======== Start timer ========
   useEffect(() => {
     if (isStart && !isPause) {
       let intervalId = setInterval(calculateTimer, 1000);
@@ -193,7 +213,7 @@ const Pomodoro = () => {
     }
   }, [isStart, calculateTimer, isPause]);
 
-  // ========= default category time ==========
+  // ========= Default Category Time Text ==========
   const onHandleTimerCategory = (targetName: string) => {
     setIsPause(true);
 
@@ -203,17 +223,14 @@ const Pomodoro = () => {
       switch (targetName) {
         case POMODORO_STATE:
           setDefaultTimer(POMO);
-
           setPomoTimer(Number(pomoInput) * 60 * 1000);
           break;
         case SHORT_BREAK_STATE:
           setDefaultTimer(SHORT);
-
           setShortTimer(Number(shorBreakInput) * 60 * 1000);
           break;
         case LONG_BREAK_STATE:
           setDefaultTimer(LONG);
-
           setLongTimer(Number(longBreakInput) * 60 * 1000);
           break;
         default:
@@ -228,20 +245,16 @@ const Pomodoro = () => {
     });
   };
 
-  const onHandleSettingForTimer = (e: React.MouseEvent<HTMLButtonElement>) => {
-    const stateName = e.currentTarget.name;
-
-    switch (stateName) {
-      case POMODORO_STATE:
-        return Number(setPomoInput(pomoInput));
-      case SHORT_BREAK_STATE:
-        return Number(setShorBreakInput(shorBreakInput));
-      case LONG_BREAK_STATE:
-        return Number(setLongBreakInput(longBreakInput));
-      default:
-    }
-
-    onHandleTimerCategory(e.currentTarget.name);
+  // =========== Handle Reset Timer ===========
+  const onHandleResetTimer = () => {
+    setIsStart(false);
+    const categoryName: { [key: string]: string } = {
+      [BEGIN]: POMODORO_STATE,
+      [POMO]: POMODORO_STATE,
+      [SHORT]: SHORT_BREAK_STATE,
+      [LONG]: LONG_BREAK_STATE,
+    };
+    onHandleTimerCategory(categoryName[defaultTimer] || "");
   };
 
   return (
@@ -283,15 +296,6 @@ const Pomodoro = () => {
                   }}
                   value={pomoInput}
                 />
-                <button
-                  name={POMODORO_STATE}
-                  onClick={(e) => {
-                    onHandleSettingForTimer(e);
-                    onHandleTimerCategory(e.currentTarget.name);
-                  }}
-                >
-                  Set Pomodoro
-                </button>
               </WrapperInputTimer>
               <WrapperInputTimer>
                 <InputTimer
@@ -302,19 +306,6 @@ const Pomodoro = () => {
                   }}
                   value={shorBreakInput}
                 />
-                <button
-                  name={SHORT_BREAK_STATE}
-                  onClick={(e) => {
-                    if (shorBreakInput === 0) {
-                      alert("set timer properly");
-                      return;
-                    }
-                    onHandleSettingForTimer(e);
-                    onHandleTimerCategory(e.currentTarget.name);
-                  }}
-                >
-                  Set Short Break
-                </button>
               </WrapperInputTimer>
               <WrapperInputTimer>
                 <InputTimer
@@ -325,16 +316,8 @@ const Pomodoro = () => {
                   }}
                   value={longBreakInput}
                 />
-                <button
-                  name={LONG_BREAK_STATE}
-                  onClick={(e) => {
-                    onHandleSettingForTimer(e);
-                    onHandleTimerCategory(e.currentTarget.name);
-                  }}
-                >
-                  Set Long Break
-                </button>
               </WrapperInputTimer>
+              <button onClick={onHandleSaveSetting}>Save Timer</button>
             </ContainerWrapperInputTimer>
           </ModalWrapper>
         )}
@@ -364,6 +347,7 @@ const Pomodoro = () => {
             </button>
           </span>
           <span onClick={(e) => e.stopPropagation()}>
+            {/* ========= Timer ========= */}
             <h2>{timeText}</h2>
             {/* ========= START BUTTON ========= */}
             <button
@@ -386,19 +370,7 @@ const Pomodoro = () => {
               Pause Timer
             </button>
             {/* ========= RESET BUTTON ========= */}
-            <button
-              type="button"
-              onClick={() => {
-                setIsStart(false);
-                const categoryName: { [key: string]: string } = {
-                  [BEGIN]: POMODORO_STATE,
-                  [POMO]: POMODORO_STATE,
-                  [SHORT]: SHORT_BREAK_STATE,
-                  [LONG]: LONG_BREAK_STATE,
-                };
-                onHandleTimerCategory(categoryName[defaultTimer] || "");
-              }}
-            >
+            <button type="button" onClick={onHandleResetTimer}>
               Reset Timer
             </button>
           </span>

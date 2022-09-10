@@ -22,6 +22,9 @@ const Chart = ({ chartData }: any) => {
         },
       ]}
       options={{
+        theme: {
+          mode: "light",
+        },
         chart: {
           type: "area",
           height: 350,
@@ -49,6 +52,8 @@ const Chart = ({ chartData }: any) => {
         legend: {
           horizontalAlign: "center",
         },
+        grid: { show: true },
+
         tooltip: {
           x: {
             format: "dd/MM/yy HH:mm",
