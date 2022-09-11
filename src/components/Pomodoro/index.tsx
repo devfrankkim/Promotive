@@ -22,6 +22,7 @@ import {
   SHORT,
   SHORT_BREAK_STATE,
 } from "utils/constants/pomodoro";
+import { FlexCenter } from "styles/styles";
 
 const Pomodoro = () => {
   const [isOpen, setIsOpen] = useRecoilState(modalPomodoro);
@@ -130,14 +131,11 @@ const Pomodoro = () => {
   useEffect(() => {
     const JSON_TIMESTATE = JSON.parse(localStorage.getItem(TIMEKEY) as any);
 
-    console.log(defaultTimer, "timeeeee");
-
     if (defaultTimer === BEGIN) {
       if (beginTimer > 0) {
         const time = convertMsToHM(beginTimer);
 
         setTimeText(time);
-        console.log(time, "timeeeee");
       }
       if (Number(beginTimer) <= 0) {
         setBeginTimer(JSON_TIMESTATE.beginState);
@@ -258,97 +256,11 @@ const Pomodoro = () => {
   };
 
   return (
-    <div onClick={() => setIsOpen(false)}>
-      <ButtonSettingContainer
-        onClick={(e) => {
-          e.stopPropagation();
-          setIsOpen((prev) => !prev);
-        }}
-      >
-        <FiSettings />
-        <div>Setting</div>
-      </ButtonSettingContainer>
-
-      <div onClick={() => setIsOpen(false)}>
-        {/* ============ modal ============ */}
-        {isOpen && (
-          <ModalWrapper onClick={(e) => e.stopPropagation()}>
-            <div className="top">
-              <h2>Timer Setting</h2>
-              <RiChatDeleteLine
-                className="closeButton"
-                onClick={() => setIsOpen(false)}
-              />
-            </div>
-            <hr />
-            <ContainerWrapperInputTimer
-              onKeyDown={(e) => {
-                if (e.key === "Escape") setIsOpen(false);
-              }}
-            >
-              <WrapperInputTimer>
-                <InputTimer
-                  autoFocus
-                  type="number"
-                  min={1}
-                  onChange={(e) => {
-                    setPomoInput(Number(e.target.value));
-                  }}
-                  value={pomoInput}
-                />
-              </WrapperInputTimer>
-              <WrapperInputTimer>
-                <InputTimer
-                  type="number"
-                  min={1}
-                  onChange={(e) => {
-                    setShorBreakInput(Number(e.target.value));
-                  }}
-                  value={shorBreakInput}
-                />
-              </WrapperInputTimer>
-              <WrapperInputTimer>
-                <InputTimer
-                  type="number"
-                  min={1}
-                  onChange={(e) => {
-                    setLongBreakInput(Number(e.target.value));
-                  }}
-                  value={longBreakInput}
-                />
-              </WrapperInputTimer>
-              <button onClick={onHandleSaveSetting}>Save Timer</button>
-            </ContainerWrapperInputTimer>
-          </ModalWrapper>
-        )}
-
-        <FramePomodoro>
-          <span onClick={(e) => e.stopPropagation()}>
-            <button
-              type="button"
-              name={POMODORO_STATE}
-              onClick={(e) => onHandleTimerCategory(e.currentTarget.name)}
-            >
-              Pomodoro
-            </button>
-            <button
-              type="button"
-              name={SHORT_BREAK_STATE}
-              onClick={(e) => onHandleTimerCategory(e.currentTarget.name)}
-            >
-              Short Break
-            </button>
-            <button
-              type="button"
-              name={LONG_BREAK_STATE}
-              onClick={(e) => onHandleTimerCategory(e.currentTarget.name)}
-            >
-              Long Break
-            </button>
-          </span>
-          <span onClick={(e) => e.stopPropagation()}>
-            {/* ========= Timer ========= */}
-            <h2>{timeText}</h2>
+    <FramerWrapper onClick={() => setIsOpen(false)}>
+      <WrapperBox>
+        <FirstBox></FirstBox>
+        <SecondBox>
+          <BoxTop>
             {/* ========= START BUTTON ========= */}
             <button
               type="button"
@@ -369,18 +281,172 @@ const Pomodoro = () => {
             >
               Pause Timer
             </button>
+          </BoxTop>
+          <div onClick={(e) => e.stopPropagation()}>
+            {/* ========= Timer ========= */}
+            <h2>{timeText}</h2>
             {/* ========= RESET BUTTON ========= */}
             <button type="button" onClick={onHandleResetTimer}>
               Reset Timer
             </button>
-          </span>
-        </FramePomodoro>
-      </div>
-    </div>
+            <FiSettings
+              onClick={(e) => {
+                e.stopPropagation();
+                setIsOpen((prev) => !prev);
+              }}
+            />
+          </div>
+
+          {/* ========= Setting BUTTON ========= */}
+          <div onClick={() => setIsOpen(false)}>
+            {/* ============ modal ============ */}
+            {isOpen && (
+              <ModalWrapper onClick={(e) => e.stopPropagation()}>
+                <div className="top">
+                  <h2>Timer Setting</h2>
+                  <RiChatDeleteLine
+                    className="closeButton"
+                    onClick={() => setIsOpen(false)}
+                  />
+                </div>
+                <hr />
+                <ContainerWrapperInputTimer
+                  onKeyDown={(e) => {
+                    if (e.key === "Escape") setIsOpen(false);
+                  }}
+                >
+                  <WrapperInputTimer>
+                    <InputTimer
+                      autoFocus
+                      type="number"
+                      min={1}
+                      onChange={(e) => {
+                        setPomoInput(Number(e.target.value));
+                      }}
+                      value={pomoInput}
+                    />
+                  </WrapperInputTimer>
+                  <WrapperInputTimer>
+                    <InputTimer
+                      type="number"
+                      min={1}
+                      onChange={(e) => {
+                        setShorBreakInput(Number(e.target.value));
+                      }}
+                      value={shorBreakInput}
+                    />
+                  </WrapperInputTimer>
+                  <WrapperInputTimer>
+                    <InputTimer
+                      type="number"
+                      min={1}
+                      onChange={(e) => {
+                        setLongBreakInput(Number(e.target.value));
+                      }}
+                      value={longBreakInput}
+                    />
+                  </WrapperInputTimer>
+                  <button onClick={onHandleSaveSetting}>Save Timer</button>
+                </ContainerWrapperInputTimer>
+              </ModalWrapper>
+            )}
+          </div>
+        </SecondBox>
+        <ThirdBox></ThirdBox>
+      </WrapperBox>
+
+      {/* =================== Pomodoro & Short Break & Long Break =================== */}
+      <FramePomodoro>
+        <span onClick={(e) => e.stopPropagation()}>
+          <button
+            type="button"
+            name={POMODORO_STATE}
+            onClick={(e) => onHandleTimerCategory(e.currentTarget.name)}
+          >
+            Pomodoro
+          </button>
+          <button
+            type="button"
+            name={SHORT_BREAK_STATE}
+            onClick={(e) => onHandleTimerCategory(e.currentTarget.name)}
+          >
+            Short Break
+          </button>
+          <button
+            type="button"
+            name={LONG_BREAK_STATE}
+            onClick={(e) => onHandleTimerCategory(e.currentTarget.name)}
+          >
+            Long Break
+          </button>
+        </span>
+      </FramePomodoro>
+    </FramerWrapper>
   );
 };
 
 export default Pomodoro;
+
+const BoxTop = styled.div`
+  ${FlexCenter}
+`;
+
+const FramerWrapper = styled.div`
+  position: absolute;
+  width: 100%;
+`;
+
+const ThirdBox = styled.div`
+  ${FlexCenter};
+  flex-direction: column;
+  position: absolute;
+  width: 290px;
+  height: 487px;
+  left: 1220px;
+  top: 213px;
+
+  background: #664eff;
+  box-shadow: 4px 8px 25px rgba(0, 0, 0, 0.25);
+  border-radius: 30px;
+`;
+
+const SecondBox = styled.div`
+  ${FlexCenter};
+  flex-direction: column;
+
+  position: absolute;
+  width: 952px;
+  height: 565px;
+  left: 244px;
+  top: 174px;
+
+  background: linear-gradient(180deg, #f55064 11.59%, #f78361 100%);
+  box-shadow: 4px 8px 25px rgba(0, 0, 0, 0.25);
+  border-radius: 30px;
+`;
+
+const FirstBox = styled.div`
+  ${FlexCenter};
+  flex-direction: column;
+
+  position: absolute;
+  width: 290px;
+  height: 487px;
+  left: -70px;
+  top: 213px;
+
+  /* background: #1c1535; */
+  background: linear-gradient(180deg, #f55064 11.59%, #f78361 100%);
+  box-shadow: 4px 8px 25px rgba(0, 0, 0, 0.25);
+  border-radius: 30px;
+`;
+
+const WrapperBox = styled.div`
+  ${FlexCenter}
+
+  position: absolute;
+  text-align: center;
+`;
 
 const ModalWrapper = styled.div`
   color: rgb(34, 34, 34);
@@ -397,7 +463,6 @@ const ModalWrapper = styled.div`
   transition: all 0.2s ease-in 0s;
   transform: translateY(20px);
   box-shadow: rgb(0 0 0 / 15%) 0px 10px 20px, rgb(0 0 0 / 10%) 0px 3px 6px;
-  overflow: hidden;
   position: absolute;
   top: 10rem;
   padding: 2rem;
@@ -464,10 +529,8 @@ const FramePomodoro = styled.div`
   top: 0px;
   left: 0px;
   width: 100%;
-  height: 100vh;
   pointer-events: auto;
   transition: all 0.2s ease-in 0s;
-  overflow: hidden scroll;
   padding: 48px 0px;
   box-sizing: border-box;
 
@@ -485,12 +548,9 @@ const ButtonSettingContainer = styled.div`
   border: 1px solid black;
   gap: 2px;
   position: absolute;
-
-  z-index: 9999;
-  position: fixed;
   height: 2rem;
   right: 6.5rem;
-  top: 2rem;
+
   border-radius: 34px;
   justify-content: center;
 

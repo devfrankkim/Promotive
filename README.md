@@ -19,9 +19,9 @@ you think you do.”_
 - [x] Dark Mode
 - [x] Momentum [#8](https://github.com/devfrankkim/Promotive/issues/8)
 - [x] Weather [#14](https://github.com/devfrankkim/Promotive/issues/14)
+- [x] Pomodoro (timer) [#15](https://github.com/devfrankkim/Promotive/issues/15)
 - [x] Drag And Drop
 - [x] CRUD lists
-- [x] Pomodoro (timer)
 
 ### Coming soon
 
