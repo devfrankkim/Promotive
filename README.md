@@ -25,6 +25,7 @@ you think you do.”_
 
 ### Coming soon
 
+- [ ] Push notification
 - [ ] Quotes API
 - [ ] OAuth - sign up/sign in
 - [ ] json db

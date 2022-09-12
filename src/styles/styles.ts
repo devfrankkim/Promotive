@@ -21,6 +21,10 @@ export const palette = {
   textColor: "#111111",
 };
 
+export const palettePomodoro = {
+  textColor: "#FFF",
+};
+
 // https://getcssscan.com/css-box-shadow-examples
 export const boxShadow = {
   type1: css`

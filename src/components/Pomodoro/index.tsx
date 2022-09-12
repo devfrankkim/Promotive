@@ -5,6 +5,8 @@ import styled from "styled-components";
 
 import { FiSettings } from "react-icons/fi";
 import { RiChatDeleteLine } from "react-icons/ri";
+import { BiReset } from "react-icons/bi";
+import { BsFillAlarmFill } from "react-icons/bs";
 
 import {
   handlePomodorotodoLocalStorage,
@@ -22,7 +24,7 @@ import {
   SHORT,
   SHORT_BREAK_STATE,
 } from "utils/constants/pomodoro";
-import { FlexCenter } from "styles/styles";
+import { FlexCenter, palettePomodoro } from "styles/styles";
 
 const Pomodoro = () => {
   const [isOpen, setIsOpen] = useRecoilState(modalPomodoro);
@@ -52,12 +54,16 @@ const Pomodoro = () => {
 
     seconds = seconds % 60;
     minut1s = minut1s % 60;
+    console.log(hours, "sadasdsad");
 
-    return `${padTo2Digits(hours)}:${padTo2Digits(minut1s)}:${padTo2Digits(
-      seconds
-    )}`;
+    return hours === 0
+      ? `${padTo2Digits(minut1s)}:${padTo2Digits(seconds)}`
+      : `${padTo2Digits(hours)}:${padTo2Digits(minut1s)}:${padTo2Digits(
+          seconds
+        )}`;
   }, []);
 
+  console.log("defaultTimer", defaultTimer);
   // ========== update the timer ==========
   const calculateTimer = useCallback(() => {
     if (!isPause) {
@@ -258,43 +264,50 @@ const Pomodoro = () => {
   return (
     <FramerWrapper onClick={() => setIsOpen(false)}>
       <WrapperBox>
-        <FirstBox></FirstBox>
-        <SecondBox>
+        <FirstBox>
           <BoxTop>
             {/* ========= START BUTTON ========= */}
-            <button
+            <TopButton
               type="button"
               onClick={() => {
                 setIsPause(false);
                 setIsStart(true);
               }}
             >
-              Start Timer
-            </button>
+              START
+            </TopButton>
             {/* ========= PAUSE BUTTON ========= */}
-            <button
+            <TopButton
               type="button"
               onClick={() => {
                 setIsStart(false);
                 setIsPause(true);
               }}
             >
-              Pause Timer
-            </button>
+              PAUSE
+            </TopButton>
           </BoxTop>
           <div onClick={(e) => e.stopPropagation()}>
             {/* ========= Timer ========= */}
-            <h2>{timeText}</h2>
-            {/* ========= RESET BUTTON ========= */}
-            <button type="button" onClick={onHandleResetTimer}>
-              Reset Timer
-            </button>
-            <FiSettings
-              onClick={(e) => {
-                e.stopPropagation();
-                setIsOpen((prev) => !prev);
-              }}
-            />
+            <TimeText>{timeText}</TimeText>
+
+            <SettingIcons>
+              {/* ========= Alarm BUTTON ========= */}
+              <BsFillAlarmFill />
+
+              {/* ========= RESET BUTTON ========= */}
+              <BiReset
+                className="reset-button"
+                type="button"
+                onClick={onHandleResetTimer}
+              />
+              <FiSettings
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setIsOpen((prev) => !prev);
+                }}
+              />
+            </SettingIcons>
           </div>
 
           {/* ========= Setting BUTTON ========= */}
@@ -303,7 +316,7 @@ const Pomodoro = () => {
             {isOpen && (
               <ModalWrapper onClick={(e) => e.stopPropagation()}>
                 <div className="top">
-                  <h2>Timer Setting</h2>
+                  <h2>Timer Settings</h2>
                   <RiChatDeleteLine
                     className="closeButton"
                     onClick={() => setIsOpen(false)}
@@ -316,6 +329,7 @@ const Pomodoro = () => {
                   }}
                 >
                   <WrapperInputTimer>
+                    <h3>Set Pomodoro</h3>
                     <InputTimer
                       autoFocus
                       type="number"
@@ -326,7 +340,9 @@ const Pomodoro = () => {
                       value={pomoInput}
                     />
                   </WrapperInputTimer>
+
                   <WrapperInputTimer>
+                    <h3>Set Short Break</h3>
                     <InputTimer
                       type="number"
                       min={1}
@@ -336,7 +352,9 @@ const Pomodoro = () => {
                       value={shorBreakInput}
                     />
                   </WrapperInputTimer>
+
                   <WrapperInputTimer>
+                    <h3>Set Long Break</h3>
                     <InputTimer
                       type="number"
                       min={1}
@@ -346,40 +364,42 @@ const Pomodoro = () => {
                       value={longBreakInput}
                     />
                   </WrapperInputTimer>
-                  <button onClick={onHandleSaveSetting}>Save Timer</button>
+
+                  <div className="save-button">
+                    <button onClick={onHandleSaveSetting}>SAVE</button>
+                  </div>
                 </ContainerWrapperInputTimer>
               </ModalWrapper>
             )}
           </div>
-        </SecondBox>
-        <ThirdBox></ThirdBox>
+        </FirstBox>
+        {/* =================== Pomodoro & Short Break & Long Break =================== */}
       </WrapperBox>
-
-      {/* =================== Pomodoro & Short Break & Long Break =================== */}
-      <FramePomodoro>
-        <span onClick={(e) => e.stopPropagation()}>
-          <button
-            type="button"
-            name={POMODORO_STATE}
-            onClick={(e) => onHandleTimerCategory(e.currentTarget.name)}
-          >
-            Pomodoro
-          </button>
-          <button
-            type="button"
-            name={SHORT_BREAK_STATE}
-            onClick={(e) => onHandleTimerCategory(e.currentTarget.name)}
-          >
-            Short Break
-          </button>
-          <button
-            type="button"
-            name={LONG_BREAK_STATE}
-            onClick={(e) => onHandleTimerCategory(e.currentTarget.name)}
-          >
-            Long Break
-          </button>
-        </span>
+      <FramePomodoro onClick={(e) => e.stopPropagation()}>
+        <ButtonOffPomodoro
+          active={defaultTimer === BEGIN || defaultTimer === POMO}
+          type="button"
+          name={POMODORO_STATE}
+          onClick={(e) => onHandleTimerCategory(e.currentTarget.name)}
+        >
+          Pomodoro
+        </ButtonOffPomodoro>
+        <ButtonOffPomodoro
+          active={defaultTimer === SHORT}
+          type="button"
+          name={SHORT_BREAK_STATE}
+          onClick={(e) => onHandleTimerCategory(e.currentTarget.name)}
+        >
+          Short Break
+        </ButtonOffPomodoro>
+        <ButtonOffPomodoro
+          active={defaultTimer === LONG}
+          type="button"
+          name={LONG_BREAK_STATE}
+          onClick={(e) => onHandleTimerCategory(e.currentTarget.name)}
+        >
+          Long Break
+        </ButtonOffPomodoro>
       </FramePomodoro>
     </FramerWrapper>
   );
@@ -387,76 +407,124 @@ const Pomodoro = () => {
 
 export default Pomodoro;
 
+const SettingIcons = styled.div`
+  ${FlexCenter}
+  gap: 1.5rem;
+  font-size: 1.3rem;
+  cursor: pointer;
+
+  .reset-button {
+    font-size: 2.5rem;
+  }
+`;
+const FramerWrapper = styled.div`
+  position: relative;
+  width: 100%;
+  height: 100vh;
+
+  .whiteTextColor {
+    color: ${palettePomodoro.textColor};
+  }
+`;
+const WrapperBox = styled.div`
+  ${FlexCenter}
+  gap: 2rem;
+  align-items: center;
+
+  position: relative;
+  text-align: center;
+  color: ${palettePomodoro.textColor};
+
+  top: 120px;
+`;
+
+const TopButton = styled.button`
+  background: #1c1535;
+  border-radius: 16px;
+  border: none;
+
+  cursor: pointer;
+  color: ${palettePomodoro.textColor};
+  width: 133px;
+  height: 48px;
+  left: 653.5px;
+  top: 268px;
+
+  font-size: 1.5rem;
+  font-weight: bold;
+  line-height: 48px;
+  text-align: center;
+
+  margin-right: 1rem;
+`;
+
+const TimeText = styled.h2`
+  height: 206px;
+  left: 469px;
+  top: 384px;
+  font-weight: 600;
+  font-size: 170px;
+  line-height: 206px;
+
+  text-align: center;
+  margin: 2rem 0;
+`;
+
 const BoxTop = styled.div`
   ${FlexCenter}
-`;
-
-const FramerWrapper = styled.div`
-  position: absolute;
-  width: 100%;
-`;
-
-const ThirdBox = styled.div`
-  ${FlexCenter};
-  flex-direction: column;
-  position: absolute;
-  width: 290px;
-  height: 487px;
-  left: 1220px;
-  top: 213px;
-
-  background: #664eff;
-  box-shadow: 4px 8px 25px rgba(0, 0, 0, 0.25);
-  border-radius: 30px;
-`;
-
-const SecondBox = styled.div`
-  ${FlexCenter};
-  flex-direction: column;
-
-  position: absolute;
-  width: 952px;
-  height: 565px;
-  left: 244px;
-  top: 174px;
-
-  background: linear-gradient(180deg, #f55064 11.59%, #f78361 100%);
-  box-shadow: 4px 8px 25px rgba(0, 0, 0, 0.25);
-  border-radius: 30px;
 `;
 
 const FirstBox = styled.div`
   ${FlexCenter};
   flex-direction: column;
 
-  position: absolute;
-  width: 290px;
-  height: 487px;
-  left: -70px;
-  top: 213px;
+  position: relative;
+  width: 952px;
+  height: 515px;
 
-  /* background: #1c1535; */
   background: linear-gradient(180deg, #f55064 11.59%, #f78361 100%);
   box-shadow: 4px 8px 25px rgba(0, 0, 0, 0.25);
   border-radius: 30px;
 `;
 
-const WrapperBox = styled.div`
-  ${FlexCenter}
-
+const FramePomodoro = styled.div`
+  ${FlexCenter};
+  gap: 1rem;
+  width: 100%;
+  pointer-events: auto;
+  padding: 48px 0px;
   position: absolute;
-  text-align: center;
+  bottom: 2rem;
+  border-radius: 16px;
+`;
+
+const ButtonOffPomodoro = styled.button<{ active: Boolean }>`
+  background: ${(props) =>
+    props.active
+      ? "linear-gradient(180deg, #f55064 11.59%, #f78361 100%)"
+      : "#664eff"};
+  box-shadow: 4px 8px 25px rgba(0, 0, 0, 0.25);
+  border: none;
+  border-radius: 16px;
+  cursor: pointer;
+
+  color: ${palettePomodoro.textColor};
+
+  width: 268px;
+  height: 65px;
+  left: 876px;
+  top: 818px;
 `;
 
 const ModalWrapper = styled.div`
-  color: rgb(34, 34, 34);
+  color: #1c1535;
   border-radius: 8px;
   background-color: white;
   /* position: relative; */
   max-width: 400px;
   width: 95%;
-  height: 50vh;
-  z-index: 2147483647;
+  height: 55vh;
+  z-index: 9999999;
   border-top: 1px solid rgb(239, 239, 239);
   border-bottom: 1px solid rgb(239, 239, 239);
   margin: auto;
@@ -465,24 +533,54 @@ const ModalWrapper = styled.div`
   box-shadow: rgb(0 0 0 / 15%) 0px 10px 20px, rgb(0 0 0 / 10%) 0px 3px 6px;
   position: absolute;
   top: 10rem;
-  padding: 2rem;
+  padding: 3rem;
 
   .top {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem;
+    padding: 1rem 0;
   }
 
   .closeButton {
+    position: absolute;
     background: none;
     border: none;
     cursor: pointer;
-    font-size: 1.3rem;
+    font-size: 1.5rem;
+    top: 2rem;
+    right: 1.5rem;
+    color: #ef6351;
+  }
+
+  hr {
+    border: 2px solid;
   }
 
   h2 {
-    display: block;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 29px;
+    text-align: left;
+  }
+
+  h3 {
+    text-align: left;
+    width: 100%;
+    margin-bottom: 0.4rem;
+    font-weight: bold;
+  }
+
+  .save-button {
+    width: 100%;
+    text-align: left;
+  }
+
+  button {
+    width: 112px;
+    height: 40px;
+
+    background: #ef6351;
+    border-radius: 10px;
+    border: none;
+    color: #fff;
   }
 `;
 
@@ -490,14 +588,18 @@ const ContainerWrapperInputTimer = styled.div`
   display: flex;
   justify-content: space-evenly;
   align-items: center;
+  flex-direction: column;
+  padding: 1rem 0;
+  width: 100%;
+  gap: 2rem;
 `;
 
 const WrapperInputTimer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-direction: column-reverse;
-  width: 80px;
+  flex-direction: column;
+  width: 100%;
 
   button {
     background: none;
@@ -522,22 +624,6 @@ const InputTimer = styled.input`
   width: 100%;
   box-sizing: border-box;
   /* outline: none; */
-`;
-
-const FramePomodoro = styled.div`
-  position: relative;
-  top: 0px;
-  left: 0px;
-  width: 100%;
-  pointer-events: auto;
-  transition: all 0.2s ease-in 0s;
-  padding: 48px 0px;
-  box-sizing: border-box;
-
-  h2 {
-    display: inline-block;
-    width: 100%;
-  }
 `;
 
 const ButtonSettingContainer = styled.div`
