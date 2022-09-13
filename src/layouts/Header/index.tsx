@@ -30,7 +30,7 @@ const Header = () => {
 export default Header;
 
 const Wrapper = styled.div`
-  /* @import url("https://fonts.googleapis.com/css2?family=Pacifico&display=swap"); */
+  @import url("https://fonts.googleapis.com/css2?family=Pacifico&display=swap");
 
   background: ${palette.darkPurple};
   color: ${palette.white};
@@ -38,8 +38,8 @@ const Wrapper = styled.div`
   font-weight: bold;
 
   .logo {
-    /* font-family: "Pacifico", cursive;
-    font-style: normal; */
+    font-family: "Pacifico", cursive;
+    font-style: normal;
     font-size: 40px;
     cursor: pointer;
   }
