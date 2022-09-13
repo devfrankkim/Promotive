@@ -22,6 +22,7 @@ you think you do.”_
 - [x] Pomodoro (timer) [#15](https://github.com/devfrankkim/Promotive/issues/15)
 - [x] Drag And Drop
 - [x] CRUD lists
+- [x] Browser Compatibility. (Chrome, Safari, Firefox) [#18](https://github.com/devfrankkim/Promotive/issues/18)
 
 ### Coming soon
 
