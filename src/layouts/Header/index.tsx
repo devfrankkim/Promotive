@@ -30,8 +30,6 @@ const Header = () => {
 export default Header;
 
 const Wrapper = styled.div`
-  @import url("https://fonts.googleapis.com/css2?family=Pacifico&display=swap");
-
   background: ${palette.darkPurple};
   color: ${palette.white};
   padding: 0 3rem;

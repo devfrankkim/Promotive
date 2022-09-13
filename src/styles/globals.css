@@ -1,0 +1,11 @@
+/* Google Font */
+@import url("https://fonts.googleapis.com/css2?family=Pacifico&display=swap");
+
+/* From Public Directory */
+@font-face {
+  font-family: "Pacifico";
+  src: url("/fonts/Pacifico.ttf");
+  font-style: normal;
+  font-weight: bold;
+  font-display: swap;
+}
