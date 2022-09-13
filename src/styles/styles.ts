@@ -19,6 +19,13 @@ export const palette = {
   checked: "#2563EB",
   white: "#FFF",
   textColor: "#111111",
+  orange: "#EF6351",
+  // Pomodoro
+  lightPurple: "#664eff",
+  darkPurple: "#1C1535",
+  orangeGradient: "linear-gradient(180deg, #f55064 11.59%, #f78361 100%)",
+  // DND
+  purpleDND: "#5D5677",
 };
 
 export const palettePomodoro = {

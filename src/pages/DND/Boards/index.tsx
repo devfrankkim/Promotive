@@ -18,6 +18,8 @@ import { handleDNDtodoLocalStorage } from "utils/helpers";
 import { NO_SWEAR } from "utils/constants/noSwear";
 
 import * as S from "../styles";
+import { palette } from "styles/styles";
+import { TDarkMode } from "types";
 
 interface IBoardProps {
   key?: string;
@@ -38,6 +40,8 @@ const Boards = ({
   boardId,
 }: IBoardProps) => {
   const isDarkMode = useRecoilValue(darkLightMode);
+
+  console.log(isDarkMode);
 
   const setAllBoards = useSetRecoilState(dNdState);
   const [isEditBoardTitle, setIsEditBoardTitle] = useState(false);
@@ -132,6 +136,7 @@ const Boards = ({
     >
       {(provided) => (
         <CardWrapper
+          darkMode={isDarkMode}
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
@@ -140,6 +145,7 @@ const Boards = ({
             {isEditBoardTitle ? (
               <Form onSubmit={onSubmitBoardTitle}>
                 <InputField
+                  darkMode={isDarkMode}
                   required
                   placeholder={titleState || ""}
                   defaultValue={titleState}
@@ -174,6 +180,7 @@ const Boards = ({
 
           <Form onSubmit={handleSubmit(onValid)}>
             <InputField
+              darkMode={isDarkMode}
               {...register("cardTextForm", {
                 required: " write down !!! ",
                 validate: {
@@ -188,8 +195,12 @@ const Boards = ({
             />
           </Form>
 
-          <span>{errors?.boardTitle?.message}</span>
-          <span>{errors?.cardTextForm?.message}</span>
+          <ErrorMessage darkMode={isDarkMode}>
+            {errors?.boardTitle?.message}
+          </ErrorMessage>
+          <ErrorMessage darkMode={isDarkMode}>
+            {errors?.cardTextForm?.message}
+          </ErrorMessage>
 
           <Droppable droppableId={boardId + ""} type="card">
             {(provided) => (
@@ -214,8 +225,11 @@ const Boards = ({
 };
 
 export default Boards;
-
-const InputField = styled.input`
+const ErrorMessage = styled.span<TDarkMode>`
+  color: ${(props) =>
+    props.darkMode ? `${palette.white}` : `${palette.darkPurple}`};
+`;
+const InputField = styled.input<TDarkMode>`
   outline: none;
   width: 100%;
   padding: 0.4rem 0.2rem 0.6rem;
@@ -227,6 +241,15 @@ const InputField = styled.input`
   overflow: hidden;
   white-space: nowrap;
   margin-bottom: 1rem;
+  background: none;
+
+  color: ${(props) =>
+    props.darkMode ? `${palette.white}` : `${palette.darkPurple}`};
+
+  ::placeholder {
+    color: ${(props) =>
+      props.darkMode ? `${palette.white}` : `${palette.darkPurple}`};
+  }
 `;
 
 const Form = styled.form`
@@ -236,12 +259,12 @@ const Form = styled.form`
   }
 `;
 
-const CardWrapper = styled.div`
+const CardWrapper = styled.div<TDarkMode>`
   overflow: hidden;
   padding: 1rem;
-  box-shadow: ${(props) => props.theme.darkBoxShadow};
-  background-color: rgb(255, 255, 255);
-  border: 0.2rem solid rgb(17, 17, 17);
+  /* box-shadow: ${(props) => props.theme.darkBoxShadow}; */
+  background-color: ${(props) => props.theme.cardColor};
+  border: 0.1rem solid ${palette.purpleDND};
   border-radius: 1rem;
   width: 15rem;
   display: flex;

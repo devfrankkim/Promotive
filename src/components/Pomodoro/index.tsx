@@ -26,7 +26,7 @@ import {
   SHORT,
   SHORT_BREAK_STATE,
 } from "utils/constants/pomodoro";
-import { FlexCenter, palettePomodoro } from "styles/styles";
+import { FlexCenter, palette, palettePomodoro } from "styles/styles";
 import { darkLightMode } from "recoil/DnDToDoAtom";
 import { TDarkMode } from "types";
 
@@ -431,7 +431,8 @@ const SettingIcons = styled.div<TDarkMode>`
 
   .icon-button {
     :hover {
-      color: ${(props) => (props.darkMode ? "#1C1535" : "#ef6351")};
+      color: ${(props) =>
+        props.darkMode ? `${palette.darkPurple};` : `${palette.orange}`};
       transition: ease-in-out 0.2s;
       opacity: 0.8;
       transform: scale(1.5);
@@ -461,9 +462,8 @@ const WrapperBox = styled.div`
 
 const TopButton = styled.button<TDarkMode>`
   background: ${(props) =>
-    props.darkMode
-      ? "#1C1535"
-      : "linear-gradient(180deg, #f55064 11.59%, #f78361 100%)"};
+    props.darkMode ? `${palette.darkPurple}` : `${palette.orangeGradient}`};
+
   border-radius: 11px;
   border: none;
 
@@ -535,9 +535,7 @@ const FramePomodoro = styled.div`
 
 const ButtonOffPomodoro = styled.button<{ active: Boolean }>`
   background: ${(props) =>
-    props.active
-      ? "linear-gradient(180deg, #f55064 11.59%, #f78361 100%)"
-      : "#664eff"};
+    props.active ? `${palette.orangeGradient}` : `${palette.lightPurple}`};
   box-shadow: 4px 8px 25px rgba(0, 0, 0, 0.25);
   border: none;
   border-radius: 16px;
@@ -558,7 +556,7 @@ const ButtonOffPomodoro = styled.button<{ active: Boolean }>`
 `;
 
 const ModalWrapper = styled.div`
-  color: #1c1535;
+  color: ${palette.darkPurple};
   border-radius: 8px;
   background-color: white;
   /* position: relative; */
@@ -588,7 +586,7 @@ const ModalWrapper = styled.div`
     font-size: 1.5rem;
     top: 2rem;
     right: 1.5rem;
-    color: #ef6351;
+    color: ${palette.orange};
   }
 
   hr {
@@ -619,7 +617,7 @@ const ModalWrapper = styled.div`
     height: 40px;
 
     cursor: pointer;
-    background: #ef6351;
+    background: ${palette.orange};
     border-radius: 10px;
     border: none;
     color: #fff;

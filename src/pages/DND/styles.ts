@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { palette } from "styles/styles";
 import { TDarkMode } from "../../types";
 
 export const FlexCenter = styled.div`
@@ -36,6 +37,8 @@ export const WrapperTitle = styled.div<TDarkMode>`
     text-align: center;
     overflow: hidden;
     overflow-wrap: break-word;
+    color: ${(props) =>
+      props.darkMode ? `${palette.white}` : `${palette.darkPurple}`};
   }
 
   .WrapperTitle__edit_delete_div {
@@ -47,7 +50,8 @@ export const WrapperTitle = styled.div<TDarkMode>`
     display: flex;
     align-items: center;
     gap: 3px;
-    color: red;
+    color: ${(props) =>
+      props.darkMode ? `${palette.orange}` : `${palette.lightPurple}`};
   }
 
   .WrapperTitle__edit_delete__buttons .icon {
@@ -69,6 +73,9 @@ export const WrapperTitle = styled.div<TDarkMode>`
 
   .card.icon {
     font-size: 0.9rem;
+    color: ${(props) =>
+      props.darkMode ? `${palette.lightPurple}` : `${palette.orange}`};
+
     :hover {
       opacity: 0.6;
       transition: 0.2s;

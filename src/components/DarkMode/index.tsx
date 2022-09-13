@@ -2,7 +2,7 @@ import { useRecoilState } from "recoil";
 import { darkLightMode } from "recoil/DnDToDoAtom";
 
 import styled from "styled-components";
-import { FlexCenter } from "styles/styles";
+import { FlexCenter, palette } from "styles/styles";
 
 import { TDarkMode } from "types";
 import { TABLET } from "utils/responsiveness";
@@ -101,7 +101,7 @@ const Wrapper = styled.div<TDarkMode>`
     opacity: ${(props) => props.darkMode && 0};
     transition: 0.3s;
     font-size: 0.6rem;
-    background: #ef6351;
+    background: ${palette.orange};
 
     @media ${TABLET} {
       font-size: 50px;
@@ -112,7 +112,7 @@ const Wrapper = styled.div<TDarkMode>`
     display: flex;
     align-items: center;
     /* background-color: ${(props) => props.darkMode && props.theme.bgColor}; */
-    background: #664eff;
+    background: ${palette.lightPurple};
     transform: ${(props) => props.darkMode && "translateX(1px)"};
     opacity: ${(props) => (props.darkMode ? 1 : 0)};
     transition: 0.3s;

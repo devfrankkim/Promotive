@@ -1,5 +1,5 @@
 import DarkMode from "components/DarkMode";
-import React from "react";
+
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { FlexCenter, palette } from "styles/styles";
@@ -32,7 +32,7 @@ export default Header;
 const Wrapper = styled.div`
   @import url("https://fonts.googleapis.com/css2?family=Pacifico&display=swap");
 
-  background: #1c1535;
+  background: ${palette.darkPurple};
   color: ${palette.white};
   padding: 0 3rem;
   font-weight: bold;
@@ -60,7 +60,7 @@ const NavContainer = styled.div`
 
   .nave {
     :hover {
-      color: #ef6351;
+      color: ${palette.orange};
     }
   }
 `;

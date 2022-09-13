@@ -14,6 +14,7 @@ import styled from "styled-components";
 import * as S from "../styles";
 
 import { handleDNDtodoLocalStorage } from "utils/helpers";
+import { palette } from "styles/styles";
 
 type TDragCard = {
   index: number;
@@ -155,10 +156,9 @@ const Form = styled.form`
 
 const Card = styled.div`
   border-radius: 5px;
-  margin-bottom: 5px;
   padding: 10px 10px;
-  margin-bottom: 0.5rem;
+  margin-bottom: 1rem;
 
   color: ${(props) => props.theme.boardTextColor};
-  background-color: ${(props) => props.theme.cardColor};
+  background-color: ${palette.white};
 `;

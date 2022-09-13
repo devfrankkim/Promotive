@@ -13,6 +13,7 @@ import { LAPTOP, TABLET } from "utils/responsiveness";
 import { TDarkMode } from "types";
 
 import { handleDNDtodoLocalStorage } from "utils/helpers";
+import { FlexCenter, palette } from "styles/styles";
 
 const DND = () => {
   const [isDarkMode, isSetDarkMode] = useRecoilState(darkLightMode);
@@ -136,11 +137,7 @@ const DND = () => {
     }
   };
   return (
-    <>
-      <ClearAll darkMode={isDarkMode}>
-        <FaTrash onClick={clearAllBoads} />
-      </ClearAll>
-
+    <DNDWrapper>
       <Form onSubmit={addToState}>
         <input
           placeholder="+ Add another list"
@@ -148,6 +145,9 @@ const DND = () => {
           onChange={(e) => setValue(e.target.value)}
           value={value || ""}
         />
+        <ClearAll>
+          <FaTrash onClick={clearAllBoads} />
+        </ClearAll>
       </Form>
 
       <DragDropContext onDragEnd={onDragEnd}>
@@ -178,41 +178,73 @@ const DND = () => {
           )}
         </Droppable>
       </DragDropContext>
-    </>
+    </DNDWrapper>
   );
 };
 
 export default DND;
 
+const DNDWrapper = styled.div`
+  ${FlexCenter}
+  flex-direction: column;
+`;
+
 const Form = styled.form`
+  ${FlexCenter}
   text-align: center;
   margin: 0 auto;
   position: relative;
   top: 6rem;
-  width: 15rem;
+  width: 100%;
   height: auto;
   overflow: hidden;
 
   input {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     outline: none;
-    border-radius: 50px;
-    padding: 15px 50px;
-    width: 100%;
+    border-radius: 12px;
+    padding: 10px 10px;
+
+    background: ${palette.orange};
+    font-size: 1.2rem;
+    border: none;
+    color: white;
+    max-width: 250px;
+
+    ::placeholder {
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+
+    @media ${TABLET} {
+      max-width: 450px;
+      padding: 10px 20px;
+      font-size: 1.5rem;
+    }
   }
+
   @media ${TABLET} {
-    width: 300px;
+    max-width: 450px;
+    padding: 10px 20px;
+    font-size: 1.5rem;
   }
 `;
 
-const ClearAll = styled.button<TDarkMode>`
-  position: fixed;
-  top: 2rem;
-  right: 0;
-  font-size: 1.7rem;
+const ClearAll = styled.button`
+  position: relative;
+  font-size: 1.4rem;
   background: none;
   border: none;
+  margin-left: 10rem;
 
-  color: ${(props) => (props.darkMode ? "white" : "black")};
+  color: ${palette.orange};
+  right: -5rem;
 
   :hover {
     opacity: 0.7;
@@ -221,7 +253,7 @@ const ClearAll = styled.button<TDarkMode>`
   }
   @media ${TABLET} {
     font-size: 2rem;
-    right: 4rem;
+    left: 7rem;
   }
 `;
 
