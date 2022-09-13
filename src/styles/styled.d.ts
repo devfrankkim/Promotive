@@ -11,5 +11,6 @@ declare module "styled-components" {
     boardTextColor?: string;
     darkBG: string;
     darkBoxShadow: string;
+    backgroudPomodoro: string;
   }
 }

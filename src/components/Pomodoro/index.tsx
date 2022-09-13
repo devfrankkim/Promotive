@@ -1,9 +1,11 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { useRecoilState } from "recoil";
 import { modalPomodoro } from "recoil/modal";
+import { useRecoilValue } from "recoil";
+
 import styled from "styled-components";
 
-import { FiSettings } from "react-icons/fi";
+import { AiFillSetting } from "react-icons/ai";
 import { RiChatDeleteLine } from "react-icons/ri";
 import { BiReset } from "react-icons/bi";
 import { BsFillAlarmFill } from "react-icons/bs";
@@ -25,8 +27,12 @@ import {
   SHORT_BREAK_STATE,
 } from "utils/constants/pomodoro";
 import { FlexCenter, palettePomodoro } from "styles/styles";
+import { darkLightMode } from "recoil/DnDToDoAtom";
+import { TDarkMode } from "types";
 
 const Pomodoro = () => {
+  const isDarkMode = useRecoilValue(darkLightMode);
+
   const [isOpen, setIsOpen] = useRecoilState(modalPomodoro);
 
   const [defaultTimer, setDefaultTimer] = useState(BEGIN);
@@ -54,7 +60,6 @@ const Pomodoro = () => {
 
     seconds = seconds % 60;
     minut1s = minut1s % 60;
-    console.log(hours, "sadasdsad");
 
     return hours === 0
       ? `${padTo2Digits(minut1s)}:${padTo2Digits(seconds)}`
@@ -63,7 +68,6 @@ const Pomodoro = () => {
         )}`;
   }, []);
 
-  console.log("defaultTimer", defaultTimer);
   // ========== update the timer ==========
   const calculateTimer = useCallback(() => {
     if (!isPause) {
@@ -251,7 +255,9 @@ const Pomodoro = () => {
 
   // =========== Handle Reset Timer ===========
   const onHandleResetTimer = () => {
+    setIsPause(true);
     setIsStart(false);
+
     const categoryName: { [key: string]: string } = {
       [BEGIN]: POMODORO_STATE,
       [POMO]: POMODORO_STATE,
@@ -264,10 +270,11 @@ const Pomodoro = () => {
   return (
     <FramerWrapper onClick={() => setIsOpen(false)}>
       <WrapperBox>
-        <FirstBox>
+        <FirstBox darkMode={isDarkMode}>
           <BoxTop>
             {/* ========= START BUTTON ========= */}
             <TopButton
+              darkMode={isDarkMode}
               type="button"
               onClick={() => {
                 setIsPause(false);
@@ -278,6 +285,7 @@ const Pomodoro = () => {
             </TopButton>
             {/* ========= PAUSE BUTTON ========= */}
             <TopButton
+              darkMode={isDarkMode}
               type="button"
               onClick={() => {
                 setIsStart(false);
@@ -291,17 +299,18 @@ const Pomodoro = () => {
             {/* ========= Timer ========= */}
             <TimeText>{timeText}</TimeText>
 
-            <SettingIcons>
+            <SettingIcons darkMode={isDarkMode}>
               {/* ========= Alarm BUTTON ========= */}
-              <BsFillAlarmFill />
+              <BsFillAlarmFill className="icon-button" />
 
               {/* ========= RESET BUTTON ========= */}
               <BiReset
-                className="reset-button"
+                className="reset-button icon-button"
                 type="button"
                 onClick={onHandleResetTimer}
               />
-              <FiSettings
+              <AiFillSetting
+                className="setting-button icon-button"
                 onClick={(e) => {
                   e.stopPropagation();
                   setIsOpen((prev) => !prev);
@@ -316,7 +325,7 @@ const Pomodoro = () => {
             {isOpen && (
               <ModalWrapper onClick={(e) => e.stopPropagation()}>
                 <div className="top">
-                  <h2>Timer Settings</h2>
+                  <h2>Timer Settings (minutes)</h2>
                   <RiChatDeleteLine
                     className="closeButton"
                     onClick={() => setIsOpen(false)}
@@ -407,7 +416,7 @@ const Pomodoro = () => {
 
 export default Pomodoro;
 
-const SettingIcons = styled.div`
+const SettingIcons = styled.div<TDarkMode>`
   ${FlexCenter}
   gap: 1.5rem;
   font-size: 1.3rem;
@@ -415,6 +424,18 @@ const SettingIcons = styled.div`
 
   .reset-button {
     font-size: 2.5rem;
+  }
+  .setting-button {
+    font-size: 1.5rem;
+  }
+
+  .icon-button {
+    :hover {
+      color: ${(props) => (props.darkMode ? "#1C1535" : "#ef6351")};
+      transition: ease-in-out 0.2s;
+      opacity: 0.8;
+      transform: scale(1.5);
+    }
   }
 `;
 const FramerWrapper = styled.div`
@@ -438,14 +459,18 @@ const WrapperBox = styled.div`
   top: 120px;
 `;
 
-const TopButton = styled.button`
-  background: #1c1535;
-  border-radius: 16px;
+const TopButton = styled.button<TDarkMode>`
+  background: ${(props) =>
+    props.darkMode
+      ? "#1C1535"
+      : "linear-gradient(180deg, #f55064 11.59%, #f78361 100%)"};
+  border-radius: 11px;
   border: none;
 
   cursor: pointer;
   color: ${palettePomodoro.textColor};
-  width: 133px;
+
+  width: 150px;
   height: 48px;
   left: 653.5px;
   top: 268px;
@@ -456,6 +481,16 @@ const TopButton = styled.button`
   text-align: center;
 
   margin-right: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  transition: ease-in-out 0.2s;
+
+  :hover {
+    opacity: 0.8;
+    transform: scale(1.05);
+  }
 `;
 
 const TimeText = styled.h2`
@@ -474,15 +509,15 @@ const BoxTop = styled.div`
   ${FlexCenter}
 `;
 
-const FirstBox = styled.div`
+const FirstBox = styled.div<TDarkMode>`
   ${FlexCenter};
   flex-direction: column;
 
   position: relative;
   width: 952px;
-  height: 515px;
+  height: 455px;
 
-  background: linear-gradient(180deg, #f55064 11.59%, #f78361 100%);
+  background: ${(props) => props.theme.backgroudPomodoro};
   box-shadow: 4px 8px 25px rgba(0, 0, 0, 0.25);
   border-radius: 30px;
 `;
@@ -514,6 +549,12 @@ const ButtonOffPomodoro = styled.button<{ active: Boolean }>`
   height: 65px;
   left: 876px;
   top: 818px;
+  font-size: 1.2rem;
+
+  :hover {
+    opacity: 0.8;
+    transform: scale(1.05);
+  }
 `;
 
 const ModalWrapper = styled.div`
@@ -523,7 +564,7 @@ const ModalWrapper = styled.div`
   /* position: relative; */
   max-width: 400px;
   width: 95%;
-  height: 55vh;
+  height: 525px;
   z-index: 9999999;
   border-top: 1px solid rgb(239, 239, 239);
   border-bottom: 1px solid rgb(239, 239, 239);
@@ -532,7 +573,7 @@ const ModalWrapper = styled.div`
   transform: translateY(20px);
   box-shadow: rgb(0 0 0 / 15%) 0px 10px 20px, rgb(0 0 0 / 10%) 0px 3px 6px;
   position: absolute;
-  top: 10rem;
+  top: 5rem;
   padding: 3rem;
 
   .top {
@@ -577,6 +618,7 @@ const ModalWrapper = styled.div`
     width: 112px;
     height: 40px;
 
+    cursor: pointer;
     background: #ef6351;
     border-radius: 10px;
     border: none;
@@ -607,7 +649,6 @@ const WrapperInputTimer = styled.div`
     cursor: pointer;
 
     :hover {
-      color: red;
       transition: all 0.1s ease-in 0s;
     }
   }
@@ -615,7 +656,8 @@ const WrapperInputTimer = styled.div`
 
 const InputTimer = styled.input`
   border-radius: 4px;
-  background-color: rgb(239, 239, 239);
+  background: #e5e3ec;
+  box-shadow: inset 1px 2px 4px rgba(0, 0, 0, 0.25);
   font-size: 16px;
   padding: 10px;
   box-shadow: none;

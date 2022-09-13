@@ -17,6 +17,7 @@ import DND from "./pages/DND";
 import Momentum from "pages/Momentum";
 import WeatherForeCast from "pages/WeatherForeCast";
 
+import Header from "layouts/Header";
 import Footer from "layouts/Footer";
 
 function App() {
@@ -29,14 +30,13 @@ function App() {
   return (
     <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
       <ResetGlobalStyle />
-      <DarkMode />
-
+      <Header />
       <Routes>
-        <Route path="/" element={<WeatherForeCast />} />
-        <Route path="momentum" element={<Momentum />} />
-        <Route path="weather" element={<Weather />} />
+        <Route path="/" element={<Momentum />} />
         <Route path="pomodoro" element={<Pomodoro />} />
-        <Route path="DND" element={<DND />} />
+        <Route path="scheduler" element={<DND />} />
+        <Route path="forecast" element={<WeatherForeCast />} />
+        <Route path="weather" element={<Weather />} />
         <Route path="toDo" element={<ToDoList />} />
       </Routes>
     </ThemeProvider>
