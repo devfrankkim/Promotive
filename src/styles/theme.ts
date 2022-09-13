@@ -1,8 +1,6 @@
 import { DefaultTheme } from "styled-components";
 import { palette } from "./styles";
 
-// color: ${(props) => (props.darkMode ? "rgba(0, 255, 255, 0.7)" : "#8A2BE2")};
-
 export const lightTheme: DefaultTheme = {
   textColor: "black",
   bgColor: "#fff",

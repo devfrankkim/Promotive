@@ -41,8 +41,6 @@ const Boards = ({
 }: IBoardProps) => {
   const isDarkMode = useRecoilValue(darkLightMode);
 
-  console.log(isDarkMode);
-
   const setAllBoards = useSetRecoilState(dNdState);
   const [isEditBoardTitle, setIsEditBoardTitle] = useState(false);
   const [titleState, setTitleState] = useState(boardTitle);

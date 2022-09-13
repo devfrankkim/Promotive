@@ -43,11 +43,6 @@ const WeatherForeCast = () => {
     }
   };
 
-  console.log(
-    currentWeatherData,
-    "currentWeatherDatacurrentWeatherDatacurrentWeatherData"
-  );
-
   return (
     <>
       {/* ==== Search Weather ==== */}
