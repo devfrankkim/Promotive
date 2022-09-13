@@ -4,16 +4,20 @@ import { TDarkMode } from "../../types";
 
 export const FlexCenter = styled.div`
   width: 100%;
-  display: flex;
+  display: -webkit-box; /* OLD - iOS 6-, Safari 3.1-6, BB7 */
+  display: -ms-flexbox; /* TWEENER - IE 10 */
+  display: -webkit-flex; /* NEW - Safari 6.1+. iOS 7.1+, BB10 */
+  display: flex; /* NEW, Spec - Firefox, Chrome, Opera */
   justify-content: space-between;
-  display: -webkit-flex;
 `;
 export const WrapperTitle = styled.div<TDarkMode>`
   position: relative;
-  display: flex;
+  display: -webkit-box; /* OLD - iOS 6-, Safari 3.1-6, BB7 */
+  display: -ms-flexbox; /* TWEENER - IE 10 */
+  display: -webkit-flex; /* NEW - Safari 6.1+. iOS 7.1+, BB10 */
+  display: flex; /* NEW, Spec - Firefox, Chrome, Opera */
   justify-content: space-between;
   align-items: center;
-  display: -webkit-flex;
 
   :hover {
     .WrapperTitle__edit_delete_div {
@@ -28,9 +32,11 @@ export const WrapperTitle = styled.div<TDarkMode>`
 
   .WrapperTitle__title {
     border: none;
-    display: flex;
     align-items: center;
-    display: -webkit-flex;
+    display: -webkit-box; /* OLD - iOS 6-, Safari 3.1-6, BB7 */
+    display: -ms-flexbox; /* TWEENER - IE 10 */
+    display: -webkit-flex; /* NEW - Safari 6.1+. iOS 7.1+, BB10 */
+    display: flex; /* NEW, Spec - Firefox, Chrome, Opera */
 
     position: relative;
     height: 28px;
@@ -51,9 +57,11 @@ export const WrapperTitle = styled.div<TDarkMode>`
   }
 
   .WrapperTitle__edit_delete__buttons {
-    display: flex;
     align-items: center;
-    display: -webkit-flex;
+    display: -webkit-box; /* OLD - iOS 6-, Safari 3.1-6, BB7 */
+    display: -ms-flexbox; /* TWEENER - IE 10 */
+    display: -webkit-flex; /* NEW - Safari 6.1+. iOS 7.1+, BB10 */
+    display: flex; /* NEW, Spec - Firefox, Chrome, Opera */
 
     gap: 3px;
     color: ${(props) =>

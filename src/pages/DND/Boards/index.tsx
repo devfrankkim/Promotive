@@ -264,10 +264,12 @@ const CardWrapper = styled.div<TDarkMode>`
   border: 0.1rem solid ${palette.purpleDND};
   border-radius: 1rem;
   width: 15rem;
-  display: flex;
   flex-direction: column;
   text-align: center;
-  display: -webkit-flex;
+  display: -webkit-box; /* OLD - iOS 6-, Safari 3.1-6, BB7 */
+  display: -ms-flexbox; /* TWEENER - IE 10 */
+  display: -webkit-flex; /* NEW - Safari 6.1+. iOS 7.1+, BB10 */
+  display: flex; /* NEW, Spec - Firefox, Chrome, Opera */
 `;
 
 const Wrapper = styled.div`

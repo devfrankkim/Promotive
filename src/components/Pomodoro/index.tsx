@@ -417,8 +417,15 @@ const Pomodoro = () => {
 export default Pomodoro;
 
 const SettingIcons = styled.div<TDarkMode>`
-  ${FlexCenter}
-  gap: 1.5rem;
+  // ${FlexCenter};
+  // gap: 1.5rem;
+
+  display: grid;
+  grid-auto-flow: column;
+  justify-content: center;
+  align-items: center;
+  grid-gap: 2rem;
+
   font-size: 1.3rem;
   cursor: pointer;
 
@@ -450,9 +457,8 @@ const FramerWrapper = styled.div`
 `;
 const WrapperBox = styled.div`
   ${FlexCenter}
-  gap: 2rem;
-  align-items: center;
 
+  align-items: center;
   position: relative;
   text-align: center;
   color: ${palettePomodoro.textColor};
@@ -481,7 +487,10 @@ const TopButton = styled.button<TDarkMode>`
   text-align: center;
 
   margin-right: 1rem;
-  display: flex;
+  display: -webkit-box; /* OLD - iOS 6-, Safari 3.1-6, BB7 */
+  display: -ms-flexbox; /* TWEENER - IE 10 */
+  display: -webkit-flex; /* NEW - Safari 6.1+. iOS 7.1+, BB10 */
+  display: flex; /* NEW, Spec - Firefox, Chrome, Opera */
   align-items: center;
   justify-content: center;
 
@@ -523,14 +532,23 @@ const FirstBox = styled.div<TDarkMode>`
 `;
 
 const FramePomodoro = styled.div`
-  ${FlexCenter};
-  gap: 1rem;
+  /* gap not working on safari */
+  /* ${FlexCenter}; */
+  /* gap: 1rem; */
+
   width: 100%;
   pointer-events: auto;
   padding: 48px 0px;
-  position: absolute;
-  bottom: 2rem;
   border-radius: 16px;
+
+  position: relative;
+  bottom: -9rem;
+
+  display: grid;
+  grid-auto-flow: column;
+  justify-content: center;
+  align-items: center;
+  grid-gap: 2rem;
 `;
 
 const ButtonOffPomodoro = styled.button<{ active: Boolean }>`
@@ -625,23 +643,30 @@ const ModalWrapper = styled.div`
 `;
 
 const ContainerWrapperInputTimer = styled.div`
-  display: flex;
+  display: -webkit-box; /* OLD - iOS 6-, Safari 3.1-6, BB7 */
+  display: -ms-flexbox; /* TWEENER - IE 10 */
+  display: -webkit-flex; /* NEW - Safari 6.1+. iOS 7.1+, BB10 */
+  display: flex; /* NEW, Spec - Firefox, Chrome, Opera */
   justify-content: space-evenly;
   align-items: center;
   flex-direction: column;
-  display: -webkit-flex;
 
   padding: 1rem 0;
   width: 100%;
-  gap: 2rem;
+
+  /* gap: 2rem; */
 `;
 
 const WrapperInputTimer = styled.div`
-  display: flex;
+  display: -webkit-box; /* OLD - iOS 6-, Safari 3.1-6, BB7 */
+  display: -ms-flexbox; /* TWEENER - IE 10 */
+  display: -webkit-flex; /* NEW - Safari 6.1+. iOS 7.1+, BB10 */
+  display: flex; /* NEW, Spec - Firefox, Chrome, Opera */
   justify-content: center;
   align-items: center;
   flex-direction: column;
   width: 100%;
+  margin-bottom: 2rem;
 
   button {
     background: none;
@@ -666,25 +691,4 @@ const InputTimer = styled.input`
   width: 100%;
   box-sizing: border-box;
   /* outline: none; */
-`;
-
-const ButtonSettingContainer = styled.div`
-  cursor: pointer;
-  padding: 8px 10px;
-  display: flex;
-  align-items: center;
-  border: 1px solid black;
-  gap: 2px;
-  position: absolute;
-  height: 2rem;
-  right: 6.5rem;
-
-  border-radius: 34px;
-  justify-content: center;
-
-  @media ${TABLET} {
-    right: 13rem;
-    width: 90px;
-    height: 34px;
-  }
 `;

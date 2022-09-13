@@ -201,10 +201,12 @@ const Form = styled.form`
 
   input {
     position: absolute;
-    display: flex;
+    display: -webkit-box; /* OLD - iOS 6-, Safari 3.1-6, BB7 */
+    display: -ms-flexbox; /* TWEENER - IE 10 */
+    display: -webkit-flex; /* NEW - Safari 6.1+. iOS 7.1+, BB10 */
+    display: flex; /* NEW, Spec - Firefox, Chrome, Opera */
     justify-content: center;
     align-items: center;
-    display: -webkit-flex;
 
     outline: none;
     border-radius: 12px;
@@ -218,7 +220,10 @@ const Form = styled.form`
 
     ::placeholder {
       color: white;
-      display: flex;
+      display: -webkit-box; /* OLD - iOS 6-, Safari 3.1-6, BB7 */
+      display: -ms-flexbox; /* TWEENER - IE 10 */
+      display: -webkit-flex; /* NEW - Safari 6.1+. iOS 7.1+, BB10 */
+      display: flex; /* NEW, Spec - Firefox, Chrome, Opera */
       justify-content: center;
       align-items: center;
       text-align: center;
@@ -264,7 +269,8 @@ const BoardsWrapper = styled.div<TDarkMode>`
   top: 10rem;
   display: grid;
   width: 100%;
-  gap: 1rem;
+  grid-gap: 1rem;
+
   grid-template-columns: repeat(1, 1fr);
 
   @media ${TABLET} {

@@ -60,10 +60,12 @@ const BodyPage = styled.section<TDarkMode>`
 `;
 
 const FlexCenter = styled.div`
-  display: flex;
   justify-content: center;
   margin-top: 3rem;
-  display: -webkit-flex;
+  display: -webkit-box; /* OLD - iOS 6-, Safari 3.1-6, BB7 */
+  display: -ms-flexbox; /* TWEENER - IE 10 */
+  display: -webkit-flex; /* NEW - Safari 6.1+. iOS 7.1+, BB10 */
+  display: flex; /* NEW, Spec - Firefox, Chrome, Opera */
 `;
 
 const BackHomeButton = styled.button<TDarkMode>`

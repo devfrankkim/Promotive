@@ -46,21 +46,25 @@ export const boxShadow = {
 export const Card = css`
   background-color: white;
   user-select: none;
-  display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  display: -webkit-flex;
+  display: -webkit-box; /* OLD - iOS 6-, Safari 3.1-6, BB7 */
+  display: -ms-flexbox; /* TWEENER - IE 10 */
+  display: -webkit-flex; /* NEW - Safari 6.1+. iOS 7.1+, BB10 */
+  display: flex; /* NEW, Spec - Firefox, Chrome, Opera */
 
   border: 1px solid ${palette.border};
   border-radius: 5px;
 `;
 
 export const FlexCenter = css`
-  display: flex;
   justify-content: center;
   align-items: center;
-  display: -webkit-flex;
+  display: -webkit-box; /* OLD - iOS 6-, Safari 3.1-6, BB7 */
+  display: -ms-flexbox; /* TWEENER - IE 10 */
+  display: -webkit-flex; /* NEW - Safari 6.1+. iOS 7.1+, BB10 */
+  display: flex; /* NEW, Spec - Firefox, Chrome, Opera */
 `;
 
 export const Skeleton = css`

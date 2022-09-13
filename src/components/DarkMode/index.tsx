@@ -37,11 +37,13 @@ const Wrapper = styled.div<TDarkMode>`
     border-radius: 50%;
     width: 18px;
     height: 18px;
-    display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
-    display: -webkit-flex;
+    display: -webkit-box; /* OLD - iOS 6-, Safari 3.1-6, BB7 */
+    display: -ms-flexbox; /* TWEENER - IE 10 */
+    display: -webkit-flex; /* NEW - Safari 6.1+. iOS 7.1+, BB10 */
+    display: flex; /* NEW, Spec - Firefox, Chrome, Opera */
   }
 
   .switch {
@@ -89,16 +91,20 @@ const Wrapper = styled.div<TDarkMode>`
 
   .slider.round {
     border-radius: 34px;
-    display: flex;
     align-items: center;
     justify-content: space-around;
-    display: -webkit-flex;
+    display: -webkit-box; /* OLD - iOS 6-, Safari 3.1-6, BB7 */
+    display: -ms-flexbox; /* TWEENER - IE 10 */
+    display: -webkit-flex; /* NEW - Safari 6.1+. iOS 7.1+, BB10 */
+    display: flex; /* NEW, Spec - Firefox, Chrome, Opera */
   }
 
   .sunMode {
-    display: flex;
     align-items: center;
-    display: -webkit-flex;
+    display: -webkit-box; /* OLD - iOS 6-, Safari 3.1-6, BB7 */
+    display: -ms-flexbox; /* TWEENER - IE 10 */
+    display: -webkit-flex; /* NEW - Safari 6.1+. iOS 7.1+, BB10 */
+    display: flex; /* NEW, Spec - Firefox, Chrome, Opera */
 
     opacity: ${(props) => props.darkMode && 0};
     transition: 0.3s;
@@ -111,9 +117,11 @@ const Wrapper = styled.div<TDarkMode>`
   }
 
   .moonMode {
-    display: flex;
     align-items: center;
-    display: -webkit-flex;
+    display: -webkit-box; /* OLD - iOS 6-, Safari 3.1-6, BB7 */
+    display: -ms-flexbox; /* TWEENER - IE 10 */
+    display: -webkit-flex; /* NEW - Safari 6.1+. iOS 7.1+, BB10 */
+    display: flex; /* NEW, Spec - Firefox, Chrome, Opera */
 
     background: ${palette.lightPurple};
     transform: ${(props) => props.darkMode && "translateX(1px)"};
