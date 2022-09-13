@@ -1,4 +1,0 @@
-{
-  "rewrites": [{ "source": "/app/:path*", "destination": "/app" }],
-  "optimizeFonts": false
-}

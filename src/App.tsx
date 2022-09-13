@@ -19,6 +19,7 @@ import WeatherForeCast from "pages/WeatherForeCast";
 
 import Header from "layouts/Header";
 import Footer from "layouts/Footer";
+import ErrorPage from "pages/ErrorPage";
 
 function App() {
   const isDark = useRecoilValue(darkLightMode);
@@ -38,6 +39,7 @@ function App() {
         <Route path="forecast" element={<WeatherForeCast />} />
         <Route path="weather" element={<Weather />} />
         <Route path="toDo" element={<ToDoList />} />
+        <Route path="*" element={<ErrorPage />} />
       </Routes>
     </ThemeProvider>
   );

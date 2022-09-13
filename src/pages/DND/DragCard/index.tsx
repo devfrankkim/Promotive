@@ -25,6 +25,7 @@ type TDragCard = {
 
 const DragCard = ({ cardId, cardText, index, boardIndex }: TDragCard) => {
   const isDarkMode = useRecoilValue(darkLightMode);
+
   const [allBoards, setAllBoards] = useRecoilState(dNdState);
   const [isEditCard, setIsEditCard] = useState(false);
   const [cardContent, setCardContent] = useState(cardText);

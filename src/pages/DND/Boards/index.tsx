@@ -260,7 +260,6 @@ const Form = styled.form`
 const CardWrapper = styled.div<TDarkMode>`
   overflow: hidden;
   padding: 1rem;
-  /* box-shadow: ${(props) => props.theme.darkBoxShadow}; */
   background-color: ${(props) => props.theme.cardColor};
   border: 0.1rem solid ${palette.purpleDND};
   border-radius: 1rem;
