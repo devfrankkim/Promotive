@@ -19,7 +19,7 @@ const ErrorPage = () => {
         </BodyPage>
         <FlexCenter>
           <Link to="/">
-            <BackHomeButton>Back home</BackHomeButton>
+            <BackHomeButton darkMode={isDarkMode}>Back home</BackHomeButton>
           </Link>
         </FlexCenter>
       </Container>
@@ -63,10 +63,12 @@ const FlexCenter = styled.div`
   display: flex;
   justify-content: center;
   margin-top: 3rem;
+  display: -webkit-flex;
 `;
 
-const BackHomeButton = styled.button`
-  background-color: rgba(235, 97, 0, 1);
+const BackHomeButton = styled.button<TDarkMode>`
+  background-color: ${(props) =>
+    props.darkMode ? `${palette.lightPurple}` : `${palette.orange}`};
   border-radius: 5px;
   color: rgba(255, 255, 255, 1);
   display: inline-block;

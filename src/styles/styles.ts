@@ -50,6 +50,8 @@ export const Card = css`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  display: -webkit-flex;
+
   border: 1px solid ${palette.border};
   border-radius: 5px;
 `;
@@ -58,6 +60,7 @@ export const FlexCenter = css`
   display: flex;
   justify-content: center;
   align-items: center;
+  display: -webkit-flex;
 `;
 
 export const Skeleton = css`

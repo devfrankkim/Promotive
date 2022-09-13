@@ -204,6 +204,8 @@ const Form = styled.form`
     display: flex;
     justify-content: center;
     align-items: center;
+    display: -webkit-flex;
+
     outline: none;
     border-radius: 12px;
     padding: 10px 10px;

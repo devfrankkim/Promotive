@@ -16,6 +16,7 @@ const ImageBox = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  display: -webkit-flex;
 `;
 
 const ErrorBox = () => {

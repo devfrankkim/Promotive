@@ -6,12 +6,14 @@ export const FlexCenter = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-between;
+  display: -webkit-flex;
 `;
 export const WrapperTitle = styled.div<TDarkMode>`
   position: relative;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  display: -webkit-flex;
 
   :hover {
     .WrapperTitle__edit_delete_div {
@@ -28,6 +30,8 @@ export const WrapperTitle = styled.div<TDarkMode>`
     border: none;
     display: flex;
     align-items: center;
+    display: -webkit-flex;
+
     position: relative;
     height: 28px;
     font-size: 1.2rem;
@@ -49,6 +53,8 @@ export const WrapperTitle = styled.div<TDarkMode>`
   .WrapperTitle__edit_delete__buttons {
     display: flex;
     align-items: center;
+    display: -webkit-flex;
+
     gap: 3px;
     color: ${(props) =>
       props.darkMode ? `${palette.orange}` : `${palette.lightPurple}`};

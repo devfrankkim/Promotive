@@ -267,6 +267,7 @@ const CardWrapper = styled.div<TDarkMode>`
   display: flex;
   flex-direction: column;
   text-align: center;
+  display: -webkit-flex;
 `;
 
 const Wrapper = styled.div`

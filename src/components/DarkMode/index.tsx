@@ -41,6 +41,7 @@ const Wrapper = styled.div<TDarkMode>`
     align-items: center;
     justify-content: center;
     text-align: center;
+    display: -webkit-flex;
   }
 
   .switch {
@@ -72,7 +73,6 @@ const Wrapper = styled.div<TDarkMode>`
   }
 
   .slider {
-    /* border: ${(props) => (!props.darkMode ? "1px solid black" : "")}; */
     position: absolute;
     bottom: 0;
     left: 0;
@@ -92,12 +92,14 @@ const Wrapper = styled.div<TDarkMode>`
     display: flex;
     align-items: center;
     justify-content: space-around;
+    display: -webkit-flex;
   }
 
   .sunMode {
     display: flex;
     align-items: center;
-    /* background-color: ${(props) => props.darkMode && props.theme.bgColor}; */
+    display: -webkit-flex;
+
     opacity: ${(props) => props.darkMode && 0};
     transition: 0.3s;
     font-size: 0.6rem;
@@ -111,7 +113,8 @@ const Wrapper = styled.div<TDarkMode>`
   .moonMode {
     display: flex;
     align-items: center;
-    /* background-color: ${(props) => props.darkMode && props.theme.bgColor}; */
+    display: -webkit-flex;
+
     background: ${palette.lightPurple};
     transform: ${(props) => props.darkMode && "translateX(1px)"};
     opacity: ${(props) => (props.darkMode ? 1 : 0)};

@@ -629,6 +629,8 @@ const ContainerWrapperInputTimer = styled.div`
   justify-content: space-evenly;
   align-items: center;
   flex-direction: column;
+  display: -webkit-flex;
+
   padding: 1rem 0;
   width: 100%;
   gap: 2rem;
