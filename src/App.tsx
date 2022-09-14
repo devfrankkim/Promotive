@@ -20,6 +20,11 @@ import WeatherForeCast from "pages/WeatherForeCast";
 import Header from "layouts/Header";
 import Footer from "layouts/Footer";
 import ErrorPage from "pages/ErrorPage";
+import About from "pages/About";
+import QNAPomodoro from "pages/QNA/QNAPomodoro";
+import QNAScheduler from "pages/QNA/QNAScheduler";
+import QNAForeCast from "pages/QNA/QNAForeCast";
+import QNAUs from "pages/QNA/QNAUs/QNAUs";
 
 function App() {
   const isDark = useRecoilValue(darkLightMode);
@@ -37,9 +42,14 @@ function App() {
         <Route path="pomodoro" element={<Pomodoro />} />
         <Route path="scheduler" element={<DND />} />
         <Route path="forecast" element={<WeatherForeCast />} />
-        <Route path="about" element={<WeatherForeCast />} />
         <Route path="weather" element={<Weather />} />
         <Route path="toDo" element={<ToDoList />} />
+        <Route path="about" element={<About />}>
+          <Route path="pomodoro" element={<QNAPomodoro />} />
+          <Route path="scheduler" element={<QNAScheduler />} />
+          <Route path="forecast" element={<QNAForeCast />} />
+          <Route path="us" element={<QNAUs />} />
+        </Route>
         <Route path="*" element={<ErrorPage />} />
       </Routes>
     </ThemeProvider>

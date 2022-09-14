@@ -53,24 +53,28 @@ const Header = () => {
           Forecast
         </Link>
         <Link to="/about" className="nav">
-          about
+          About
         </Link>
         <DarkMode />
       </NavContainer>
       {isOpen && (
         <HeaderModal darkMode={isDarkMode}>
           <DarkMode />
-          <Link to="/pomodoro" className="nav">
+          <Link to="/pomodoro" className="nav" onClick={() => setIsOpen(false)}>
             Pomodoro
           </Link>
-          <Link to="/scheduler" className="nav">
+          <Link
+            to="/scheduler"
+            className="nav"
+            onClick={() => setIsOpen(false)}
+          >
             Scheduler
           </Link>
-          <Link to="/forecast" className="nav">
+          <Link to="/forecast" className="nav" onClick={() => setIsOpen(false)}>
             Forecast
           </Link>
-          <Link to="/about" className="nav">
-            about
+          <Link to="/about" className="nav" onClick={() => setIsOpen(false)}>
+            About
           </Link>
         </HeaderModal>
       )}
