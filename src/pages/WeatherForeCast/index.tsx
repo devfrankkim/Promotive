@@ -49,11 +49,11 @@ const WeatherForeCast = () => {
       <WeatherSearch onSearchChange={searchCity} />
 
       {/* ==== Current Weather ==== */}
-      {Object.keys(currentWeatherData).length > 0 && (
+      {Object.keys(currentWeatherData)?.length > 0 && (
         <WeatherCard weatherInfo={currentWeatherData} />
       )}
       {/* ==== Forecast ==== */}
-      {Object.keys(forecastData).length !== 0 && (
+      {Object.keys(forecastData)?.length !== 0 && (
         <ForeCast data={forecastData} />
       )}
     </>

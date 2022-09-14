@@ -1,4 +1,5 @@
 import { DefaultTheme } from "styled-components";
+import { palette } from "./styles";
 
 export const lightTheme: DefaultTheme = {
   textColor: "black",
@@ -14,7 +15,7 @@ export const lightTheme: DefaultTheme = {
 
 export const darkTheme: DefaultTheme = {
   textColor: "black",
-  bgColor: "black",
+  bgColor: `${palette.darkPurple}`,
   accentColor: "rgba(0, 255, 255, 0.7)",
   boardColor: "#1C1535",
   cardColor: "#5D5677",

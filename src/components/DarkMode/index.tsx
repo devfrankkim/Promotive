@@ -2,9 +2,10 @@ import { useRecoilState } from "recoil";
 import { darkLightMode } from "recoil/DnDToDoAtom";
 
 import styled from "styled-components";
-import { FlexCenter, palette } from "styles/styles";
 
 import { TDarkMode } from "types";
+
+import { FlexCenter, palette } from "styles/styles";
 import { TABLET } from "utils/responsiveness";
 
 const DarkMode = () => {
@@ -49,7 +50,7 @@ const Wrapper = styled.div<TDarkMode>`
   .switch {
     ${FlexCenter}
     z-index: 9999;
-    height: 4rem;
+    /* height: 4rem; */
     /* right: 3rem; */
     /* top: 2rem; */
 
@@ -91,8 +92,11 @@ const Wrapper = styled.div<TDarkMode>`
 
   .slider.round {
     border-radius: 34px;
+    border: 1px solid #1c1535;
+
     align-items: center;
-    justify-content: space-around;
+    justify-content: space-between;
+    padding: 5px;
     display: -webkit-box; /* OLD - iOS 6-, Safari 3.1-6, BB7 */
     display: -ms-flexbox; /* TWEENER - IE 10 */
     display: -webkit-flex; /* NEW - Safari 6.1+. iOS 7.1+, BB10 */

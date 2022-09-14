@@ -37,6 +37,7 @@ function App() {
         <Route path="pomodoro" element={<Pomodoro />} />
         <Route path="scheduler" element={<DND />} />
         <Route path="forecast" element={<WeatherForeCast />} />
+        <Route path="about" element={<WeatherForeCast />} />
         <Route path="weather" element={<Weather />} />
         <Route path="toDo" element={<ToDoList />} />
         <Route path="*" element={<ErrorPage />} />

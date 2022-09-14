@@ -16,7 +16,7 @@ import {
   TIMEKEY,
   TIMESTATE,
 } from "utils/helpers";
-import { TABLET } from "utils/responsiveness";
+import { LAPTOP, TABLET } from "utils/responsiveness";
 import {
   BEGIN,
   LONG,
@@ -26,7 +26,7 @@ import {
   SHORT,
   SHORT_BREAK_STATE,
 } from "utils/constants/pomodoro";
-import { FlexCenter, palette, palettePomodoro } from "styles/styles";
+import { boxShadow, FlexCenter, palette, palettePomodoro } from "styles/styles";
 import { darkLightMode } from "recoil/DnDToDoAtom";
 import { TDarkMode } from "types";
 
@@ -420,36 +420,50 @@ const SettingIcons = styled.div<TDarkMode>`
   // ${FlexCenter};
   // gap: 1.5rem;
 
+  cursor: pointer;
+
   display: grid;
   grid-auto-flow: column;
   justify-content: center;
   align-items: center;
   grid-gap: 2rem;
 
-  font-size: 1.3rem;
-  cursor: pointer;
+  font-size: 1.2rem;
 
   .reset-button {
-    font-size: 2.5rem;
+    font-size: 2rem;
   }
+
   .setting-button {
-    font-size: 1.5rem;
+    font-size: 1.3rem;
   }
 
   .icon-button {
     :hover {
       color: ${(props) =>
-        props.darkMode ? `${palette.darkPurple};` : `${palette.orange}`};
+        props.darkMode ? `${palette.darkPurple};` : "#f55064"};
       transition: ease-in-out 0.2s;
       opacity: 0.8;
       transform: scale(1.5);
+    }
+  }
+
+  @media ${TABLET} {
+    font-size: 1.3rem;
+
+    .reset-button {
+      font-size: 3rem;
+    }
+
+    .setting-button {
+      font-size: 1.5rem;
     }
   }
 `;
 const FramerWrapper = styled.div`
   position: relative;
   width: 100%;
-  height: 100vh;
+  height: 100%;
 
   .whiteTextColor {
     color: ${palettePomodoro.textColor};
@@ -466,33 +480,35 @@ const WrapperBox = styled.div`
   top: 120px;
 `;
 
+const BoxTop = styled.div`
+  ${FlexCenter}
+
+  display: grid;
+  justify-content: center;
+  align-items: center;
+  grid-auto-flow: column;
+  grid-gap: 1rem;
+`;
+
 const TopButton = styled.button<TDarkMode>`
   background: ${(props) =>
     props.darkMode ? `${palette.darkPurple}` : `${palette.orangeGradient}`};
 
-  border-radius: 11px;
+  border-radius: 5px;
   border: none;
 
   cursor: pointer;
   color: ${palettePomodoro.textColor};
 
-  width: 150px;
-  height: 48px;
+  /* width: 80px; */
+
   left: 653.5px;
   top: 268px;
-
-  font-size: 1.5rem;
+  font-size: 0.75rem;
   font-weight: bold;
-  line-height: 48px;
   text-align: center;
 
-  margin-right: 1rem;
-  display: -webkit-box; /* OLD - iOS 6-, Safari 3.1-6, BB7 */
-  display: -ms-flexbox; /* TWEENER - IE 10 */
-  display: -webkit-flex; /* NEW - Safari 6.1+. iOS 7.1+, BB10 */
-  display: flex; /* NEW, Spec - Firefox, Chrome, Opera */
-  align-items: center;
-  justify-content: center;
+  padding: 0.3rem 1rem;
 
   transition: ease-in-out 0.2s;
 
@@ -500,35 +516,58 @@ const TopButton = styled.button<TDarkMode>`
     opacity: 0.8;
     transform: scale(1.05);
   }
+
+  @media ${TABLET} {
+    font-size: 1.2rem;
+    width: 150px;
+    height: 48px;
+    left: 653.5px;
+    top: 268px;
+    border-radius: 7px;
+  }
+
+  @media ${TABLET} {
+    font-size: 1.4rem;
+    border-radius: 11px;
+  }
 `;
 
 const TimeText = styled.h2`
-  height: 206px;
   left: 469px;
   top: 384px;
+
+  font-size: 85px;
   font-weight: 600;
-  font-size: 170px;
-  line-height: 206px;
 
   text-align: center;
   margin: 2rem 0;
-`;
 
-const BoxTop = styled.div`
-  ${FlexCenter}
+  @media ${TABLET} {
+    font-size: 170px;
+    line-height: 206px;
+  }
 `;
 
 const FirstBox = styled.div<TDarkMode>`
   ${FlexCenter};
   flex-direction: column;
-
   position: relative;
-  width: 952px;
-  height: 455px;
 
   background: ${(props) => props.theme.backgroudPomodoro};
   box-shadow: 4px 8px 25px rgba(0, 0, 0, 0.25);
   border-radius: 30px;
+
+  width: 400px;
+  height: 350px;
+
+  @media ${TABLET} {
+    width: 652px;
+    height: 455px;
+  }
+
+  @media ${LAPTOP} {
+    width: 952px;
+  }
 `;
 
 const FramePomodoro = styled.div`
@@ -542,58 +581,107 @@ const FramePomodoro = styled.div`
   border-radius: 16px;
 
   position: relative;
-  bottom: -9rem;
+  bottom: -8rem;
 
   display: grid;
-  grid-auto-flow: column;
+  grid-gap: 0.8rem;
+
   justify-content: center;
   align-items: center;
-  grid-gap: 2rem;
+
+  @media ${TABLET} {
+    grid-auto-flow: column;
+    bottom: -7rem;
+  }
+
+  @media ${LAPTOP} {
+    grid-gap: 2rem;
+    bottom: -9rem;
+  }
 `;
 
 const ButtonOffPomodoro = styled.button<{ active: Boolean }>`
+  ${boxShadow.type13};
+
   background: ${(props) =>
     props.active ? `${palette.orangeGradient}` : `${palette.lightPurple}`};
-  box-shadow: 4px 8px 25px rgba(0, 0, 0, 0.25);
+
   border: none;
-  border-radius: 16px;
+  border-radius: 10px;
   cursor: pointer;
 
   color: ${palettePomodoro.textColor};
 
-  width: 268px;
-  height: 65px;
+  width: 168px;
+  height: 45px;
   left: 876px;
   top: 818px;
-  font-size: 1.2rem;
+  font-size: 0.8rem;
+  font-weight: bold;
 
   :hover {
     opacity: 0.8;
     transform: scale(1.05);
   }
+
+  @media ${TABLET} {
+    width: 198px;
+    height: 45px;
+    left: 876px;
+    top: 818px;
+    font-size: 1rem;
+    border-radius: 13px;
+  }
+
+  @media ${LAPTOP} {
+    width: 268px;
+    height: 65px;
+    left: 876px;
+    top: 818px;
+    font-size: 1.2rem;
+    border-radius: 16px;
+  }
 `;
 
 const ModalWrapper = styled.div`
+  ${boxShadow.type13};
+
   color: ${palette.darkPurple};
   border-radius: 8px;
   background-color: white;
-  /* position: relative; */
-  max-width: 400px;
-  width: 95%;
-  height: 525px;
+
+  width: 300px;
+  height: 400px;
+
   z-index: 9999999;
   border-top: 1px solid rgb(239, 239, 239);
   border-bottom: 1px solid rgb(239, 239, 239);
+
   margin: auto;
+
   transition: all 0.2s ease-in 0s;
   transform: translateY(20px);
-  box-shadow: rgb(0 0 0 / 15%) 0px 10px 20px, rgb(0 0 0 / 10%) 0px 3px 6px;
+
   position: absolute;
-  top: 5rem;
-  padding: 3rem;
+  top: 1.2rem;
+  padding: 1.5rem;
+
+  right: 0.2rem;
+
+  @media ${TABLET} {
+    max-width: 400px;
+    width: 95%;
+    height: 525px;
+    padding: 3rem;
+    right: 0.5rem;
+  }
 
   .top {
-    padding: 1rem 0;
+    padding: 0.4rem 0;
+
+    @media ${TABLET} {
+      padding: 1rem 0;
+    }
   }
 
   .closeButton {
@@ -601,28 +689,51 @@ const ModalWrapper = styled.div`
     background: none;
     border: none;
     cursor: pointer;
-    font-size: 1.5rem;
-    top: 2rem;
-    right: 1.5rem;
+    font-size: 1.2rem;
+    top: 1.5rem;
+    right: 1rem;
     color: ${palette.orange};
+
+    :hover {
+      transition: ease-in-out 0.2s;
+      transform: scale(1.3);
+    }
+
+    @media ${TABLET} {
+      font-size: 1.5rem;
+      top: 2rem;
+      right: 1.5rem;
+    }
   }
 
   hr {
-    border: 2px solid;
+    border: 1px solid;
+
+    @media ${TABLET} {
+      border: 2px solid;
+    }
   }
 
   h2 {
+    font-size: 17px;
     font-weight: 700;
-    font-size: 24px;
     line-height: 29px;
     text-align: left;
+
+    @media ${TABLET} {
+      font-size: 20px;
+    }
   }
 
   h3 {
     text-align: left;
     width: 100%;
-    margin-bottom: 0.4rem;
+    margin-bottom: 0.3rem;
     font-weight: bold;
+
+    @media ${TABLET} {
+      margin-bottom: 0.4rem;
+    }
   }
 
   .save-button {
@@ -631,14 +742,28 @@ const ModalWrapper = styled.div`
   }
 
   button {
-    width: 112px;
-    height: 40px;
+    width: 80px;
+    height: 30px;
 
+    font-size: 0.8rem;
     cursor: pointer;
     background: ${palette.orange};
-    border-radius: 10px;
+    border-radius: 5px;
     border: none;
     color: #fff;
+
+    @media ${TABLET} {
+      font-size: 1rem;
+      width: 112px;
+      height: 40px;
+      border-radius: 10px;
+    }
+
+    :hover {
+      background: ${palette.orangeGradient};
+      transition: ease-in-out 0.2s;
+      transform: scale(1.05);
+    }
   }
 `;
 
@@ -666,7 +791,15 @@ const WrapperInputTimer = styled.div`
   align-items: center;
   flex-direction: column;
   width: 100%;
-  margin-bottom: 2rem;
+
+  margin-bottom: 1rem;
+
+  font-size: 0.9rem;
+
+  @media ${TABLET} {
+    margin-bottom: 2rem;
+    font-size: 1rem;
+  }
 
   button {
     background: none;
@@ -676,6 +809,9 @@ const WrapperInputTimer = styled.div`
     :hover {
       transition: all 0.1s ease-in 0s;
     }
+
+    @media ${TABLET} {
+    }
   }
 `;
 
@@ -683,12 +819,14 @@ const InputTimer = styled.input`
   border-radius: 4px;
   background: #e5e3ec;
   box-shadow: inset 1px 2px 4px rgba(0, 0, 0, 0.25);
-  font-size: 16px;
+  font-size: 13px;
   padding: 10px;
   box-shadow: none;
   border: none;
   color: rgb(85, 85, 85);
   width: 100%;
-  box-sizing: border-box;
-  /* outline: none; */
+
+  @media ${TABLET} {
+    font-size: 16px;
+  }
 `;

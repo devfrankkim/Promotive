@@ -1,4 +1,4 @@
-import { css } from "styled-components";
+import styled, { css } from "styled-components";
 
 export const palette = {
   vividRed: "#F44336",
@@ -78,4 +78,8 @@ export const Skeleton = css`
 
   ${FlexCenter};
   ${boxShadow.type3};
+`;
+
+export const WrapperApp = styled.div`
+  max-width: 450px;
 `;
