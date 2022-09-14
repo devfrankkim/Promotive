@@ -32,6 +32,9 @@ const DarkMode = () => {
 export default DarkMode;
 
 const Wrapper = styled.div<TDarkMode>`
+  :hover {
+    opacity: 0.7;
+  }
   span {
     user-select: none;
     position: relative;
@@ -111,7 +114,7 @@ const Wrapper = styled.div<TDarkMode>`
     display: flex; /* NEW, Spec - Firefox, Chrome, Opera */
 
     opacity: ${(props) => props.darkMode && 0};
-    transition: 0.3s;
+    transition: 0.1s;
     font-size: 0.6rem;
     background: ${palette.orange};
 

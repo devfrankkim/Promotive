@@ -83,19 +83,23 @@ export default Header;
 const Wrapper = styled.div<TDarkMode>`
   background: ${palette.darkPurple};
   color: ${palette.white};
-  padding: 0.5rem 3rem;
+  padding: 1rem 0.5rem;
   font-weight: bold;
   ${boxShadow.type3};
 
   .logo {
     font-family: "Pacifico", cursive;
     font-style: normal;
-    font-size: 40px;
+    font-size: 25px;
     cursor: pointer;
 
     :hover {
       color: ${(props) =>
         props.darkMode ? `${palette.lightPurple}` : `${palette.orange}`};
+    }
+
+    @media ${TABLET} {
+      font-size: 40px;
     }
   }
 
@@ -174,7 +178,7 @@ const BurgerButton = styled.button<TDarkMode>`
   background: none;
   border: none;
   color: white;
-  font-size: 1.5rem;
+  font-size: 1.1rem;
   outline: none;
 
   :hover {
