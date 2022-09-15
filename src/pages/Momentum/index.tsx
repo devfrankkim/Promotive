@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 
 import { useForm } from "react-hook-form";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { clockState, ClockVersionState, getTime } from "recoil/clock";
 import { modalClockVersion } from "recoil/modal";
 
-import { FaUserClock } from "react-icons/fa";
+import { AiOutlineClockCircle } from "react-icons/ai";
 
 import styled from "styled-components";
 
@@ -18,6 +18,10 @@ import {
   momentumLocalName,
 } from "utils/helpers";
 import { useCallback } from "react";
+import { boxShadow, FlexCenter, palette } from "styles/styles";
+import { darkLightMode } from "recoil/DnDToDoAtom";
+import { TDarkMode } from "types";
+import { TABLET } from "utils/responsiveness";
 
 type TMomentumRegister = {
   momentumRegisterForm: string;
@@ -26,6 +30,8 @@ type TMomentumRegister = {
 const MOMENTTUM_REGISTER = "momentumRegisterForm";
 
 const Momentum = () => {
+  const isDarkMode = useRecoilValue(darkLightMode);
+
   const [isOpen, setIsOpen] = useRecoilState(modalClockVersion);
 
   const domNode = useCloseOutside(() => {
@@ -79,66 +85,147 @@ const Momentum = () => {
   };
 
   return (
-    <>
-      <div>
-        <span ref={domNode}>
-          <button
-            onClick={(e) => {
-              setIsOpen((prev) => !prev);
+    <Wrapper>
+      <Container darkMode={isDarkMode}>
+        <TimeContainer darkMode={isDarkMode}>
+          <div className="time">{timeState[0]}</div>
+          <div
+            className="time-setting-modal"
+            onKeyDown={(e) => {
+              if (e.key === "Escape") setIsOpen(false);
             }}
           >
-            <FaUserClock />
-          </button>
+            <span ref={domNode}>
+              <button
+                className="clock-setting"
+                onClick={(e) => {
+                  setIsOpen((prev) => !prev);
+                }}
+              >
+                <AiOutlineClockCircle />
+              </button>
 
-          {isOpen && (
-            <ButtonClockSwitch>
-              <span>24-hour clock</span>
-              <label className="switch">
-                <input
-                  type="checkbox"
-                  defaultChecked={
-                    clockVersion === 24
-                      ? true
-                      : clockVersion === 12
-                      ? false
-                      : true
-                  }
-                />
-                <span className="slider round" onClick={onHandleClock}></span>
-              </label>
-            </ButtonClockSwitch>
-          )}
-        </span>
-      </div>
-      <div>
-        <TextSpan>{timeState[0]}</TextSpan>
-        <TextSpan>Hello, What's your name?</TextSpan>
-        <TextSpan>
+              {isOpen && (
+                <ButtonClockSwitch>
+                  <span>24-hour clock</span>
+                  <label className="switch">
+                    <input
+                      type="checkbox"
+                      defaultChecked={
+                        clockVersion === 24
+                          ? true
+                          : clockVersion === 12
+                          ? false
+                          : true
+                      }
+                    />
+                    <span
+                      className="slider round"
+                      onClick={onHandleClock}
+                    ></span>
+                  </label>
+                </ButtonClockSwitch>
+              )}
+            </span>
+          </div>
+        </TimeContainer>
+        <TextDiv>
           {timeState[1]} {momentumName}.
-        </TextSpan>
-      </div>
-      <form onSubmit={handleSubmit(handleValid)}>
-        <InputBox
-          type="text"
-          {...register(MOMENTTUM_REGISTER, {
-            required:
-              "Please let us know how to address you. This is required.",
-            validate: {
-              minLength: (value) => {
-                return value.length < 3 ? "too short! minimum 3 letters" : true;
+        </TextDiv>
+
+        <form onSubmit={handleSubmit(handleValid)}>
+          <InputBox
+            type="text"
+            {...register(MOMENTTUM_REGISTER, {
+              required:
+                "Please let us know how to address you. This is required.",
+              validate: {
+                minLength: (value) => {
+                  return value.length < 3
+                    ? "too short! minimum 3 letters"
+                    : true;
+                },
               },
-            },
-          })}
-          placeholder={"what's your name?"}
-          defaultValue={momentumName}
-        />
-        <ErrorSpan>{errors?.momentumRegisterForm?.message}</ErrorSpan>
-      </form>
-    </>
+            })}
+            placeholder={"what's your name?"}
+            defaultValue={momentumName}
+          />
+          <ErrorSpan>{errors?.momentumRegisterForm?.message}</ErrorSpan>
+        </form>
+      </Container>
+    </Wrapper>
   );
 };
 
 export default Momentum;
+
+const TimeContainer = styled.div<TDarkMode>`
+  ${FlexCenter};
+
+  .time-setting-modal {
+    /* position: absolute; */
+    /* right: 100px; */
+
+    /* @media ${TABLET} {
+      right: 100px;
+    } */
+  }
+
+  .time {
+    font-size: 3rem;
+    margin-right: 1rem;
+  }
+
+  .clock-setting {
+    font-size: 1rem;
+    cursor: pointer;
+    background: none;
+    border: none;
+    color: ${(props) => props.theme.darkBG};
+
+    :hover {
+      transition: ease-in-out 0.2s;
+      opacity: 0.8;
+      transform: scale(1.5);
+      outline: none;
+    }
+  }
+`;
+
+const Container = styled.div<TDarkMode>`
+  ${boxShadow.type1};
+  color: ${(props) => props.theme.darkBG};
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  background: radial-gradient(rgba(255, 255, 255, 0.49), #9198e5);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+
+  border-radius: 70px;
+
+  width: 500px;
+  height: 425px;
+
+  @media ${TABLET} {
+    width: 900px;
+    height: 525px;
+  }
+`;
+
+const Wrapper = styled.div`
+  position: absolute;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  height: 100%;
+  width: 100%;
+  padding: 1rem;
+`;
 
 const ButtonClockSwitch = styled.button`
   background: none;
@@ -215,7 +302,7 @@ const ErrorSpan = styled.span`
   text-align: center;
 `;
 
-const TextSpan = styled.span`
+const TextDiv = styled.span`
   /* padding-bottom: 15px;
   line-height: 1.2;
   white-space: normal;

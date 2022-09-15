@@ -1,5 +1,4 @@
 import CQNA from "components/CQNA";
-import React from "react";
 import { useOutletContext } from "react-router-dom";
 import { ABOUT_US_LIST } from "utils/FAQList/aboutus";
 
