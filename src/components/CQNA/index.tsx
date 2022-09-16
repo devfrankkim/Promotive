@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { ReactNode, useState } from "react";
 import {
   IoArrowUpCircleOutline,
   IoArrowDownCircleOutline,
 } from "react-icons/io5";
+import { FlexCenterDiv } from "styles/styles";
 
 import * as S from "./style";
 
@@ -10,7 +11,7 @@ type TSection = {
   section: {
     answer: string;
     asymbol: string;
-    qsymbol: string;
+    qsymbol: ReactNode;
     question: string;
   };
 };
@@ -26,10 +27,10 @@ const CQNA = ({ section }: TSection) => {
       <S.WrapperS>
         <S.FAQlist>
           <S.ContainerQuestion>
-            <div>
+            <FlexCenterDiv>
               <S.QuestionLetter> {qsymbol} </S.QuestionLetter>
               {question}
-            </div>
+            </FlexCenterDiv>
             <S.ArrowModalButton type="button" onClick={toggle}>
               {isShowing ? (
                 <IoArrowUpCircleOutline fontSize="32px" />

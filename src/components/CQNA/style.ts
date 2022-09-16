@@ -1,17 +1,23 @@
 import styled from "styled-components";
-import { FlexCenter } from "styles/styles";
-import { TABLET } from "utils/responsiveness";
+import { boxShadow, FlexCenter, palette } from "styles/styles";
+import { LAPTOP, TABLET } from "utils/responsiveness";
 
 export const Wrapper = styled.div`
   position: relative;
   height: 100%;
   width: 100%;
   padding: 0 2rem;
-  margin: auto;
-  top: 15rem;
+
+  top: 11rem;
 
   @media ${TABLET} {
     width: 60%;
+    margin-left: 18rem;
+  }
+
+  @media ${LAPTOP} {
+    width: 70%;
+    margin-right: 0;
   }
 `;
 
@@ -25,6 +31,8 @@ export const ContainerUl = styled.ul`
 `;
 
 export const FAQlist = styled.li`
+  ${boxShadow.type1};
+
   list-style-type: none;
 
   background-color: rgba(242, 242, 242, 1);
@@ -33,11 +41,13 @@ export const FAQlist = styled.li`
   font-weight: 600;
   font-size: 0.625rem;
   line-height: 2;
+
   padding-left: 1rem;
   padding-right: 1rem;
   padding-top: 0.375rem;
   padding-bottom: 0.375rem;
-  margin-bottom: 0.3rem;
+
+  margin-bottom: 2rem;
 
   @media ${TABLET} {
     font-size: 1rem;
@@ -58,12 +68,14 @@ export const ContainerAnswer = styled.div<{ isShowing: boolean }>`
 `;
 
 export const QuestionLetter = styled.span`
-  color: rgba(246, 85, 0, 1);
-  margin-right: 0.2rem;
+  ${FlexCenter};
+  color: ${palette.orange};
+  font-size: 1.5rem;
+  margin-right: 1rem;
 `;
 
 export const AnswerLetter = styled.span`
-  color: rgba(107, 155, 255, 1);
+  color: ${palette.lightPurple};
   margin-right: 0.2rem;
 `;
 

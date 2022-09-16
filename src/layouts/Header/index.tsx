@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 import { FaHamburger } from "react-icons/fa";
 
@@ -12,12 +12,14 @@ import { darkLightMode } from "recoil/DnDToDoAtom";
 
 import DarkMode from "components/DarkMode";
 
-import { TDarkMode } from "types";
+import { TDarkMode, TDarkModeActive } from "types";
 import { TABLET } from "utils/responsiveness";
 import useCloseOutside from "hooks/useCloseOutside";
 
 const Header = () => {
   const isDarkMode = useRecoilValue(darkLightMode);
+
+  const { pathname } = useLocation();
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -43,18 +45,44 @@ const Header = () => {
         <FaHamburger />
       </BurgerButton>
       <NavContainer darkMode={isDarkMode}>
-        <Link to="/pomodoro" className="nav">
-          Pomodoro
-        </Link>
-        <Link to="/scheduler" className="nav">
-          Scheduler
-        </Link>
-        <Link to="/forecast" className="nav">
-          Forecast
-        </Link>
-        <Link to="/about" className="nav">
-          About
-        </Link>
+        <NavActiveOption
+          active={pathname === "/pomodoro"}
+          darkMode={isDarkMode}
+        >
+          <Link to="/pomodoro" className="nav">
+            Pomodoro
+          </Link>
+        </NavActiveOption>
+        <NavActiveOption
+          active={pathname === "/scheduler"}
+          darkMode={isDarkMode}
+        >
+          <Link to="/scheduler" className="nav">
+            Scheduler
+          </Link>
+        </NavActiveOption>
+        <NavActiveOption
+          active={pathname === "/forecast"}
+          darkMode={isDarkMode}
+        >
+          <Link to="/forecast" className="nav">
+            Forecast
+          </Link>
+        </NavActiveOption>
+        <NavActiveOption
+          active={
+            pathname === "/about" ||
+            pathname === `/about/pomodoro` ||
+            pathname === `/about/scheduler` ||
+            pathname === `/about/forecast` ||
+            pathname === `/about/us`
+          }
+          darkMode={isDarkMode}
+        >
+          <Link to="/about" className="nav">
+            About
+          </Link>
+        </NavActiveOption>
         <DarkMode />
       </NavContainer>
       {isOpen && (
@@ -87,6 +115,7 @@ export default Header;
 const Wrapper = styled.div<TDarkMode>`
   background: ${palette.darkPurple};
   color: ${palette.white};
+
   padding: 1rem 0.5rem;
   font-weight: bold;
   ${boxShadow.type3};
@@ -115,11 +144,6 @@ const Wrapper = styled.div<TDarkMode>`
 `;
 
 const NavContainer = styled.div<TDarkMode>`
-  /* gap not working on safari */
-  // ${FlexCenter};
-  // align-items: center;
-  // gap: 2rem;
-
   display: none;
 
   @media ${TABLET} {
@@ -139,6 +163,15 @@ const NavContainer = styled.div<TDarkMode>`
       }
     }
   }
+`;
+
+const NavActiveOption = styled.div<TDarkModeActive>`
+  color: ${(props) =>
+    props.active && props.darkMode
+      ? `${palette.lightPurple}`
+      : props.active && !props.darkMode
+      ? `${palette.orange}`
+      : "white"};
 `;
 
 const HeaderModal = styled.div<TDarkMode>`
@@ -195,3 +228,10 @@ const BurgerButton = styled.button<TDarkMode>`
     display: none;
   }
 `;
+
+// color: ${(props) =>
+//   props.active
+//     ? props.darkMode
+//     : `${palette.lightPurple}`
+//     ? `${palette.orange}`
+//     : "white"};
