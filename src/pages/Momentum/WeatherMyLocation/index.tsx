@@ -13,6 +13,7 @@ import { TbTemperatureCelsius } from "react-icons/tb";
 import { useRecoilValue } from "recoil";
 import { darkLightMode } from "recoil/DnDToDoAtom";
 import { TDarkMode } from "types";
+import { palette } from "styles/styles";
 
 const skeletonStyles = {
   position: "fixed",
@@ -72,7 +73,13 @@ const WeatherMyLocation = () => {
       {isError ? (
         <ErrorBox />
       ) : isLoading ? (
-        [getSkeletonCards(1, skeletonStyles)]
+        <>
+          {[getSkeletonCards(1, skeletonStyles)]}
+          <NotificationDiv darkMode={isDark}>
+            Enable the location features to check the weather for your current
+            location.
+          </NotificationDiv>
+        </>
       ) : (
         <WeatherContainer darkMode={isDark}>
           <img
@@ -108,4 +115,15 @@ const WeatherContainer = styled.div<TDarkMode>`
     ${FlexCenter};
     flex-direction: column;
   }
+`;
+
+const NotificationDiv = styled(WeatherContainer)`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: ${palette.white};
+  right: 1rem;
+  font-size: 0.7rem;
+  text-align: center;
 `;
