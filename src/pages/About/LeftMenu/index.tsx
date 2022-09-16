@@ -24,7 +24,7 @@ const LeftMenu = () => {
             active={pathname === "/about/pomodoro"}
             htmlFor="pomodoro"
           >
-            <AiOutlineQuestionCircle />
+            <AiOutlineQuestionCircle className="icon" />
             QNA-pomodoro
             <ButtonOption type="radio" value="1" id="pomodoro" />
           </ActiveButtonLabel>
@@ -36,6 +36,7 @@ const LeftMenu = () => {
             active={pathname === "/about/scheduler"}
             htmlFor="scheduler"
           >
+            <AiOutlineQuestionCircle className="icon" />
             QNA-scheduler
             <ButtonOption type="radio" value="2" id="scheduler" />
           </ActiveButtonLabel>
@@ -47,6 +48,7 @@ const LeftMenu = () => {
             active={pathname === "/about/forecast"}
             htmlFor="forecast"
           >
+            <AiOutlineQuestionCircle className="icon" />
             QNA-forecast
             <ButtonOption type="radio" value="3" id="forecast" />
           </ActiveButtonLabel>
@@ -58,6 +60,7 @@ const LeftMenu = () => {
             active={pathname === "/about/us"}
             htmlFor="us"
           >
+            <CgProfile className="icon" />
             About us
             <ButtonOption type="radio" value="4" id="us" />
           </ActiveButtonLabel>
@@ -123,10 +126,10 @@ const Wrapper = styled.div`
   justify-content: flex-start;
   grid-auto-flow: column;
 
-  grid-gap: 2rem;
   font-size: 1rem;
 
   .center-menu {
+    padding: 0 0.5rem;
     position: absolute;
     width: 100%;
     display: grid;
@@ -134,9 +137,13 @@ const Wrapper = styled.div`
     justify-content: center;
     grid-auto-flow: column;
 
-    grid-gap: 2rem;
+    grid-gap: 1.2rem;
     top: 6rem;
     font-size: 1rem;
+
+    .icon {
+      margin-right: 0.3rem;
+    }
 
     @media ${TABLET} {
       grid-auto-flow: row;
@@ -164,6 +171,10 @@ const Wrapper = styled.div`
       flex-direction: column;
       height: calc(100vh - 5rem);
     }
+
+    .icon {
+      margin-right: 1rem;
+    }
   }
 
   .left-menu__container {
@@ -180,10 +191,6 @@ const Wrapper = styled.div`
     margin-bottom: 2rem;
     font-size: 1.5rem;
     padding: 0rem 2.5rem 0rem 1rem;
-
-    .icon {
-      margin-right: 1rem;
-    }
   }
 `;
 

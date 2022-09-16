@@ -49,11 +49,11 @@ const SkeletonCardBox = styled.div<TSkeletonStyle>`
 
   @keyframes skeletonAnimation {
     0% {
-      background-position: 80%;
+      background-position: 85%;
     }
     50% {
       background-position: 90%;
-      transform: scale3d(1.1, 1.1, 10);
+      transform: scale3d(1.05, 1.1, 10);
     }
     100% {
       background-position: 100%;

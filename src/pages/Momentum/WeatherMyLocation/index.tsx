@@ -13,7 +13,7 @@ import { TbTemperatureCelsius } from "react-icons/tb";
 import { useRecoilValue } from "recoil";
 import { darkLightMode } from "recoil/DnDToDoAtom";
 import { TDarkMode } from "types";
-import { palette } from "styles/styles";
+import { boxShadow, palette } from "styles/styles";
 
 const skeletonStyles = {
   position: "fixed",
@@ -83,6 +83,7 @@ const WeatherMyLocation = () => {
       ) : (
         <WeatherContainer darkMode={isDark}>
           <img
+            className="weather-icon"
             src={`http://openweathermap.org/img/w/${weatherInfo?.weather[0]?.icon}.png`}
             alt="weather-icon"
           />
@@ -114,6 +115,10 @@ const WeatherContainer = styled.div<TDarkMode>`
     margin-left: 1rem;
     ${FlexCenter};
     flex-direction: column;
+  }
+
+  .weather-icon {
+    /* ${boxShadow.type1}; */
   }
 `;
 
