@@ -8,8 +8,6 @@ import { darkTheme, lightTheme } from "./styles/theme";
 import { useRecoilValue } from "recoil";
 import { darkLightMode, ISDARK } from "./recoil/DnDToDoAtom";
 
-import Weather from "pages/WeatherMyLocation";
-import DarkMode from "components/DarkMode";
 import Pomodoro from "components/Pomodoro";
 
 import ToDoList from "./pages/ToDoList";
@@ -42,7 +40,6 @@ function App() {
         <Route path="pomodoro" element={<Pomodoro />} />
         <Route path="scheduler" element={<DND />} />
         <Route path="forecast" element={<WeatherForeCast />} />
-        <Route path="weather" element={<Weather />} />
         <Route path="toDo" element={<ToDoList />} />
         <Route path="about" element={<About />}>
           <Route path="pomodoro" element={<QNAPomodoro />} />

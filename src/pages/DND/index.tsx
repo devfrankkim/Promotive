@@ -265,11 +265,12 @@ const ClearAll = styled.button`
 `;
 
 const BoardsWrapper = styled.div<TDarkMode>`
+  width: 100%;
   position: relative;
   top: 10rem;
   display: grid;
-  width: 100%;
   grid-gap: 1rem;
+  padding-bottom: 2rem;
 
   grid-template-columns: repeat(1, 1fr);
 

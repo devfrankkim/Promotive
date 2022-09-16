@@ -33,7 +33,7 @@ const Header = () => {
         if (e.key === "Escape") setIsOpen(false);
       }}
     >
-      <Link to="/" className="logo">
+      <Link to="/" className="logo" onClick={() => setIsOpen(false)}>
         Promotive
       </Link>
       <BurgerButton

@@ -6,10 +6,26 @@ import { error, ISuccess, options, WEATHER_API_KEY } from "api/API_weather";
 
 import ErrorBox from "components/ErrorBox";
 import { getSkeletonCards } from "components/SkeletonCard";
-import WeatherCard from "components/WeatherCard";
+
+import styled from "styled-components";
+import { FlexCenter } from "pages/DND/styles";
+import { TbTemperatureCelsius } from "react-icons/tb";
+import { useRecoilValue } from "recoil";
+import { darkLightMode } from "recoil/DnDToDoAtom";
+import { TDarkMode } from "types";
+
+const skeletonStyles = {
+  position: "fixed",
+  right: "1rem",
+  top: "6rem",
+  width: "150px",
+  height: "60px",
+};
 
 const WeatherMyLocation = () => {
-  const [weatherInfo, setWeatherInfo] = useState();
+  const isDark = useRecoilValue(darkLightMode);
+
+  const [weatherInfo, setWeatherInfo] = useState<any>();
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
 
@@ -56,12 +72,40 @@ const WeatherMyLocation = () => {
       {isError ? (
         <ErrorBox />
       ) : isLoading ? (
-        [getSkeletonCards()]
+        [getSkeletonCards(1, skeletonStyles)]
       ) : (
-        <WeatherCard weatherInfo={weatherInfo} />
+        <WeatherContainer darkMode={isDark}>
+          <img
+            src={`http://openweathermap.org/img/w/${weatherInfo?.weather[0]?.icon}.png`}
+            alt="weather-icon"
+          />
+          <div className="city-name-temp">
+            <div>
+              {weatherInfo?.main?.temp} <TbTemperatureCelsius />
+            </div>
+            <div>{weatherInfo?.name}</div>
+          </div>
+        </WeatherContainer>
       )}
     </div>
   );
 };
 
 export default WeatherMyLocation;
+
+const WeatherContainer = styled.div<TDarkMode>`
+  color: ${(props) => props.theme.darkBG};
+  display: flex;
+  position: absolute;
+  width: 150px;
+  height: 60px;
+  right: 2rem;
+  top: 6rem;
+  font-weight: bold;
+
+  .city-name-temp {
+    margin-left: 1rem;
+    ${FlexCenter};
+    flex-direction: column;
+  }
+`;

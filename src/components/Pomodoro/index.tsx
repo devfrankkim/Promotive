@@ -557,7 +557,7 @@ const FirstBox = styled.div<TDarkMode>`
   box-shadow: 4px 8px 25px rgba(0, 0, 0, 0.25);
   border-radius: 30px;
 
-  width: 400px;
+  width: 95%;
   height: 350px;
 
   @media ${TABLET} {

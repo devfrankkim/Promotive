@@ -1,25 +1,51 @@
-import React from "react";
 import styled from "styled-components";
-import { boxShadow, Card, Skeleton } from "styles/styles";
+import { boxShadow, FlexCenter } from "styles/styles";
 
-export const getSkeletonCards = (cards: number = 1) =>
-  [cards].map((_, idx) => (
+type TStyle = {
+  position: string;
+  right: string;
+  top: string;
+  width: string;
+  height: string;
+};
+
+type TSkeletonStyle = {
+  styles: {
+    position: string;
+    right: string;
+    top: string;
+    width: string;
+    height: string;
+  };
+};
+
+export const getSkeletonCards = (cards: number, skeletonStyles: TStyle) => {
+  return [cards].map((_, idx) => (
     <div key={idx}>
-      <SkeletonCard />
+      <SkeletonCard styles={skeletonStyles} />
     </div>
   ));
+};
 
-const SkeletonCard = () => {
+const SkeletonCard = ({ styles }: TSkeletonStyle) => {
   //  ====== Skeleton  =======
 
-  return <SkeletonCardBox />;
+  return <SkeletonCardBox styles={styles} />;
 };
 
 export default SkeletonCard;
 
-const SkeletonCardBox = styled.div`
-  ${Card}
-  ${Skeleton}
+const SkeletonCardBox = styled.div<TSkeletonStyle>`
+  ${boxShadow.type3};
+  border-radius: 5px;
+
+  width: ${(props) => props.styles.width};
+  height: ${(props) => props.styles.height};
+  position: ${(props) => props.styles.position};
+  right: ${(props) => props.styles.right};
+  top: ${(props) => props.styles.top};
+
+  background: grey;
 
   @keyframes skeletonAnimation {
     0% {
