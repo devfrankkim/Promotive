@@ -16,13 +16,14 @@ import {
   CLOCK_VERSION,
   handleClockVersionLocalStorage,
   handleMomentumNameLocalStorage,
-  momentumLocalName,
 } from "utils/helpers";
+
 import { useCallback } from "react";
 import { boxShadow, FlexCenter } from "styles/styles";
 import { darkLightMode } from "recoil/DnDToDoAtom";
 import { TDarkMode } from "types";
 import { LAPTOP, TABLET } from "utils/responsiveness";
+import { MomentumState } from "recoil/momentum";
 
 type TMomentumRegister = {
   momentumRegisterForm: string;
@@ -41,7 +42,7 @@ const MomentumMain = () => {
     setIsNameEdit(false);
   });
 
-  const [momentumName, setMomentumName] = useState(momentumLocalName);
+  const [momentumName, setMomentumName] = useRecoilState(MomentumState);
 
   const [clockVersion, setClockVersion] = useRecoilState(ClockVersionState);
   const [timeState, setTimeState] = useRecoilState(clockState);
@@ -161,9 +162,9 @@ const MomentumMain = () => {
         >
           {momentumName && isNameEdit && (
             <InputBox
+              autoComplete="off"
               autoFocus
               type="text"
-              placeholder={"What's your name?"}
               {...register(MOMENTTUM_REGISTER, {
                 required:
                   "Please let us know how to address you. This is required.",
@@ -179,8 +180,9 @@ const MomentumMain = () => {
             />
           )}
 
-          {!momentumName && (
+          {(!momentumName || momentumName.length < 2) && (
             <InputBox
+              autoComplete="off"
               autoFocus
               type="text"
               placeholder={"What's your name?"}

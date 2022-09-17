@@ -44,7 +44,3 @@ export const handleClockVersionLocalStorage = (result: number): number => {
   localStorage.setItem(CLOCK_VERSION, JSON.stringify(result));
   return result;
 };
-
-export const momentumLocalName =
-  JSON.parse(localStorage.getItem(MOMENTUM_NAME) as any) ||
-  handleMomentumNameLocalStorage(" ");
