@@ -200,7 +200,9 @@ const MomentumMain = () => {
               defaultValue={momentumName}
             />
           )}
-          <ErrorBox>{errors?.momentumRegisterForm?.message}</ErrorBox>
+          <ErrorBox>
+            {isNameEdit && errors?.momentumRegisterForm?.message}
+          </ErrorBox>
         </form>
       </Container>
     </Wrapper>
