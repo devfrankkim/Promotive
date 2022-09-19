@@ -2,6 +2,7 @@ import { DAY, TODAY_DATE } from "utils/constants/weather";
 import { TbTemperatureCelsius } from "react-icons/tb";
 import styled from "styled-components";
 import { boxShadow, FlexCenter } from "styles/styles";
+import React, { useState } from "react";
 
 const WeatherCard = ({ weatherInfo }: any) => {
   return (
@@ -10,11 +11,14 @@ const WeatherCard = ({ weatherInfo }: any) => {
         <div className="flip-card-inner">
           <div className="flip-card-front">
             <Wrapper>
-              <WrapperDate>
+              {/* <WrapperDate>
                 <div>
                   {TODAY_DATE} <span> ({DAY}) </span>
                 </div>
-              </WrapperDate>
+              </WrapperDate> */}
+              <div>
+                <span> {weatherInfo?.dt_txt} </span>
+              </div>
               <WeatherDetail>
                 <img
                   src={`http://openweathermap.org/img/w/${weatherInfo?.weather[0]?.icon}.png`}
@@ -60,13 +64,15 @@ const WeatherCard = ({ weatherInfo }: any) => {
   );
 };
 
-export default WeatherCard;
+export default React.memo(WeatherCard);
 
 const FliperContainer = styled.div`
+  position: relative;
   cursor: pointer;
   text-align: center;
 
   .flip-card {
+    /* position: absolute; */
     background-color: transparent;
     height: 130px;
     width: 110px;
@@ -84,7 +90,7 @@ const FliperContainer = styled.div`
 
   .flip-card-front,
   .flip-card-back {
-    position: absolute;
+    /* position: relative; */
     width: 100%;
     height: 100%;
     -webkit-backface-visibility: hidden;
@@ -113,7 +119,7 @@ const Wrapper = styled.div`
   height: 150px;
   width: 130px;
   flex-direction: column;
-  position: relative;
+  /* position: relative; */
   top: 2rem;
   left: 2.5rem;
   gap: 3px;
