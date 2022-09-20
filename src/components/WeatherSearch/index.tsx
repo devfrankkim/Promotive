@@ -26,6 +26,7 @@ const WeatherSearch = ({ onSearchChange }: any) => {
     onSearchChange(searchData);
   };
 
+  //  =========== Return 10 cities list ===========
   const loadOptions = async (inputValue: string) => {
     const response = await fetch(
       `${GEO_URL}/cities?limit=10&namePrefix=${inputValue}`,
@@ -38,6 +39,7 @@ const WeatherSearch = ({ onSearchChange }: any) => {
       options: data.map((city: TLoadOptions) => {
         return {
           label: `${city.name}, ${city.countryCode}`,
+          latLong: ` ${city.latitude}, ${city.longitude}`,
         };
       }),
     };
@@ -54,4 +56,4 @@ const WeatherSearch = ({ onSearchChange }: any) => {
   );
 };
 
-export default WeatherSearch;
+export default React.memo(WeatherSearch);
