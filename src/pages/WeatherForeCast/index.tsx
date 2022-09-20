@@ -21,7 +21,6 @@ const WeatherForeCast = () => {
     setAnimationRunning(true);
   };
 
-  console.log(animationRunning);
   const [currentWeatherData, setCurrentWeatherData] = useState<any>({});
   const [forecastChartData, setForecastChartData] = useState<any>({});
   const [forecastData, setForecastData] = useState<any>({});
@@ -66,15 +65,15 @@ const WeatherForeCast = () => {
 
   return (
     <WrapperForecast>
-      {/* ==== Search Weather Component ==== */}
       <WrapperSearch>
+        {/* ==== Search Weather Component ==== */}
         <WeatherSearch onSearchChange={onSearchChange} />
-      </WrapperSearch>
 
-      {/* ==== Current Weather ==== */}
-      {Object.keys(currentWeatherData)?.length > 0 && (
-        <WeatherCard weatherInfo={currentWeatherData} />
-      )}
+        {/* ==== Current Weather ==== */}
+        {Object.keys(currentWeatherData)?.length > 0 && (
+          <WeatherCard weatherInfo={currentWeatherData} currentWeatherActive />
+        )}
+      </WrapperSearch>
 
       {/* ==== Forecast Chart ==== */}
       <WrapperChart>
@@ -109,6 +108,7 @@ const WeatherForeCast = () => {
 export default WeatherForeCast;
 
 const WrapperChart = styled.div`
+  margin-top: 10rem;
   margin-bottom: 1rem;
 `;
 
@@ -150,13 +150,12 @@ const CardsWrapper = styled.div<{ active: boolean }>`
   position: relative;
   padding: 2rem;
   margin-right: 0.5rem;
-
   width: 400px;
 
   // Animation
   animation: carousel 40s linear infinite;
   animation-play-state: ${(props) => (props.active ? "running" : "paused")};
-  animation-delay: 1.5s;
+  animation-delay: 2s;
 
   @keyframes carousel {
     0% {
@@ -164,7 +163,7 @@ const CardsWrapper = styled.div<{ active: boolean }>`
     }
 
     100% {
-      transform: translateX(calc(-50px * 40));
+      transform: translateX(calc(-40px * 40));
     }
   }
 `;
