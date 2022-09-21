@@ -44,3 +44,28 @@ export const handleClockVersionLocalStorage = (result: number): number => {
   localStorage.setItem(CLOCK_VERSION, JSON.stringify(result));
   return result;
 };
+
+//  ============ Weather dt_txt  ============
+
+export const handleDtText = (result: string): string => {
+  switch (result.split(" ")[1]) {
+    case "00:00:00":
+      return "12AM";
+    case "03:00:00":
+      return "3AM";
+    case "06:00:00":
+      return "6AM";
+    case "09:00:00":
+      return "9AM";
+    case "12:00:00":
+      return "12PM";
+    case "15:00:00":
+      return "3PM";
+    case "18:00:00":
+      return "6PM";
+    case "21:00:00":
+      return "9PM";
+    default:
+  }
+  return result;
+};
