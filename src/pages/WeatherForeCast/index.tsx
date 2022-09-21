@@ -8,8 +8,9 @@ import WeatherCard from "components/WeatherCard";
 import WeatherSearch from "components/WeatherSearch";
 import ForeCast from "components/ForeCast";
 import styled from "styled-components";
-import { TABLET } from "utils/responsiveness";
-import { FlexCenter } from "styles/styles";
+import { LAPTOP, TABLET } from "utils/responsiveness";
+
+import Loader from "components/Loader";
 
 const WeatherForeCast = () => {
   const [animationRunning, setAnimationRunning] = useState(true);
@@ -23,11 +24,9 @@ const WeatherForeCast = () => {
 
   const [currentWeatherData, setCurrentWeatherData] = useState<any>({});
   const [forecastChartData, setForecastChartData] = useState<any>({});
-  const [forecastData, setForecastData] = useState<any>({});
 
   const [currentIsLoading, setCurrentIsLoading] = useState(false);
   const [foreCastChartIsLoading, setForeCastChartIsLoading] = useState(false);
-  const [foreCastIsLoading, setForeCastIsLoading] = useState(false);
 
   const onSearchChange = async (searchInput: {
     latLong: string;
@@ -41,7 +40,9 @@ const WeatherForeCast = () => {
 
     try {
       const { data: currentWeatherData } = await axios(
-        `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${WEATHER_API_KEY}&units=metric`
+        `https://api.openweathermap.org/data/2.5/weather?lat=${Number(
+          lat
+        )}&lon=${Number(lon)}&appid=${WEATHER_API_KEY}&units=metric`
       );
 
       const { data: foreCastChartData } = await axios(
@@ -65,22 +66,21 @@ const WeatherForeCast = () => {
 
   return (
     <WrapperForecast>
+      {/*  ==== Search Weather & Current Weather ==== */}
       <WrapperSearch>
         {/* ==== Search Weather Component ==== */}
         <WeatherSearch onSearchChange={onSearchChange} />
 
         {/* ==== Current Weather ==== */}
-        {Object.keys(currentWeatherData)?.length > 0 && (
-          <WeatherCard weatherInfo={currentWeatherData} currentWeatherActive />
-        )}
+        {!currentIsLoading &&
+          !foreCastChartIsLoading &&
+          Object.keys(currentWeatherData)?.length > 0 && (
+            <WeatherCard
+              weatherInfo={currentWeatherData}
+              currentWeatherActive
+            />
+          )}
       </WrapperSearch>
-
-      {/* ==== Forecast Chart ==== */}
-      <WrapperChart>
-        {Object.keys(forecastChartData)?.length !== 0 && (
-          <ForeCast data={forecastChartData} />
-        )}
-      </WrapperChart>
 
       {/* ==== Forecast Card ==== */}
       <WrapperForecastCards
@@ -89,18 +89,31 @@ const WeatherForeCast = () => {
         onMouseOut={onMouseOutHandler}
         className="WrapperForecastCards"
       >
-        <ContainerForecastCards className="ContainerForecastCards">
-          {forecastChartData?.list?.map((card: any, index: number) => (
-            <CardsWrapper
-              className="CardsWrapper"
-              key={`forecastCard${index + 1}`}
-              active={animationRunning}
-            >
-              <WeatherCard weatherInfo={card} />
-            </CardsWrapper>
-          ))}
-        </ContainerForecastCards>
+        {currentIsLoading || foreCastChartIsLoading ? (
+          <Loader />
+        ) : (
+          <ContainerForecastCards className="ContainerForecastCards">
+            {forecastChartData?.list?.map((card: any, index: number) => (
+              <CardsWrapper
+                className="CardsWrapper"
+                key={`forecastCard${index + 1}`}
+                active={animationRunning}
+              >
+                <WeatherCard weatherInfo={card} />
+              </CardsWrapper>
+            ))}
+          </ContainerForecastCards>
+        )}
       </WrapperForecastCards>
+
+      {/* ==== Forecast Chart ==== */}
+      {!currentIsLoading && !foreCastChartIsLoading && (
+        <WrapperChart>
+          {Object.keys(forecastChartData)?.length !== 0 && (
+            <ForeCast data={forecastChartData} />
+          )}
+        </WrapperChart>
+      )}
     </WrapperForecast>
   );
 };
@@ -112,50 +125,59 @@ const WrapperChart = styled.div`
   margin-bottom: 1rem;
 `;
 
+// ========= Component Container =========
 const WrapperForecast = styled.div`
   position: absolute;
   height: 100%;
   width: 100%;
-  padding: 1rem;
+  /* padding: 1rem; */
   overflow-x: hidden;
+  padding: 3rem;
+
+  @media ${TABLET} {
+    position: relative;
+    width: 80%;
+    margin: auto;
+    overflow: hidden;
+  }
+
+  @media ${LAPTOP} {
+    /* width: 100%; */
+  }
 `;
 
 const WrapperSearch = styled.div`
   position: relative;
   top: 5rem;
-  /* padding: 3rem; */
-
-  @media ${TABLET} {
-    padding: 5rem;
-  }
 `;
 
 const WrapperForecastCards = styled.div<{ active: boolean }>`
   position: relative;
   width: 100%;
   margin-bottom: 5rem;
-  padding: 0rem 2rem;
+
+  top: 8rem;
 `;
 
 const ContainerForecastCards = styled.div`
+  margin-top: 2rem;
+
   position: relative;
   display: flex;
   justify-content: start;
-  /* width: calc(110px * 14); */
   overflow: hidden;
 `;
 
 const CardsWrapper = styled.div<{ active: boolean }>`
-  padding: 5rem;
   position: relative;
-  padding: 2rem;
-  margin-right: 0.5rem;
+
   width: 400px;
+  margin: 5rem 5rem 5rem 0;
 
   // Animation
   animation: carousel 40s linear infinite;
   animation-play-state: ${(props) => (props.active ? "running" : "paused")};
-  animation-delay: 2s;
+  animation-delay: 0.7s;
 
   @keyframes carousel {
     0% {

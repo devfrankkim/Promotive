@@ -2,20 +2,22 @@ import styled from "styled-components";
 import { boxShadow, FlexCenter } from "styles/styles";
 
 type TStyle = {
-  position: string;
-  right: string;
-  top: string;
-  width: string;
-  height: string;
+  position?: string;
+  right?: string;
+  top?: string;
+  width?: string;
+  height?: string;
+  borderRadius?: string;
 };
 
 type TSkeletonStyle = {
   styles: {
-    position: string;
-    right: string;
-    top: string;
-    width: string;
-    height: string;
+    position?: string;
+    right?: string;
+    top?: string;
+    width?: string;
+    height?: string;
+    borderRadius?: string;
   };
 };
 
@@ -38,6 +40,7 @@ export default SkeletonCard;
 const SkeletonCardBox = styled.div<TSkeletonStyle>`
   ${boxShadow.type3};
   border-radius: 5px;
+  border-radius: ${(props) => props.styles.borderRadius};
 
   width: ${(props) => props.styles.width};
   height: ${(props) => props.styles.height};

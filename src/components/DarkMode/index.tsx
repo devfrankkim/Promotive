@@ -53,13 +53,6 @@ const Wrapper = styled.div<TDarkMode>`
   .switch {
     ${FlexCenter}
     z-index: 9999;
-    /* height: 4rem; */
-    /* right: 3rem; */
-    /* top: 2rem; */
-
-    /* @media ${TABLET} {
-      right: 8rem;
-    } */
   }
 
   .theme-switch {
@@ -89,7 +82,7 @@ const Wrapper = styled.div<TDarkMode>`
     width: 75px;
     height: 26px;
     background-color: ${(props) => props.theme.darkBG};
-    /* box-shadow: ${(props) => props.darkMode && props.theme.darkBoxShadow}; */
+
     cursor: pointer;
   }
 
