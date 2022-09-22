@@ -36,7 +36,8 @@ export const FAQlist = styled.li`
   list-style-type: none;
 
   background-color: rgba(242, 242, 242, 1);
-  color: rgba(112, 112, 112, 1);
+  background: #e5e3ec;
+  color: ${palette.darkPurple};
   border-radius: 5px;
   font-weight: 600;
   font-size: 0.625rem;
@@ -87,6 +88,10 @@ export const ArrowButton = styled.div`
 export const ArrowModalButton = styled.button`
   cursor: pointer;
   border: none;
+  background: transparent;
+  color: ${palette.orange};
+  outline: none;
+
   :hover {
     opacity: 0.7;
   }
