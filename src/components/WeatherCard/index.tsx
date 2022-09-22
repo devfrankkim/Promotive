@@ -35,29 +35,31 @@ const WeatherCard = ({ weatherInfo, currentWeatherActive }: TWeatherCard) => {
               <div className="flip-card-front">
                 <div className="wrapper">
                   <WeatherDetailCurrentWeather>
-                    <div style={{ display: `${FlexCenter};` }}>
-                      <div>Now</div>
-                      <img
-                        src={`http://openweathermap.org/img/w/${weatherInfo?.weather[0]?.icon}.png`}
-                        alt="weather-icon"
-                      />
-
+                    <div>
+                      <h3>Now</h3>
                       <div>
-                        {weatherInfo?.main?.temp} <TbTemperatureCelsius />
-                      </div>
-                      <div>
-                        {" "}
                         <IoLocationSharp /> Near ({weatherInfo?.name},{" "}
                         {weatherInfo?.sys?.country})
                       </div>
                     </div>
-                    <div>
-                      <div>{weatherInfo?.weather[0]?.description}</div>
-                      <div>
-                        H: {weatherInfo?.main?.temp_max}
-                        <TbTemperatureCelsius /> / L:{" "}
-                        {weatherInfo?.main?.temp_min}
-                        <TbTemperatureCelsius />
+                    <div className="second-container">
+                      <div className="second-container__space-between">
+                        <img
+                          src={`http://openweathermap.org/img/w/${weatherInfo?.weather[0]?.icon}.png`}
+                          alt="weather-icon"
+                        />
+                        <div>
+                          {weatherInfo?.main?.temp} <TbTemperatureCelsius />
+                        </div>
+                      </div>
+                      <div className="second-container__space-between">
+                        <div>{weatherInfo?.weather[0]?.description}</div>
+                        <div>
+                          H: {weatherInfo?.main?.temp_max}
+                          <TbTemperatureCelsius /> / L:{" "}
+                          {weatherInfo?.main?.temp_min}
+                          <TbTemperatureCelsius />
+                        </div>
                       </div>
                     </div>
                   </WeatherDetailCurrentWeather>
@@ -262,9 +264,36 @@ const WeatherDetail = styled.div`
 `;
 
 const WeatherDetailCurrentWeather = styled(WeatherDetail)`
+  line-height: 1.7rem;
+
+  h3 {
+    font-weight: bold;
+    font-size: 1.5rem;
+    margin-bottom: 0.8rem;
+  }
+
   @media ${TABLET} {
-    flex-direction: row;
-    width: 50%;
+    flex-direction: column;
+    width: 80%;
+
+    font-size: 1.15rem;
+
+    h3 {
+      font-size: 2rem;
+    }
+
+    .second-container {
+      ${FlexCenter};
+      justify-content: space-around;
+      width: 100%;
+
+      .second-container__space-between {
+        height: 80px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+      }
+    }
   }
 `;
 
