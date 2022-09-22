@@ -220,6 +220,12 @@ const Wrapper = styled.div`
 
   height: 100%;
   width: 100%;
+
+  form {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+  }
 `;
 
 const Container = styled.div<TDarkMode>`
@@ -394,14 +400,15 @@ const ButtonClockSwitch = styled.button<TDarkMode>`
 
 const InputBox = styled.input`
   color: ${palette.almostWhite};
-  width: 100%;
+  width: 80%;
   background: none;
   padding: 0;
-  /* position: absolute; */
   top: 0;
   right: 0;
   bottom: 0;
   left: 0;
+  margin: auto;
+
   border: none;
   caret-color: black;
   font-size: 1.5rem;
@@ -412,6 +419,10 @@ const InputBox = styled.input`
   border-bottom: 2px solid ${palette.almostWhite};
   padding: 1rem;
   caret-color: ${palette.almostWhite};
+
+  @media ${TABLET} {
+    width: 100%;
+  }
 `;
 
 const ErrorBox = styled.div`
