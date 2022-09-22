@@ -239,7 +239,7 @@ const Container = styled.div<TDarkMode>`
   align-items: center;
 
   width: 95%;
-  height: 310px;
+  height: 370px;
   margin-top: 4rem;
 
   @media ${TABLET} {
