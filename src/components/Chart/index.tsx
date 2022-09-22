@@ -1,6 +1,10 @@
 import ReactApexChart from "react-apexcharts";
+import { useRecoilValue } from "recoil";
+import { darkLightMode } from "recoil/DnDToDoAtom";
 
 const Chart = ({ chartData }: any) => {
+  const isDarkMode = useRecoilValue(darkLightMode);
+
   return (
     <ReactApexChart
       type="area"
@@ -23,7 +27,7 @@ const Chart = ({ chartData }: any) => {
       ]}
       options={{
         theme: {
-          mode: "light",
+          mode: isDarkMode ? "dark" : "light",
         },
         chart: {
           type: "area",
@@ -36,7 +40,7 @@ const Chart = ({ chartData }: any) => {
 
         title: {
           text: "Weather(°C)",
-          align: "center",
+          align: "left",
         },
         dataLabels: {
           enabled: true,

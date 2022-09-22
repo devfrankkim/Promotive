@@ -1,7 +1,7 @@
-import { GEOOptions, GEO_URL } from "api/API_weather";
-import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { AsyncPaginate } from "react-select-async-paginate";
+
+import { GEOOptions, GEO_URL } from "api/API_weather";
 
 type TLoadOptions = {
   city: string;

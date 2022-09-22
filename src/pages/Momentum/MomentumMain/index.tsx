@@ -112,7 +112,7 @@ const MomentumMain = () => {
               </button>
 
               {isOpen && (
-                <ButtonClockSwitch>
+                <ButtonClockSwitch darkMode={isDarkMode}>
                   <div>24-HR</div>
                   <label className="switch">
                     <input
@@ -334,7 +334,7 @@ const TextDiv = styled.span`
 `;
 
 // --------- modal clock-version button ---------
-const ButtonClockSwitch = styled.button`
+const ButtonClockSwitch = styled.button<TDarkMode>`
   border: none;
   background: none;
 
@@ -374,11 +374,8 @@ const ButtonClockSwitch = styled.button`
   }
 
   input:checked + .slider {
-    background-color: ${palette.orange};
-  }
-
-  input:focus + .slider {
-    box-shadow: 0 0 1px ${palette.orange};
+    background-color: ${(props) =>
+      props.darkMode ? `${palette.lightPurple}` : `${palette.orange}`};
   }
 
   input:checked + .slider:before {
