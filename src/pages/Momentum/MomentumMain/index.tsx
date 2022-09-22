@@ -19,7 +19,7 @@ import {
 } from "utils/helpers";
 
 import { useCallback } from "react";
-import { boxShadow, FlexCenter } from "styles/styles";
+import { boxShadow, FlexCenter, palette } from "styles/styles";
 import { darkLightMode } from "recoil/DnDToDoAtom";
 import { TDarkMode } from "types";
 import { LAPTOP, TABLET } from "utils/responsiveness";
@@ -101,7 +101,7 @@ const MomentumMain = () => {
               if (e.key === "Escape") setIsOpen(false);
             }}
           >
-            <span ref={domNode}>
+            <span ref={domNode} style={{ display: "flex" }}>
               <button
                 className="clock-setting"
                 onClick={(e) => {
@@ -113,7 +113,7 @@ const MomentumMain = () => {
 
               {isOpen && (
                 <ButtonClockSwitch>
-                  <span>24-hour clock</span>
+                  <div>24-HR</div>
                   <label className="switch">
                     <input
                       type="checkbox"
@@ -223,12 +223,15 @@ const Wrapper = styled.div`
 `;
 
 const Container = styled.div<TDarkMode>`
-  ${boxShadow.type1};
+  box-shadow: rgb(100 100 111 / 20%) 7px 1px 16px 5px;
 
-  background: radial-gradient(rgba(255, 255, 255, 0.49), #9198e5);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: ${(props) =>
+    props.darkMode
+      ? "linear-gradient(0deg, #1c1535 0%, #a29cb9 145%)"
+      : "linear-gradient(180deg, #1c1535 15%, #a29cb9 160%)"};
+
   border-radius: 70px;
-  color: ${(props) => props.theme.darkBG};
+  color: ${palette.almostWhite};
 
   display: flex;
   flex-direction: column;
@@ -282,7 +285,7 @@ const TimeContainer = styled.div<TDarkMode>`
   .clock-setting {
     background: none;
     border: none;
-    color: ${(props) => props.theme.darkBG};
+    color: ${palette.almostWhite};
     cursor: pointer;
 
     font-size: 1.5rem;
@@ -332,10 +335,13 @@ const TextDiv = styled.span`
 
 // --------- modal clock-version button ---------
 const ButtonClockSwitch = styled.button`
+  border: none;
   background: none;
-  border: 1px black solid;
+
+  color: white;
 
   .switch {
+    margin-top: 5px;
     position: relative;
     display: inline-block;
     width: 60px;
@@ -368,11 +374,11 @@ const ButtonClockSwitch = styled.button`
   }
 
   input:checked + .slider {
-    background-color: #2196f3;
+    background-color: ${palette.orange};
   }
 
   input:focus + .slider {
-    box-shadow: 0 0 1px #2196f3;
+    box-shadow: 0 0 1px ${palette.orange};
   }
 
   input:checked + .slider:before {
@@ -390,7 +396,7 @@ const ButtonClockSwitch = styled.button`
 `;
 
 const InputBox = styled.input`
-  color: red;
+  color: ${palette.almostWhite};
   width: 100%;
   background: none;
   padding: 0;
@@ -406,12 +412,13 @@ const InputBox = styled.input`
   line-height: normal;
   outline: none;
   text-align: center;
-  border-bottom: 2px solid black;
+  border-bottom: 2px solid ${palette.almostWhite};
   padding: 1rem;
+  caret-color: ${palette.almostWhite};
 `;
 
 const ErrorBox = styled.div`
-  color: red;
+  color: ${palette.orange};
   width: 100%;
   padding: 0;
   /* position: absolute; */
