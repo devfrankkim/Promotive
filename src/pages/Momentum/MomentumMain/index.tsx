@@ -90,6 +90,8 @@ const MomentumMain = () => {
     // setValue(MOMENTTUM_REGISTER, "");
   };
 
+  console.log(errors);
+
   return (
     <Wrapper>
       <Container ref={domNode} darkMode={isDarkMode}>
@@ -200,9 +202,7 @@ const MomentumMain = () => {
               defaultValue={momentumName}
             />
           )}
-          <ErrorBox>
-            {isNameEdit && errors?.momentumRegisterForm?.message}
-          </ErrorBox>
+          <ErrorBox>{errors?.momentumRegisterForm?.message}</ErrorBox>
         </form>
       </Container>
     </Wrapper>
