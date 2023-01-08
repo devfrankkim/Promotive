@@ -3,8 +3,8 @@ import { CLOCK_VERSION, handleClockVersionLocalStorage } from "utils/helpers";
 
 // =========== Get time & greet status ===========
 export const getTime = (number: number) => {
-  let hours: number | string | any = new Date().getHours();
-  let minutes: number | string = new Date().getMinutes();
+  let hours: number | string | any = Number(new Date().getHours());
+  let minutes: number | string = Number(new Date().getMinutes());
 
   let GREET = "";
   let TIME = "";
@@ -39,6 +39,10 @@ export const getTime = (number: number) => {
   // ------- Mid night - 00:00 or 24:00 -------
   if (hours === 24) {
     hours = number === 12 ? "00" : "24";
+  }
+
+  if (hours === "0") {
+    hours = 12;
   }
 
   minutes = minutes < 10 ? `0${minutes}` : minutes;

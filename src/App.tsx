@@ -59,5 +59,6 @@ const SFooter = styled.footer`
   display: grid;
   justify-content: center;
   z-index: 999999;
+  color: ${(props) => props.theme.accentColor};
 `;
 export default App;

@@ -3,14 +3,14 @@ import { AiOutlineQuestionCircle } from "react-icons/ai";
 export const FORECAST_LIST = [
   {
     qsymbol: <AiOutlineQuestionCircle />,
-    question: "FORECAST_LIST",
+    question: "What is Forecast?",
     asymbol: "[A]",
-    answer: `Have a great day!`,
+    answer: `Have plans later? Need to go out? The Forecast will tell you the temperature, and the daily weather so you can better plan your activities.`,
   },
   {
     qsymbol: <AiOutlineQuestionCircle />,
-    question: "What's a timer?",
+    question: "How to use it?",
     asymbol: "[A]",
-    answer: `Yes!`,
+    answer: `When you search for a city, the Forecaster will show you cards and chart showcasing the weather of your selected location.`,
   },
 ];

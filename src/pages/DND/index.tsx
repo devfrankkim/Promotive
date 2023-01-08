@@ -140,7 +140,7 @@ const DND = () => {
     <DNDWrapper>
       <Form onSubmit={addToState}>
         <input
-          placeholder="+ Add another list"
+          placeholder="+ Add new list"
           type="text"
           onChange={(e) => setValue(e.target.value)}
           value={value || ""}

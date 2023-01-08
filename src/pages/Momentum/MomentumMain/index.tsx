@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { useForm } from "react-hook-form";
 import { useRecoilState, useRecoilValue } from "recoil";
@@ -19,7 +19,7 @@ import {
 } from "utils/helpers";
 
 import { useCallback } from "react";
-import { boxShadow, FlexCenter, palette } from "styles/styles";
+import { FlexCenter, palette } from "styles/styles";
 import { darkLightMode } from "recoil/DnDToDoAtom";
 import { TDarkMode } from "types";
 import { LAPTOP, TABLET } from "utils/responsiveness";
@@ -89,8 +89,6 @@ const MomentumMain = () => {
     // ------ clear the value ------
     // setValue(MOMENTTUM_REGISTER, "");
   };
-
-  console.log(errors);
 
   return (
     <Wrapper>

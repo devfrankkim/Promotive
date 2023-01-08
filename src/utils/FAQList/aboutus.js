@@ -5,12 +5,12 @@ export const ABOUT_US_LIST = [
     qsymbol: <AiOutlineQuestionCircle />,
     question: "About us?",
     asymbol: "[A]",
-    answer: `Have a great day!`,
+    answer: `Our goal is to help people be more productive, stay organized, and feel great about their accomplishments.`,
   },
   {
     qsymbol: <AiOutlineQuestionCircle />,
-    question: "What's a timer?",
+    question: "Questions or feedback.",
     asymbol: "[A]",
-    answer: `Yes!`,
+    answer: `Please send an email to dev.frank.kim@gmail.com if you have any questions or concerns.`,
   },
 ];
