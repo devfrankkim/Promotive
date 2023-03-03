@@ -16,7 +16,6 @@ import Momentum from "pages/Momentum";
 import WeatherForeCast from "pages/WeatherForeCast";
 
 import Header from "layouts/Header";
-import Footer from "layouts/Footer";
 import ErrorPage from "pages/ErrorPage";
 import About from "pages/About";
 import QNAPomodoro from "pages/QNA/QNAPomodoro";
@@ -46,6 +45,7 @@ function App() {
           <Route path="scheduler" element={<QNAScheduler />} />
           <Route path="forecast" element={<QNAForeCast />} />
           <Route path="us" element={<QNAUs />} />
+          <Route path="test" element={<QNAUs />} />
         </Route>
         <Route path="*" element={<ErrorPage />} />
       </Routes>
@@ -61,4 +61,5 @@ const SFooter = styled.footer`
   z-index: 999999;
   color: ${(props) => props.theme.accentColor};
 `;
+
 export default App;
